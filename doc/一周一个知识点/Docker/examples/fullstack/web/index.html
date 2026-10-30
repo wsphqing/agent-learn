@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Docker 全栈实验</title>
+<style>
+body{font-family:system-ui,sans-serif;max-width:680px;margin:10vh auto;padding:24px;background:#f2f6fc;color:#123}
+main{padding:36px;background:white;border-radius:20px;box-shadow:0 14px 60px #173b6414}
+button{background:#1767df;color:white;padding:12px 18px;border:0;border-radius:8px;font-size:16px;cursor:pointer}
+button:disabled{opacity:.6}output{font-size:48px;display:block;margin:28px 0}small{display:block;margin-top:22px;line-height:1.8;color:#52647a}
+</style>
+<main><h1>Docker 全栈计数器</h1><p>浏览器 → Nginx → Python API → PostgreSQL</p>
+<output id="count" aria-live="polite">加载中</output><button id="add">计数 +1</button>
+<small>重新创建容器后，计数应继续保留在 PostgreSQL 的命名卷中。</small></main>
+<script>
+const count=document.querySelector('#count');
+const button=document.querySelector('#add');
+async function update(method='GET'){
+  button.disabled=true;
+  try{
+    const response=await fetch('/api/visits',{method});
+    if(!response.ok)throw new Error('HTTP '+response.status);
+    const data=await response.json();count.textContent=data.visits;
+  }catch(error){count.textContent='请求失败：'+error.message;}
+  finally{button.disabled=false;}
+}
+button.addEventListener('click',()=>update('POST'));
+update();
+</script>
+</html>

@@ -1,0 +1,672 @@
+
+
+
+
+
+
+
+
+
+
+
+ 
+ qwen2.5:0.5b
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+ 
+
+ 
+ 
+ 
+ 
+
+ 
+ 
+ 
+
+ 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+ 
+ 
+
+ 
+ 
+ 
+
+ 
+ 
+ 
+ 
+ 
+ 
+
+ 
+ 
+ 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Models
+ Docs
+ Pricing
+ 
+
+ 
+ 
+ 
+ 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+
+
+
+ 
+ 
+
+ 
+ 
+ 
+ Sign in
+ Download
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+ 
+ Models
+ Download
+ Docs
+ Pricing
+
+ 
+ Sign in
+ 
+
+ 
+ 
+ 
+ 
+ 
+
+
+ 
+
+ 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ qwen2.5:0.5b
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+ 
+ 
+ 
+ 
+ 
+ 39.8M
+  Downloads
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Updated 
+ 1 year ago
+ 
+ 
+ 
+ 
+ 
+ 
+
+ 
+ 
+ Qwen2.5 models are pretrained on Alibaba's latest large-scale dataset, encompassing up to 18 trillion tokens. The model supports up to 128K tokens and has multilingual support. 
+ 
+ 
+ 
+ 
+ 
+ 
+ Qwen2.5 models are pretrained on Alibaba's latest large-scale dataset, encompassing up to 18 trillion tokens. The model supports up to 128K tokens and has multilingual support. 
+ 
+ 
+ Cancel
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ tools
+ 
+ 
+ 
+ 
+ 
+ 
+ 0.5b
+ 
+ 1.5b
+ 
+ 3b
+ 
+ 7b
+ 
+ 14b
+ 
+ 32b
+ 
+ 72b
+ 
+ 
+ 
+
+
+
+
+
+
+ 
+ 
+ 
+ 
+ 
+ 
+
+
+
+ 
+ 
+ 
+ CLI
+ 
+ 
+ cURL
+ Python
+ JavaScript
+ 
+ 
+ Documentation 
+ Documentation 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+ 
+
+ollama run qwen2.5:0.5b
+ 
+
+ 
+ 
+
+
+curl http://localhost:11434/api/chat \
+ -d '{
+ "model": "qwen2.5:0.5b",
+ "messages": [{"role": "user", "content": "Hello!"}]
+ }'
+
+ 
+ 
+
+
+from ollama import chat
+
+response = chat(
+ model='qwen2.5:0.5b',
+ messages=[{'role': 'user', 'content': 'Hello!'}],
+)
+print(response.message.content)
+
+ 
+
+ 
+
+
+import ollama from 'ollama'
+
+const response = await ollama.chat({
+ model: 'qwen2.5:0.5b',
+ messages: [{role: 'user', content: 'Hello!'}],
+})
+console.log(response.message.content)
+
+ 
+ 
+ 
+ 
+
+
+
+
+
+
+ 
+ 
+ 
+ 
+ 
+Details
+ 
+ 
+ 
+ 
+Updated 1 year ago
+ 
+
+ 
+ 
+ 
+ 1 year ago
+ 
+ 
+a8b0c5157701 · 398MB ·
+ 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ model
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ archqwen2
+ 
+ 
+ ·
+ parameters494M
+ 
+ 
+ ·
+ quantizationQ4_K_M
+ 
+ 
+ 
+ 
+ 
+ 398MB
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ system
+ 
+ 
+ 
+ 
+ 
+ You are Qwen, created by Alibaba Cloud. You are a helpful assistant.
+ 
+ 
+ 
+ 68B
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ license
+ 
+ 
+ 
+ 
+ 
+ Apache License
+Version 2.0, January 2004
+http://www.apache.org/licenses/
+TERMS AND CONDITIONS FOR US
+ 
+ 
+ 
+ 11kB
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ template
+ 
+ 
+ 
+ 
+ 
+ {{- if .Messages }}
+{{- if or .System .Tools }}<|im_start|>system
+{{- if .System }}
+{{ .System }}
+{{
+ 
+ 
+ 
+ 1.5kB
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Readme
+
+ 
+ 
+ 
+ 
+ 
+ 
+
+
+
+Qwen2.5 is the latest series of Qwen large language models. For Qwen2.5, a range of base language models and instruction-tuned models are released, with sizes ranging from 0.5 to 72 billion parameters. Qwen2.5 introduces the following improvements over Qwen2:
+
+
+
+It possesses significantly more knowledge and has greatly enhanced capabilities in coding and mathematics, due to specialized expert models in these domains.
+
+It demonstrates significant advancements in instruction following, long-text generation (over 8K tokens), understanding structured data (e.g., tables), and generating structured outputs, especially in JSON format. It is also more resilient to diverse system prompts, improving role-play and condition-setting for chatbots.
+
+It supports long contexts of up to 128K tokens and can generate up to 8K tokens.
+
+It offers multilingual support for over 29 languages, including Chinese, English, French, Spanish, Portuguese, German, Italian, Russian, Japanese, Korean, Vietnamese, Thai, Arabic, and more.
+
+
+
+Please note: all models except the 3B and 72B are released under the Apache 2.0 license, while the 3B and 72B models are under the Qwen license.
+
+
+References
+
+
+GitHub
+
+
+Blog post
+
+
+HuggingFace
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Write
+ Preview
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+<img src="https://ollama.com/assets/library/qwen2.5/4b4f719f-c327-489e-8dc1-89a455c21e89" width="320" />
+
+Qwen2.5 is the latest series of Qwen large language models. For Qwen2.5, a range of base language models and instruction-tuned models are released, with sizes ranging from 0.5 to 72 billion parameters. Qwen2.5 introduces the following improvements over Qwen2:
+
+- It possesses **significantly more knowledge** and has greatly enhanced capabilities in **coding** and **mathematics**, due to specialized expert models in these domains.
+- It demonstrates significant advancements in **instruction following**, **long-text generation** (over 8K tokens), **understanding structured data** (e.g., tables), and **generating structured outputs**, especially in JSON format. It is also **more resilient to diverse system prompts**, improving role-play and condition-setting for chatbots.
+- It supports **long contexts** of up to 128K tokens and can generate up to 8K tokens.
+- It offers **multilingual support** for over 29 languages, including Chinese, English, French, Spanish, Portuguese, German, Italian, Russian, Japanese, Korean, Vietnamese, Thai, Arabic, and more.
+
+Please note: all models except the 3B and 72B are released under the Apache 2.0 license, while the 3B and 72B models are under the Qwen license.
+
+## References
+
+[GitHub](https://github.com/QwenLM/Qwen2.5)
+
+[Blog post](https://qwenlm.github.io/blog/qwen2.5/)
+
+[HuggingFace](https://huggingface.co/collections/Qwen/qwen25-66e81a666513e518adb90d9e)
+ 
+ 
+ Paste, drop or click to upload images (.png, .jpeg, .jpg, .svg, .gif)
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+
+
+
+
+ 
+ 
+
+
+ 
+ 
+ © 2026 Ollama
+ 
+ Download
+ Blog
+ Docs
+ GitHub
+ Discord
+ X (Twitter)
+ Support
+ Careers
+ Privacy
+ Terms
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+ Blog
+ 
+ 
+
+ Download
+ 
+ 
+
+ Docs
+ 
+ 
+ 
+ 
+
+ GitHub
+ 
+ 
+
+ Discord
+ 
+ 
+
+ X (Twitter)
+ 
+ 
+
+ Meetups
+ 
+ 
+
+ Careers
+ 
+ 
+
+ Privacy
+ 
+ 
+
+ Terms
+ 
+ 
+ 
+ © 2026 Ollama Inc.
+ 
+ 
+ 
+
+
+
+ 
+
+ 
+ 
+ 
+

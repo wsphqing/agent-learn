@@ -1,0 +1,16 @@
+name: docker-week-ai
+services:
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      - "127.0.0.1:11434:11434"
+    volumes:
+      - model_data:/root/.ollama
+    restart: unless-stopped
+    logging:
+      driver: local
+      options:
+        max-size: "10m"
+        max-file: "3"
+volumes:
+  model_data:

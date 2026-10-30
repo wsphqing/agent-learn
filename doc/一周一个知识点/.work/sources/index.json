@@ -1,0 +1,171 @@
+[
+  {
+    "id": "overview",
+    "url": "https://docs.docker.com/get-started/docker-overview/",
+    "error": "<urlopen error EOF occurred in violation of protocol (_ssl.c:1108)>"
+  },
+  {
+    "id": "install",
+    "url": "https://docs.docker.com/engine/install/",
+    "status": 200,
+    "chars": 19856
+  },
+  {
+    "id": "containers",
+    "url": "https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-a-container/",
+    "error": "<urlopen error EOF occurred in violation of protocol (_ssl.c:1108)>"
+  },
+  {
+    "id": "build-best",
+    "url": "https://docs.docker.com/build/building/best-practices/",
+    "status": 200,
+    "chars": 45595
+  },
+  {
+    "id": "multistage",
+    "url": "https://docs.docker.com/build/building/multi-stage/",
+    "status": 200,
+    "chars": 22323
+  },
+  {
+    "id": "build-secrets",
+    "url": "https://docs.docker.com/build/building/secrets/",
+    "status": 200,
+    "chars": 24563
+  },
+  {
+    "id": "dockerfile",
+    "url": "https://docs.docker.com/reference/dockerfile/",
+    "error": "<urlopen error EOF occurred in violation of protocol (_ssl.c:1108)>"
+  },
+  {
+    "id": "compose-startup",
+    "url": "https://docs.docker.com/compose/how-tos/startup-order/",
+    "error": "<urlopen error EOF occurred in violation of protocol (_ssl.c:1108)>"
+  },
+  {
+    "id": "compose-net",
+    "url": "https://docs.docker.com/compose/how-tos/networking/",
+    "status": 200,
+    "chars": 29933
+  },
+  {
+    "id": "compose-secrets",
+    "url": "https://docs.docker.com/compose/how-tos/use-secrets/",
+    "status": 200,
+    "chars": 19820
+  },
+  {
+    "id": "volumes",
+    "url": "https://docs.docker.com/engine/storage/volumes/",
+    "status": 200,
+    "chars": 41800
+  },
+  {
+    "id": "bind-mounts",
+    "url": "https://docs.docker.com/engine/storage/bind-mounts/",
+    "status": 200,
+    "chars": 32283
+  },
+  {
+    "id": "network",
+    "url": "https://docs.docker.com/engine/network/",
+    "status": 200,
+    "chars": 28527
+  },
+  {
+    "id": "ports",
+    "url": "https://docs.docker.com/engine/network/port-publishing/",
+    "status": 200,
+    "chars": 29142
+  },
+  {
+    "id": "containerd",
+    "url": "https://docs.docker.com/engine/storage/containerd/",
+    "status": 200,
+    "chars": 21552
+  },
+  {
+    "id": "overlay2",
+    "url": "https://docs.docker.com/engine/storage/drivers/overlayfs-driver/",
+    "error": "<urlopen error EOF occurred in violation of protocol (_ssl.c:1108)>"
+  },
+  {
+    "id": "resources",
+    "url": "https://docs.docker.com/engine/containers/resource_constraints/",
+    "error": "<urlopen error EOF occurred in violation of protocol (_ssl.c:1108)>"
+  },
+  {
+    "id": "rootless",
+    "url": "https://docs.docker.com/engine/security/rootless/",
+    "status": 200,
+    "chars": 20569
+  },
+  {
+    "id": "security",
+    "url": "https://docs.docker.com/engine/security/",
+    "error": "<urlopen error EOF occurred in violation of protocol (_ssl.c:1108)>"
+  },
+  {
+    "id": "multiplatform",
+    "url": "https://docs.docker.com/build/building/multi-platform/",
+    "status": 200,
+    "chars": 31326
+  },
+  {
+    "id": "buildkit",
+    "url": "https://docs.docker.com/build/buildkit/",
+    "error": "<urlopen error EOF occurred in violation of protocol (_ssl.c:1108)>"
+  },
+  {
+    "id": "oci",
+    "url": "https://github.com/opencontainers/runtime-spec/blob/main/config-linux.md",
+    "status": 200,
+    "chars": 47165
+  },
+  {
+    "id": "containerd-arch",
+    "url": "https://github.com/containerd/containerd/blob/main/docs/getting-started.md",
+    "status": 200,
+    "chars": 24575
+  },
+  {
+    "id": "postgres",
+    "url": "https://hub.docker.com/_/postgres",
+    "error": "<urlopen error [Errno 54] Connection reset by peer>"
+  },
+  {
+    "id": "ollama",
+    "url": "https://docs.ollama.com/docker",
+    "status": 200,
+    "chars": 3174
+  },
+  {
+    "id": "ollama-api",
+    "url": "https://docs.ollama.com/api/generate",
+    "status": 200,
+    "chars": 4384
+  },
+  {
+    "id": "qwen",
+    "url": "https://ollama.com/library/qwen2.5:0.5b",
+    "status": 200,
+    "chars": 5531
+  },
+  {
+    "id": "restart",
+    "url": "https://docs.docker.com/engine/containers/start-containers-automatically/",
+    "error": "<urlopen error EOF occurred in violation of protocol (_ssl.c:1108)>"
+  },
+  {
+    "id": "logs",
+    "url": "https://docs.docker.com/engine/logging/configure/",
+    "error": "<urlopen error EOF occurred in violation of protocol (_ssl.c:1108)>"
+  },
+  {
+    "id": "prune",
+    "url": "https://docs.docker.com/engine/manage-resources/pruning/",
+    "status": 200,
+    "chars": 22478
+  }
+]

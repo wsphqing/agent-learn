@@ -1,0 +1,141 @@
+Generate a response - Ollama
+Documentation Index
+Fetch the complete documentation index at: /llms.txt
+Use this file to discover all available pages before exploring further.Skip to main contentOllama home pageSearch...⌘K
+API Reference
+Introduction
+Authentication
+Streaming
+Usage
+Errors
+OpenAI compatibility
+Anthropic compatibility
+Endpoints
+POSTGenerate
+POSTChat
+POSTEmbed
+GETTags
+GETPs
+POSTShow model details
+POSTCreate
+POSTCopy
+POSTPull
+POSTPush
+DELDelete
+GETGet version
+Sign in
+Download
+GuideIntegrationsAPI ReferenceOllama home pageSearch...⌘K
+Sign in
+Download
+DownloadSearch...NavigationEndpointsGenerate a responseGuideIntegrationsAPI ReferenceEndpoints
+Generate a responseCopy pageCopy page
+Generates a response for the provided promptCopy pageCopy pagePOST/api/generate
+cURL
+Default
+curl http://localhost:11434/api/generate -d '{
+ "model": "gemma4",
+ "prompt": "Why is the sky blue?"
+}'200
+{
+ "model": "<string>",
+ "created_at": "<string>",
+ "response": "<string>",
+ "thinking": "<string>",
+ "done": true,
+ "done_reason": "<string>",
+ "total_duration": 123,
+ "load_duration": 123,
+ "prompt_eval_count": 123,
+ "prompt_eval_cached_count": 123,
+ "prompt_eval_duration": 123,
+ "eval_count": 123,
+ "eval_duration": 123,
+ "logprobs": [
+ {
+ "token": "<string>",
+ "logprob": 123,
+ "bytes": [
+ 123
+ ],
+ "top_logprobs": [
+ {
+ "token": "<string>",
+ "logprob": 123,
+ "bytes": [
+ 123
+ ]
+ }
+ ]
+ }
+ ]
+}Bodyapplication/json​modelstringrequired
+Model name​promptstring
+Text for the model to generate a response from​suffixstring
+Used for fill-in-the-middle models, text that appears after the user prompt and before the model response​imagesstring[]
+Base64-encoded images for models that support image input​formatstringobjectstringobject
+Structured output format for the model to generate a response from. Supports either the string "json" or a JSON schema object.​systemstring
+System prompt for the model to generate a response from​streambooleandefault:true
+When true, returns a stream of partial responses​thinkbooleanenum<string>booleanenum<string>
+When true, returns separate thinking output in addition to content. Can be a boolean (true/false) or a string ("high", "medium", "low", "max") for supported models, with "max" requesting the highest thinking level.​rawboolean
+When true, returns the raw response from the model without any prompt templating​keep_alivestringnumberstringnumber
+Model keep-alive duration (for example 5m or 0 to unload immediately)​optionsobject
+Runtime options that control text generation
+Show child attributes​logprobsboolean
+Whether to return log probabilities of the output tokens​top_logprobsinteger
+Number of most likely tokens to return at each token position when logprobs are enabledResponse200application/json
+Generation responses​modelstring
+Model name​created_atstring
+ISO 8601 timestamp of response creation​responsestring
+The model's generated text response​thinkingstring
+The model's generated thinking output​doneboolean
+Indicates whether generation has finished​done_reasonstring
+Reason the generation stopped​total_durationinteger
+Time spent generating the response in nanoseconds​load_durationinteger
+Time spent loading the model in nanoseconds​prompt_eval_countinteger
+Number of input tokens in the prompt​prompt_eval_cached_countinteger
+Number of prompt tokens read from the cache​prompt_eval_durationinteger
+Time spent evaluating uncached prompt tokens in nanoseconds​eval_countinteger
+Number of output tokens generated in the response​eval_durationinteger
+Time spent generating tokens in nanoseconds​logprobsobject[]
+Log probability information for the generated tokens when logprobs are enabled
+Show child attributesPreviousChatGenerate the next chat message in a conversation between a user and an assistant.Next⌘I
+cURL
+Default
+curl http://localhost:11434/api/generate -d '{
+ "model": "gemma4",
+ "prompt": "Why is the sky blue?"
+}'200
+{
+ "model": "<string>",
+ "created_at": "<string>",
+ "response": "<string>",
+ "thinking": "<string>",
+ "done": true,
+ "done_reason": "<string>",
+ "total_duration": 123,
+ "load_duration": 123,
+ "prompt_eval_count": 123,
+ "prompt_eval_cached_count": 123,
+ "prompt_eval_duration": 123,
+ "eval_count": 123,
+ "eval_duration": 123,
+ "logprobs": [
+ {
+ "token": "<string>",
+ "logprob": 123,
+ "bytes": [
+ 123
+ ],
+ "top_logprobs": [
+ {
+ "token": "<string>",
+ "logprob": 123,
+ "bytes": [
+ 123
+ ]
+ }
+ ]
+ }
+ ]
+}

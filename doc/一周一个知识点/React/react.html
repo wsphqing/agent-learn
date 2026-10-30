@@ -1,0 +1,1616 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="React 中文学习文档：组件、JSX、State、Hooks、虚拟 DOM、Fiber 与并发渲染原理，附 17 张原创示意图和完整示例代码。"><meta name="color-scheme" content="light"><title>React：从组件思维到工程实践</title><style>
+:root{--ink:#182c47;--muted:#5d6e83;--blue:#205dd7;--line:#dfe6ee;--paper:#fff;--wash:#f4f7fb;--nav:254px;scroll-behavior:smooth}
+*{box-sizing:border-box}body{margin:0;background:var(--wash);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;font-size:16px;line-height:1.9;-webkit-font-smoothing:antialiased}a{color:var(--blue);text-decoration:none;text-underline-offset:3px}a:hover{text-decoration:underline}button{font:inherit;cursor:pointer}button:focus-visible,a:focus-visible,img:focus-visible{outline:3px solid #f6a65b;outline-offset:3px}#progress{position:fixed;left:0;top:0;height:3px;width:0;background:var(--blue);z-index:30}
+.sidebar{position:fixed;inset:0 auto 0 0;width:var(--nav);background:#fff;border-right:1px solid var(--line);padding:32px 20px 20px;overflow-y:auto;z-index:20}.brand{font-size:11px;letter-spacing:2px;color:var(--blue);font-weight:750}.brand strong{display:block;font-size:28px;letter-spacing:-1px;color:var(--ink);line-height:1.7}.sidebar .intro{font-size:12px;color:var(--muted);margin:12px 0 21px}.toc a{display:block;padding:9px 10px;margin:3px 0;border-radius:8px;font-size:13px;line-height:1.55;color:#53657e}.toc a.active,.toc a:hover{color:var(--blue);background:#edf3ff;text-decoration:none}.sidefoot{font-size:11px;color:#7a899d;margin:26px 10px}.mobilebar{display:none}
+main{margin-left:var(--nav);padding:45px 52px 60px;min-width:0}.page{max-width:1030px;margin:auto}.hero{position:relative;padding:49px 52px;background:linear-gradient(125deg,#10284b,#1a4881);color:white;border-radius:20px;overflow:hidden;box-shadow:0 16px 48px #1f42681a}.hero:after{content:"";position:absolute;width:260px;height:260px;right:-115px;top:-110px;border:42px solid #ffffff0a;border-radius:50%}.eyebrow{color:#a9cdfa;letter-spacing:3px;font-size:12px;font-weight:650}.hero h1{font-size:53px;line-height:1.15;letter-spacing:-1px;margin:18px 0}.hero h1 span{font-size:26px;display:block;font-weight:500;letter-spacing:.1px;margin-top:15px;line-height:1.5}.hero p{max-width:620px;color:#d1e1f4;font-size:15px;margin:22px 0 26px}.pills{display:flex;gap:10px;flex-wrap:wrap}.pills span{padding:5px 12px;border:1px solid #ffffff26;border-radius:5px;background:#ffffff09;font-size:12px;color:#e4efff}.hero-actions{display:flex;align-items:center;justify-content:space-between;padding:18px 4px;color:var(--muted);font-size:12px;gap:10px}.subtle{background:#fff;border:1px solid var(--line);border-radius:7px;padding:5px 13px;color:var(--muted)}
+article{background:#fff;border:1px solid var(--line);border-radius:16px;padding:35px 48px 50px;overflow:hidden}article>blockquote:first-child{margin-top:0}h2{font-size:28px;line-height:1.5;letter-spacing:-.3px;margin:76px 0 25px;padding-top:22px;border-top:2px solid #e7edf6;scroll-margin-top:32px}h2:first-of-type{margin-top:38px}h3{font-size:21px;line-height:1.6;margin:36px 0 15px;scroll-margin-top:30px}p{margin:16px 0}strong{font-weight:650}li{margin:9px 0}ul,ol{padding-left:1.5em}blockquote{border-left:3px solid #4582ed;background:#f4f8ff;color:#526681;margin:24px 0;padding:13px 20px;font-size:14px;border-radius:0 9px 9px 0}blockquote p{margin:4px 0}code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.87em;padding:2px 5px;border-radius:4px;background:#eef3f9;overflow-wrap:anywhere}.codebox{margin:22px 0;border-radius:11px;overflow:hidden;background:#142338;border:1px solid #1d3453}.codehead{display:flex;justify-content:space-between;align-items:center;min-height:38px;padding:6px 14px;background:#1b2f49;color:#a9bed8;font-size:10px;letter-spacing:1.3px}.copy{line-height:1.5;font-size:11px;padding:3px 10px;color:#d4e4f9;border:1px solid #607894;border-radius:5px;background:transparent;letter-spacing:0}.copy:hover{background:#ffffff14}pre{margin:0;padding:19px 21px;overflow:auto;tab-size:4;line-height:1.75;font-size:13px;color:#e2ecf9}pre code{background:none;padding:0;color:inherit;border:0;font-size:inherit;white-space:pre;overflow-wrap:normal}
+.table-wrap{margin:24px 0;overflow-x:auto;border:1px solid var(--line);border-radius:9px}table{border-collapse:collapse;width:100%;font-size:14px;line-height:1.85}th,td{border-bottom:1px solid #e5ebf2;padding:12px 14px;text-align:left;vertical-align:top;min-width:100px}th{font-weight:650;background:#edf3fb;color:#24436c}tr:last-child td{border-bottom:0}tbody tr:nth-child(even){background:#fafbfd}td:first-child{font-weight:550}table code{font-size:.86em}.diagram{display:block;width:100%;height:auto;cursor:zoom-in;border-radius:12px}.diagram:hover{box-shadow:0 0 0 2px #d8e7fc}figure{margin:32px 0 13px}p:has(>em:only-child){font-size:13px;line-height:1.85;color:var(--muted);margin-top:10px}p:has(>em:only-child) em{font-style:normal}.footer{text-align:center;padding:32px 0 0;color:var(--muted);font-size:12px}#top{position:fixed;bottom:22px;right:22px;border:1px solid #ced9e7;border-radius:10px;background:#fff;padding:8px 13px;color:var(--blue);box-shadow:0 4px 16px #14365712;z-index:10}dialog{border:1px solid var(--line);padding:18px;border-radius:14px;max-width:96vw;max-height:94vh;background:#fff;color:var(--ink)}dialog::backdrop{background:#11223bdd;backdrop-filter:blur(4px)}.zoomhead{display:flex;justify-content:space-between;gap:20px;align-items:center;font-size:14px;margin-bottom:14px}.zoomscroll{overflow:auto;max-height:78vh}#zoomimage{display:block;width:1080px;max-width:none;height:auto}#scrim{display:none}
+@media(min-width:1600px){main{padding-top:60px}.page{max-width:1130px}article{padding-left:62px;padding-right:62px}}
+@media(max-width:1190px){:root{--nav:224px}main{padding:30px 25px}article{padding:26px 30px}.hero{padding:36px}.hero h1{font-size:46px}.hero h1 span{font-size:24px}}
+@media(max-width:900px){:root{--nav:0px}.sidebar{width:280px;transform:translateX(-100%);transition:transform .2s}.sidebar.open{transform:none}.mobilebar{display:flex;position:sticky;top:0;background:#ffffffed;backdrop-filter:blur(12px);border-bottom:1px solid var(--line);z-index:15;padding:10px 17px;align-items:center;justify-content:space-between;font-size:13px;font-weight:650}.mobilebar button{font-size:12px}main{margin:0;padding:22px 18px 50px}h2,h3{scroll-margin-top:72px}#scrim.visible{display:block;position:fixed;inset:0;background:#152a4b55;z-index:18}.hero h1{font-size:45px}.hero{padding:30px}article{padding:23px 25px}.hero-actions{font-size:11px}}
+@media(max-width:520px){body{font-size:15px;line-height:1.9}main{padding:15px 10px 50px}.hero{padding:27px 23px;border-radius:13px}.hero h1{font-size:43px}.hero h1 span{font-size:22px}.hero p{font-size:14px}.eyebrow{font-size:10px;letter-spacing:1.8px}.pills{gap:7px}.pills span{font-size:11px;padding:3px 8px}.hero-actions{align-items:flex-start;padding:14px 4px}article{padding:18px 19px;border-radius:12px}h2{font-size:24px;margin-top:58px}h3{font-size:19px}pre{font-size:12px;padding:15px}table{font-size:13px;min-width:550px}th,td{padding:10px 12px}blockquote{padding:11px 14px;font-size:13px}.diagram{border-radius:7px}figure{margin-left:-9px;margin-right:-9px}#top{font-size:12px;bottom:14px;right:14px}.zoomhead{font-size:12px}#zoomimage{width:1000px}}
+@media(prefers-reduced-motion:reduce){:root{scroll-behavior:auto}.sidebar{transition:none}}
+@media print{@page{size:A4;margin:16mm 15mm}body{background:#fff;font-size:11px;line-height:1.65}.sidebar,.mobilebar,#progress,#top,.hero-actions,.copy,#scrim,dialog{display:none!important}main{margin:0;padding:0}.page{max-width:none}.hero{box-shadow:none;color:#152b46;background:#fff;border:2px solid #244978;padding:24px;border-radius:0;break-after:page}.hero:after{display:none}.hero h1{font-size:42px}.hero h1 span{font-size:24px}.hero p,.eyebrow,.pills span{color:#234063}.pills span{border-color:#c6d5e7}article{border:0;padding:0;overflow:visible}h2{font-size:22px;break-before:page;margin-top:0;padding-top:12px;break-after:avoid}h3{font-size:16px;break-after:avoid}p,li{orphans:3;widows:3}blockquote{background:#f7f8fa}.codebox{background:#fafafa;border:1px solid #cdd6e1;break-inside:auto;border-radius:4px}.codehead{background:#eee;color:#456;min-height:22px;padding:3px 9px}pre{color:#152b46;font-size:8.5px;white-space:pre-wrap;padding:11px;overflow:visible}pre code{white-space:pre-wrap;word-break:break-word}.table-wrap{overflow:visible;border-radius:0}table{min-width:0;font-size:9.5px}th,td{padding:7px;min-width:0}thead{display:table-header-group}tr{break-inside:avoid}figure{break-inside:avoid;max-width:100%;margin:18px 0 8px}.diagram{max-height:155mm;object-fit:contain}a{color:#204c8c;text-decoration:none}.footer{font-size:9px}}
+</style></head>
+<body><div id="progress" aria-hidden="true"></div><div id="scrim"></div><div class="mobilebar"><span>一周一个知识点 / React</span><button id="menu" class="subtle" aria-controls="sidebar" aria-expanded="false">目录</button></div>
+<aside class="sidebar" id="sidebar"><div class="brand">一周一个知识点<strong>REACT</strong></div><p class="intro">从组件思维到工程实践<br>概念 · 操作 · 原理 · 实践</p><nav class="toc" aria-label="章节目录"><a href="#0">0. 如何使用这份文档</a><a href="#1-react">1. React 的介绍：解决什么问题</a><a href="#2">2. 安装、环境与核心心智模型</a><a href="#3-jsx">3. 核心概念一：JSX 与组件</a><a href="#4-state">4. 核心概念二：State 与事件</a><a href="#5">5. 核心概念三：列表与条件渲染</a><a href="#6-hooks">6. 核心概念四：Hooks 深入</a><a href="#7-dom">7. 实现原理：从虚拟 DOM 到并发渲染</a><a href="#8-todo">8. 实践一：Todo 应用</a><a href="#9">9. 实践二：与后端交互</a><a href="#10">10. 实践三：路由与构建部署</a><a href="#11_1">11. 工程化与最佳实践</a><a href="#12">12. 排错：用证据缩小问题范围</a><a href="#13">13. 一周学习计划与动手挑战</a><a href="#14-react">14. 复盘题：能否脱离代码解释 React</a><a href="#15">15. 官方资料与验证说明</a></nav><div class="sidefoot">2026.09.15 · 学习手册<br>正文与示意图可离线阅读</div></aside>
+<main><div class="page"><header class="hero"><div class="eyebrow">REACT / COMPONENTS / HOOKS</div><h1>React<span>从组件思维到工程实践</span></h1><p>用组件描述界面，让数据的变化自动变成界面的变化，再用完整项目把知识串起来。</p><div class="pills"><span>7 天学习路线</span><span>17 张原理示意图</span><span>3 个递进实践</span><span>16 道复盘题</span></div></header>
+<div class="hero-actions"><span>面向有 HTML / CSS / JS 基础的开发者 · React 19 / Vite<br>资料核对：2026-09-15</span><button type="button" class="subtle" id="print">打印 / 保存 PDF</button></div>
+<article>
+<blockquote>
+<p><strong>一周一个知识点 · 前端与工程化</strong><br/>
+面向有 HTML / CSS / JavaScript 基础的开发者，从“会写组件”走向“能解释、能排错、能交付”。<br/>
+整理与资料核对日期：2026-09-15。本文以 <strong>React 19、函数组件与 Hooks、Vite 构建</strong> 为主线；不同框架版本之间的差异会单独说明。</p>
+</blockquote>
+<h2 id="0">0. 如何使用这份文档</h2>
+<p>React 最值得掌握的能力是：<strong>用组件描述界面，把数据的变化自动变成界面的变化，并用声明式的方式组织可复用的 UI 逻辑。</strong></p>
+<p>建议分三遍阅读：第一遍读第 1～4 章并运行一个组件；第二遍读第 5～7 章，理解状态、Hooks 与渲染原理；第三遍读第 8～15 章，完成 Todo、请求、路由与部署实践。每天投入约 60～90 分钟，完整实验可另外安排 2～3 小时。</p>
+<div aria-label="可横向滚动的表格" class="table-wrap" role="region" tabindex="0"><table>
+<thead>
+<tr>
+<th>你要学会什么</th>
+<th>对应内容</th>
+<th>学完后的检验方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>React 是什么、解决什么问题</td>
+<td>第 1～2 章</td>
+<td>能区分声明式与命令式，能说清组件、JSX、Props</td>
+</tr>
+<tr>
+<td>如何使用 React</td>
+<td>第 3～5 章</td>
+<td>能编写组件、管理 State、处理事件与列表</td>
+</tr>
+<tr>
+<td>React 为什么能工作</td>
+<td>第 6～7 章</td>
+<td>能解释虚拟 DOM、协调、Fiber、双缓存与并发渲染</td>
+</tr>
+<tr>
+<td>如何落到真实项目</td>
+<td>第 8～10 章</td>
+<td>能完成 Todo、请求后端、配置路由</td>
+</tr>
+<tr>
+<td>如何用得稳</td>
+<td>第 11～15 章</td>
+<td>能设计组件、排查故障、解释常见误区</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>文档与附件：</strong> <code>react.md</code> 是正文；<code>react.html</code> 是同源生成、图像内嵌的离线阅读版；<code>assets/</code> 保存示意图；<code>tools/</code> 保存生成脚本。Markdown 与 <code>assets/</code> 放在一起即可显示配图。HTML 可单独复制分享，所有示例代码已在正文展开，可复制到本地练习。</p>
+<p><strong>命令约定：</strong> 代码块不带 shell 提示符，可以复制。所有案例均以本地学习为目标，不需要购买云服务。首次创建项目和安装依赖需要网络连接。文中示例尽量保持小而完整：同一段代码同时展示概念，不追求生产级复杂度。</p>
+<h2 id="1-react">1. React 的介绍：解决什么问题</h2>
+<h3 id="11">1.1 从“页面能显示”开始</h3>
+<p>设想一个计数器页面：用户点按钮，数字加一。用原生 JavaScript 写，你需要先找到按钮、再找到数字节点，注册事件，然后在回调里读取旧值、计算新值、写回 DOM：</p>
+<div class="codebox"><div class="codehead"><span>JAVASCRIPT</span><button aria-label="复制这段代码" class="copy" type="button">复制</button></div><pre><code class="language-javascript">let count = 0;
+const button = document.querySelector('#add');
+const output = document.querySelector('#count');
+button.addEventListener('click', () =&gt; {
+  count += 1;
+  output.textContent = String(count);
+});
+</code></pre></div>
+<p>代码不长，但问题会随界面复杂迅速放大：页面有几十个互相影响的区域时，“先改哪个节点、再改哪个节点”的命令式逻辑会越来越难维护。你不仅要描述<strong>界面长什么样</strong>，还要手动管理<strong>每一步怎么改</strong>。</p>
+<p>React 换了一个角度：你只需要描述 <strong>“数据是什么，界面应该长什么样”</strong>，React 负责把数据变成 DOM。同一个计数器用 React 写，核心只有两件事——保存状态、声明界面：</p>
+<div class="codebox"><div class="codehead"><span>JSX</span><button aria-label="复制这段代码" class="copy" type="button">复制</button></div><pre><code class="language-jsx">import { useState } from 'react';
+
+export default function Counter() {
+  const [count, setCount] = useState(0);
+  return (
+    &lt;div&gt;
+      &lt;output&gt;{count}&lt;/output&gt;
+      &lt;button onClick={() =&gt; setCount(count + 1)}&gt;计数 +1&lt;/button&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre></div>
+<p>点击按钮后，React 会重新执行组件函数、得到新的界面描述，然后以最小代价更新真实 DOM。你不需要告诉它“把哪个节点改成什么”，只要告诉它 <strong>“count 变成了几”</strong>。<a href="https://react.dev/learn">React 官方教程</a></p>
+<h3 id="12-react">1.2 React 是什么</h3>
+<p>React 是一个用于构建用户界面的 JavaScript 库，围绕“组件”组织一切。几个经常混在一起的名字需要分开：</p>
+<div aria-label="可横向滚动的表格" class="table-wrap" role="region" tabindex="0"><table>
+<thead>
+<tr>
+<th>名称</th>
+<th>角色</th>
+<th>直观理解</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>React 库</td>
+<td>提供组件、JSX、Hooks 等能力</td>
+<td>描述界面的核心库</td>
+</tr>
+<tr>
+<td>react-dom</td>
+<td>把 React 元素渲染到浏览器 DOM 中</td>
+<td>React 与浏览器的桥</td>
+</tr>
+<tr>
+<td>组件（Component）</td>
+<td>返回界面的函数或类</td>
+<td>界面的一个“积木块”</td>
+</tr>
+<tr>
+<td>JSX</td>
+<td>JavaScript 的语法扩展，写起来像 HTML</td>
+<td>描述界面结构的语法糖</td>
+</tr>
+<tr>
+<td>Props</td>
+<td>父组件传给子组件的数据（只读）</td>
+<td>组件的“入参”</td>
+</tr>
+<tr>
+<td>State</td>
+<td>组件内部的可变数据</td>
+<td>组件的“记忆”</td>
+</tr>
+<tr>
+<td>Hooks</td>
+<td>在函数组件中接入状态与副作用的能力</td>
+<td>函数组件的“工具函数”</td>
+</tr>
+<tr>
+<td>虚拟 DOM</td>
+<td>内存中的界面描述树，用于高效更新</td>
+<td>真实 DOM 的“草稿”</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>组件不是页面，JSX 也不是 HTML。</strong> 组件是返回界面描述的 JavaScript 函数；JSX 最终被编译成普通的 JavaScript 调用，再由 react-dom 渲染成浏览器节点。<a href="https://react.dev/learn/thinking-in-react">React 概念</a></p>
+<h3 id="13-javascript-vue">1.3 与原生 JavaScript 和 Vue 有什么区别</h3>
+<figure><img alt="图 1：React 在 Web 技术栈中的位置" aria-label="放大查看：图 1：React 在 Web 技术栈中的位置" class="diagram" loading="lazy" role="button" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDgwIiBoZWlnaHQ9IjYzOCIgdmlld0JveD0iMCAwIDEwODAgNjM4IiByb2xlPSJpbWciIGFyaWEtbGFiZWxsZWRieT0idGl0bGUgZGVzYyI+Cjx0aXRsZSBpZD0idGl0bGUiPlJlYWN0IOWcqCBXZWIg5oqA5pyv5qCI5Lit55qE5L2N572uPC90aXRsZT48ZGVzYyBpZD0iZGVzYyI+5oqK55WM6Z2i5ouG5oiQ5Y+v5aSN55So55qE57uE5Lu277yM55So5aOw5piO5byP5pa55byP5o+P6L+w6aG16Z2i57uT5p6c44CCPC9kZXNjPgo8ZGVmcz48bWFya2VyIGlkPSJhcnJvdyIgbWFya2VyV2lkdGg9IjgiIG1hcmtlckhlaWdodD0iOCIgcmVmWD0iNyIgcmVmWT0iMy41IiBvcmllbnQ9ImF1dG8iPjxwYXRoIGQ9Ik0wLDAgTDcsMy41IEwwLDciIGZpbGw9IiMyNTYzZWIiLz48L21hcmtlcj48L2RlZnM+CjxzdHlsZT50ZXh0e2ZvbnQtZmFtaWx5OiJQaW5nRmFuZyBTQyIsIk5vdG8gU2FucyBDSksgU0MiLCJNaWNyb3NvZnQgWWFIZWkiLHNhbnMtc2VyaWZ9PC9zdHlsZT4KPHJlY3Qgd2lkdGg9IjEwODAiIGhlaWdodD0iNjM4IiByeD0iMjIiIGZpbGw9IiNmN2ZhZmYiLz4KPHRleHQgeD0iMzUiIHk9IjM3IiBmb250LXNpemU9IjEzIiBmaWxsPSIjMjU2M2ViIiBmb250LXdlaWdodD0iNzAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPlJFQUNUIC8gMDE8L3RleHQ+PHRleHQgeD0iMzUiIHk9Ijc4IiBmb250LXNpemU9IjI5IiBmaWxsPSIjMTcyYzQ4IiBmb250LXdlaWdodD0iNzAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPlJlYWN0IOWcqCBXZWIg5oqA5pyv5qCI5Lit55qE5L2N572uPC90ZXh0Pjx0ZXh0IHg9IjM1IiB5PSIxMTAiIGZvbnQtc2l6ZT0iMTciIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+5oqK55WM6Z2i5ouG5oiQ5Y+v5aSN55So55qE57uE5Lu277yM55So5aOw5piO5byP5pa55byP5o+P6L+w6aG16Z2i57uT5p6c44CCPC90ZXh0Pgo8cmVjdCB4PSIzNSIgeT0iMTQwIiB3aWR0aD0iMzEwIiBoZWlnaHQ9IjQwNCIgcng9IjE2IiBmaWxsPSIjZmZmIiBzdHJva2U9IiNjNWQ0ZTYiLz48dGV4dCB4PSI1MyIgeT0iMTc2IiBmb250LXNpemU9IjIyIiBmaWxsPSIjMTcyYzQ4IiBmb250LXdlaWdodD0iNzAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPua1j+iniOWZqOS4ieS7tuWllzwvdGV4dD48dGV4dCB4PSI1MyIgeT0iMjA0IiBmb250LXNpemU9IjE2IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPue7k+aehCAvIOagt+W8jyAvIOihjOS4ujwvdGV4dD48cmVjdCB4PSIzODUiIHk9IjE0MCIgd2lkdGg9IjMxMCIgaGVpZ2h0PSI0MDQiIHJ4PSIxNiIgZmlsbD0iI2ZmZiIgc3Ryb2tlPSIjYzVkNGU2Ii8+PHRleHQgeD0iNDAzIiB5PSIxNzYiIGZvbnQtc2l6ZT0iMjIiIGZpbGw9IiMxNzJjNDgiIGZvbnQtd2VpZ2h0PSI3MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+UmVhY3Q8L3RleHQ+PHRleHQgeD0iNDAzIiB5PSIyMDQiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+55So57uE5Lu25o+P6L+w55WM6Z2iPC90ZXh0PjxyZWN0IHg9IjczNSIgeT0iMTQwIiB3aWR0aD0iMzEwIiBoZWlnaHQ9IjQwNCIgcng9IjE2IiBmaWxsPSIjZmZmIiBzdHJva2U9IiNjNWQ0ZTYiLz48dGV4dCB4PSI3NTMiIHk9IjE3NiIgZm9udC1zaXplPSIyMiIgZmlsbD0iIzE3MmM0OCIgZm9udC13ZWlnaHQ9IjcwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7nlKjmiLfnnIvliLDnmoTpobXpnaI8L3RleHQ+PHRleHQgeD0iNzUzIiB5PSIyMDQiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+57uE5ZCI5ZCO55qE55yf5a6e57uT5p6cPC90ZXh0PjxyZWN0IHg9IjUyIiB5PSIyMjUiIHdpZHRoPSIxMzAiIGhlaWdodD0iOTIiIHJ4PSIxNiIgZmlsbD0iI2ZmZjNlNiIgc3Ryb2tlPSIjYzVkNGU2Ii8+PHJlY3QgeD0iNTIiIHk9IjI0MCIgd2lkdGg9IjQiIGhlaWdodD0iNjIiIHJ4PSIyIiBmaWxsPSIjYjc1YTE4Ii8+PHRleHQgeD0iNzAiIHk9IjI1NyIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzE3MmM0OCIgZm9udC13ZWlnaHQ9IjY1MCIgdGV4dC1hbmNob3I9InN0YXJ0Ij5IVE1MPC90ZXh0Pjx0ZXh0IHg9IjcwIiB5PSIyODciIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+57uT5p6E6K+t5LmJPC90ZXh0PjxyZWN0IHg9IjE5OCIgeT0iMjI1IiB3aWR0aD0iMTMwIiBoZWlnaHQ9IjkyIiByeD0iMTYiIGZpbGw9IiNlOGY3ZjIiIHN0cm9rZT0iI2M1ZDRlNiIvPjxyZWN0IHg9IjE5OCIgeT0iMjQwIiB3aWR0aD0iNCIgaGVpZ2h0PSI2MiIgcng9IjIiIGZpbGw9IiMwMDg2NzUiLz48dGV4dCB4PSIyMTYiIHk9IjI1NyIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzE3MmM0OCIgZm9udC13ZWlnaHQ9IjY1MCIgdGV4dC1hbmNob3I9InN0YXJ0Ij5DU1M8L3RleHQ+PHRleHQgeD0iMjE2IiB5PSIyODciIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+5qC35byP5LiO5biD5bGAPC90ZXh0PjxyZWN0IHg9IjUyIiB5PSIzMzMiIHdpZHRoPSIyNzYiIGhlaWdodD0iNzMiIHJ4PSIxNiIgZmlsbD0iI2VkZjRmZiIgc3Ryb2tlPSIjYzVkNGU2Ii8+PHJlY3QgeD0iNTIiIHk9IjM0OCIgd2lkdGg9IjQiIGhlaWdodD0iNDMiIHJ4PSIyIiBmaWxsPSIjMjU2M2ViIi8+PHRleHQgeD0iNzAiIHk9IjM2NSIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzE3MmM0OCIgZm9udC13ZWlnaHQ9IjY1MCIgdGV4dC1hbmNob3I9InN0YXJ0Ij5KYXZhU2NyaXB0PC90ZXh0Pjx0ZXh0IHg9IjcwIiB5PSIzOTUiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+6YC76L6R44CB5LqL5Lu244CB5pWw5o2u44CBRE9NIOaTjeS9nDwvdGV4dD48cmVjdCB4PSI0MDIiIHk9IjIyNSIgd2lkdGg9IjEzMCIgaGVpZ2h0PSIxMTEiIHJ4PSIxNiIgZmlsbD0iI2VkZjRmZiIgc3Ryb2tlPSIjYzVkNGU2Ii8+PHJlY3QgeD0iNDAyIiB5PSIyNDAiIHdpZHRoPSI0IiBoZWlnaHQ9IjgxIiByeD0iMiIgZmlsbD0iIzI1NjNlYiIvPjx0ZXh0IHg9IjQyMCIgeT0iMjU3IiBmb250LXNpemU9IjE4IiBmaWxsPSIjMTcyYzQ4IiBmb250LXdlaWdodD0iNjUwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPue7hOS7tiBBPC90ZXh0Pjx0ZXh0IHg9IjQyMCIgeT0iMjg3IiBmb250LXNpemU9IjE2IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPkpTWCArIOagt+W8jyArIOeKtuaAgTwvdGV4dD48cmVjdCB4PSI1NDgiIHk9IjIyNSIgd2lkdGg9IjEzMCIgaGVpZ2h0PSIxMTEiIHJ4PSIxNiIgZmlsbD0iI2VkZjRmZiIgc3Ryb2tlPSIjYzVkNGU2Ii8+PHJlY3QgeD0iNTQ4IiB5PSIyNDAiIHdpZHRoPSI0IiBoZWlnaHQ9IjgxIiByeD0iMiIgZmlsbD0iIzI1NjNlYiIvPjx0ZXh0IHg9IjU2NiIgeT0iMjU3IiBmb250LXNpemU9IjE4IiBmaWxsPSIjMTcyYzQ4IiBmb250LXdlaWdodD0iNjUwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPue7hOS7tiBCPC90ZXh0Pjx0ZXh0IHg9IjU2NiIgeT0iMjg3IiBmb250LXNpemU9IjE2IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPkpTWCArIOagt+W8jyArIOeKtuaAgTwvdGV4dD48cmVjdCB4PSI0MDIiIHk9IjM1NCIgd2lkdGg9IjI3NiIgaGVpZ2h0PSI3MCIgcng9IjE2IiBmaWxsPSIjZjFlY2ZkIiBzdHJva2U9IiNjNWQ0ZTYiLz48cmVjdCB4PSI0MDIiIHk9IjM2OSIgd2lkdGg9IjQiIGhlaWdodD0iNDAiIHJ4PSIyIiBmaWxsPSIjNmQyOGQ5Ii8+PHRleHQgeD0iNDIwIiB5PSIzODYiIGZvbnQtc2l6ZT0iMTkiIGZpbGw9IiMxNzJjNDgiIGZvbnQtd2VpZ2h0PSI2NTAiIHRleHQtYW5jaG9yPSJzdGFydCI+57uE5Lu25qCR77yI5aSN55So5LiO57uE5ZCI77yJPC90ZXh0PjxyZWN0IHg9IjQwMiIgeT0iNDQzIiB3aWR0aD0iMjc2IiBoZWlnaHQ9IjczIiByeD0iMTYiIGZpbGw9IiNmZmYzZTYiIHN0cm9rZT0iI2M1ZDRlNiIvPjxyZWN0IHg9IjQwMiIgeT0iNDU4IiB3aWR0aD0iNCIgaGVpZ2h0PSI0MyIgcng9IjIiIGZpbGw9IiNiNzVhMTgiLz48dGV4dCB4PSI0MjAiIHk9IjQ3NSIgZm9udC1zaXplPSIxOSIgZmlsbD0iIzE3MmM0OCIgZm9udC13ZWlnaHQ9IjY1MCIgdGV4dC1hbmNob3I9InN0YXJ0Ij5SZWFjdCDmuLLmn5PliLDnnJ/lrp4gRE9NPC90ZXh0PjxyZWN0IHg9Ijc1MiIgeT0iMjI1IiB3aWR0aD0iMjc2IiBoZWlnaHQ9IjkyIiByeD0iMTYiIGZpbGw9IiNlOGY3ZjIiIHN0cm9rZT0iI2M1ZDRlNiIvPjxyZWN0IHg9Ijc1MiIgeT0iMjQwIiB3aWR0aD0iNCIgaGVpZ2h0PSI2MiIgcng9IjIiIGZpbGw9IiMwMDg2NzUiLz48dGV4dCB4PSI3NzAiIHk9IjI1NyIgZm9udC1zaXplPSIxOSIgZmlsbD0iIzE3MmM0OCIgZm9udC13ZWlnaHQ9IjY1MCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7pnZnmgIHpobXpnaI8L3RleHQ+PHRleHQgeD0iNzcwIiB5PSIyODciIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+SFRNTCAvIENTUyAvIOWbvueJhzwvdGV4dD48cmVjdCB4PSI3NTIiIHk9IjMzMyIgd2lkdGg9IjI3NiIgaGVpZ2h0PSI5MiIgcng9IjE2IiBmaWxsPSIjZmZmM2U2IiBzdHJva2U9IiNjNWQ0ZTYiLz48cmVjdCB4PSI3NTIiIHk9IjM0OCIgd2lkdGg9IjQiIGhlaWdodD0iNjIiIHJ4PSIyIiBmaWxsPSIjYjc1YTE4Ii8+PHRleHQgeD0iNzcwIiB5PSIzNjUiIGZvbnQtc2l6ZT0iMTkiIGZpbGw9IiMxNzJjNDgiIGZvbnQtd2VpZ2h0PSI2NTAiIHRleHQtYW5jaG9yPSJzdGFydCI+5Lqk5LqS55WM6Z2iPC90ZXh0Pjx0ZXh0IHg9Ijc3MCIgeT0iMzk1IiBmb250LXNpemU9IjE2IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuS6i+S7tuOAgeeKtuaAgeOAgeaVsOaNrjwvdGV4dD48cmVjdCB4PSI3NTIiIHk9IjQ0MyIgd2lkdGg9IjI3NiIgaGVpZ2h0PSI3MyIgcng9IjE2IiBmaWxsPSIjZWRmNGZmIiBzdHJva2U9IiNjNWQ0ZTYiLz48cmVjdCB4PSI3NTIiIHk9IjQ1OCIgd2lkdGg9IjQiIGhlaWdodD0iNDMiIHJ4PSIyIiBmaWxsPSIjMjU2M2ViIi8+PHRleHQgeD0iNzcwIiB5PSI0NzUiIGZvbnQtc2l6ZT0iMTkiIGZpbGw9IiMxNzJjNDgiIGZvbnQtd2VpZ2h0PSI2NTAiIHRleHQtYW5jaG9yPSJzdGFydCI+5rWP6KeI5Zmo5riy5p+T5LiO57uY5Yi2PC90ZXh0PjxyZWN0IHg9IjM1IiB5PSI1NjUiIHdpZHRoPSIxMDEwIiBoZWlnaHQ9IjQ4IiByeD0iMTYiIGZpbGw9IiNmZmYiIHN0cm9rZT0iI2M1ZDRlNiIvPjx0ZXh0IHg9IjUzIiB5PSI1OTUiIGZvbnQtc2l6ZT0iMTciIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+UmVhY3Qg5LiN5pu/5LujIEhUTUwg5LiOIENTU++8muWug+i0n+i0o+eUqOe7hOS7tuaPj+i/sOeVjOmdouOAgeaKiueKtuaAgeWPmOaIkCBET03jgII8L3RleHQ+PC9zdmc+" tabindex="0"/></figure>
+<p><em>图 1：React 不替代 HTML 与 CSS。它负责用组件描述界面，把状态变成 DOM；浏览器最终渲染的还是标准 HTML / CSS / JavaScript。</em></p>
+<div aria-label="可横向滚动的表格" class="table-wrap" role="region" tabindex="0"><table>
+<thead>
+<tr>
+<th>维度</th>
+<th>原生 JavaScript</th>
+<th>React</th>
+<th>Vue（同为组件化框架）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>更新界面的方式</td>
+<td>手动操作 DOM（命令式）</td>
+<td>声明式：数据变化自动更新</td>
+<td>声明式：模板 + 响应式数据</td>
+</tr>
+<tr>
+<td>描述界面的语法</td>
+<td>无统一约定</td>
+<td>JSX（JavaScript 内写结构）</td>
+<td>模板（类 HTML 语法）</td>
+</tr>
+<tr>
+<td>组件化</td>
+<td>需自行设计</td>
+<td>一等公民</td>
+<td>一等公民</td>
+</tr>
+<tr>
+<td>学习曲线</td>
+<td>无框架负担但难规模化</td>
+<td>需要接受“数据驱动”思维</td>
+<td>模板友好，上手平缓</td>
+</tr>
+<tr>
+<td>适用场景</td>
+<td>简单页面、脚本增强</td>
+<td>中大型交互界面</td>
+<td>中大型交互界面</td>
+</tr>
+</tbody>
+</table></div>
+<p>“用原生 JS 也行”是对的，但它没有回答“如何维护”。当页面有大量状态、多个视图互相联动时，声明式组件模型能显著降低心智负担。这不是说 React 永远更优：一个纯静态页或单次脚本，直接写 HTML / JS 通常更简单，不值得引入框架。</p>
+<h3 id="14">1.4 使用场景与不适用场景</h3>
+<div aria-label="可横向滚动的表格" class="table-wrap" role="region" tabindex="0"><table>
+<thead>
+<tr>
+<th>场景</th>
+<th>React 带来的具体收益</th>
+<th>仍需处理的问题</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>交互式单页应用</td>
+<td>组件复用、状态集中、更新自动</td>
+<td>路由、状态拆分、性能优化</td>
+</tr>
+<tr>
+<td>后台管理系统</td>
+<td>表格、表单、弹窗等可组件化</td>
+<td>权限、接口约定、大数据量渲染</td>
+</tr>
+<tr>
+<td>移动端 / 桌面端</td>
+<td>React Native / Electron 复用组件思维</td>
+<td>平台差异、原生能力桥接</td>
+</tr>
+<tr>
+<td>服务端渲染（SSR）</td>
+<td>Next.js 等框架支持首屏优化与 SEO</td>
+<td>部署复杂度、数据获取时机</td>
+</tr>
+<tr>
+<td>简单静态页面</td>
+<td>收益有限</td>
+<td>框架体积、构建链复杂度</td>
+</tr>
+<tr>
+<td>强计算或游戏场景</td>
+<td>渲染模型不匹配高频逐帧更新</td>
+<td>需要 Canvas / WebGL 等专门方案</td>
+</tr>
+</tbody>
+</table></div>
+<p>如果只是给现有页面加几个交互点，不一定值得引入 React。如果需要完整框架能力（路由、SSR、数据获取约定），通常直接选 Next.js 等框架比手动拼装更合适。<a href="https://react.dev/learn/start-a-new-react-project">React 生态</a></p>
+<h2 id="2">2. 安装、环境与核心心智模型</h2>
+<h3 id="21">2.1 选择运行环境</h3>
+<p>React 本身是纯 JavaScript 库，但现代开发几乎都会用到工具链。本文使用 <strong>Node.js + Vite</strong>：</p>
+<ul>
+<li><strong>Node.js：</strong> 提供 JavaScript 运行时与包管理。建议安装当前 LTS 版本；<code>node -v</code> 与 <code>npm -v</code> 确认可用。</li>
+<li><strong>Vite：</strong> 本地开发服务器与构建工具。启动快、配置少，是 React 官方推荐的起步方式之一。</li>
+<li><strong>浏览器：</strong> Chrome / Edge / Firefox 任一即可，配合开发者工具观察组件与网络请求。</li>
+</ul>
+<div class="codebox"><div class="codehead"><span>BASH</span><button aria-label="复制这段代码" class="copy" type="button">复制</button></div><pre><code class="language-bash">node -v
+npm -v
+</code></pre></div>
+<p>如果你已有其他构建工具（Webpack、Parcel 等）的项目，本文命令不要求迁移；思路一致，命令有差异。<strong>不需要为了完成本文再安装第二套 Node 环境。</strong> 也可以直接在浏览器里用 CodeSandbox / StackBlitz 体验 React，跳过本地安装。<a href="https://vitejs.dev/">Vite 官方文档</a> · <a href="https://react.dev/learn/installation">React 入门</a></p>
+<h3 id="22-react">2.2 创建第一个 React 项目</h3>
+<p>Vite 提供脚手架命令，一条命令生成项目骨架：</p>
+<div class="codebox"><div class="codehead"><span>BASH</span><button aria-label="复制这段代码" class="copy" type="button">复制</button></div><pre><code class="language-bash">npm create vite@latest react-week -- --template react
+cd react-week
+npm install
+npm run dev
+</code></pre></div>
+<p>浏览器打开终端提示的地址（默认 <code>http://localhost:5173</code>），应看到 Vite + React 的欢迎页。项目结构大致如下：</p>
+<div class="codebox"><div class="codehead"><span>TEXT</span><button aria-label="复制这段代码" class="copy" type="button">复制</button></div><pre><code class="language-text">react-week/
+├── index.html          # 唯一的 HTML 入口
+├── package.json        # 依赖与脚本
+├── vite.config.js      # Vite 配置（代理、插件等）
+└── src/
+    ├── main.jsx        # 应用入口：挂载根组件
+    ├── App.jsx         # 根组件
+    └── index.css       # 全局样式
+</code></pre></div>
+<p>打开 <code>src/main.jsx</code> 可以看到入口如何把根组件挂到 HTML 节点上：</p>
+<div class="codebox"><div class="codehead"><span>JSX</span><button aria-label="复制这段代码" class="copy" type="button">复制</button></div><pre><code class="language-jsx">import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import App from './App.jsx';
+import './index.css';
+
+createRoot(document.getElementById('root')).render(&lt;App /&gt;);
+</code></pre></div>
+<p><code>createRoot(...).render(&lt;App /&gt;)</code> 是 React 19 及 18+ 的标准挂载方式：告诉 react-dom 把 <code>&lt;App /&gt;</code> 渲染进 <code>#root</code> 节点。开发模式下 <code>StrictMode</code> 会让组件额外执行一次渲染，帮助你尽早暴露不纯的副作用代码，这是有意设计，不是 bug。</p>
+<h3 id="23">2.3 从源码到页面的完整路径</h3>
+<figure><img alt="图 2：页面即组件树" aria-label="放大查看：图 2：页面即组件树" class="diagram" loading="lazy" role="button" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDgwIiBoZWlnaHQ9IjY2NSIgdmlld0JveD0iMCAwIDEwODAgNjY1IiByb2xlPSJpbWciIGFyaWEtbGFiZWxsZWRieT0idGl0bGUgZGVzYyI+Cjx0aXRsZSBpZD0idGl0bGUiPumhtemdouWNs+e7hOS7tuagkTwvdGl0bGU+PGRlc2MgaWQ9ImRlc2MiPuS7juS4iuWIsOS4i+mAkOWxgue7hOWQiO+8jOavj+S4que7hOS7tui+k+WFpSBQcm9wc+OAgee7tOaKpOiHquW3seeahOeKtuaAgeOAgjwvZGVzYz4KPGRlZnM+PG1hcmtlciBpZD0iYXJyb3ciIG1hcmtlcldpZHRoPSI4IiBtYXJrZXJIZWlnaHQ9IjgiIHJlZlg9IjciIHJlZlk9IjMuNSIgb3JpZW50PSJhdXRvIj48cGF0aCBkPSJNMCwwIEw3LDMuNSBMMCw3IiBmaWxsPSIjMjU2M2ViIi8+PC9tYXJrZXI+PC9kZWZzPgo8c3R5bGU+dGV4dHtmb250LWZhbWlseToiUGluZ0ZhbmcgU0MiLCJOb3RvIFNhbnMgQ0pLIFNDIiwiTWljcm9zb2Z0IFlhSGVpIixzYW5zLXNlcmlmfTwvc3R5bGU+CjxyZWN0IHdpZHRoPSIxMDgwIiBoZWlnaHQ9IjY2NSIgcng9IjIyIiBmaWxsPSIjZjdmYWZmIi8+Cjx0ZXh0IHg9IjM1IiB5PSIzNyIgZm9udC1zaXplPSIxMyIgZmlsbD0iIzI1NjNlYiIgZm9udC13ZWlnaHQ9IjcwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij5SRUFDVCAvIDAyPC90ZXh0Pjx0ZXh0IHg9IjM1IiB5PSI3OCIgZm9udC1zaXplPSIyOSIgZmlsbD0iIzE3MmM0OCIgZm9udC13ZWlnaHQ9IjcwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7pobXpnaLljbPnu4Tku7bmoJE8L3RleHQ+PHRleHQgeD0iMzUiIHk9IjExMCIgZm9udC1zaXplPSIxNyIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7ku47kuIrliLDkuIvpgJDlsYLnu4TlkIjvvIzmr4/kuKrnu4Tku7bovpPlhaUgUHJvcHPjgIHnu7TmiqToh6rlt7HnmoTnirbmgIHjgII8L3RleHQ+CjxyZWN0IHg9IjM5NSIgeT0iMTUwIiB3aWR0aD0iMjkwIiBoZWlnaHQ9IjkyIiByeD0iMTYiIGZpbGw9IiNmMWVjZmQiIHN0cm9rZT0iI2M1ZDRlNiIvPjxyZWN0IHg9IjM5NSIgeT0iMTY1IiB3aWR0aD0iNCIgaGVpZ2h0PSI2MiIgcng9IjIiIGZpbGw9IiM2ZDI4ZDkiLz48dGV4dCB4PSI0MTMiIHk9IjE4MiIgZm9udC1zaXplPSIyMiIgZmlsbD0iIzE3MmM0OCIgZm9udC13ZWlnaHQ9IjY1MCIgdGV4dC1hbmNob3I9InN0YXJ0Ij5BcHDvvIjmoLnnu4Tku7bvvIk8L3RleHQ+PHRleHQgeD0iNDEzIiB5PSIyMTIiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+57uE5ZCI6aG16Z2i57uT5p6EPC90ZXh0PjxyZWN0IHg9IjE1NSIgeT0iMzIwIiB3aWR0aD0iMjE1IiBoZWlnaHQ9IjEwMCIgcng9IjE2IiBmaWxsPSIjZWRmNGZmIiBzdHJva2U9IiNjNWQ0ZTYiLz48cmVjdCB4PSIxNTUiIHk9IjMzNSIgd2lkdGg9IjQiIGhlaWdodD0iNzAiIHJ4PSIyIiBmaWxsPSIjMjU2M2ViIi8+PHRleHQgeD0iMTczIiB5PSIzNTIiIGZvbnQtc2l6ZT0iMTkiIGZpbGw9IiMxNzJjNDgiIGZvbnQtd2VpZ2h0PSI2NTAiIHRleHQtYW5jaG9yPSJzdGFydCI+SGVhZGVyPC90ZXh0Pjx0ZXh0IHg9IjE3MyIgeT0iMzgyIiBmb250LXNpemU9IjE2IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuagh+mimOS4juWvvOiIqjwvdGV4dD48cmVjdCB4PSI0MzAiIHk9IjMyMCIgd2lkdGg9IjIxNSIgaGVpZ2h0PSIxMDAiIHJ4PSIxNiIgZmlsbD0iI2VkZjRmZiIgc3Ryb2tlPSIjYzVkNGU2Ii8+PHJlY3QgeD0iNDMwIiB5PSIzMzUiIHdpZHRoPSI0IiBoZWlnaHQ9IjcwIiByeD0iMiIgZmlsbD0iIzI1NjNlYiIvPjx0ZXh0IHg9IjQ0OCIgeT0iMzUyIiBmb250LXNpemU9IjE5IiBmaWxsPSIjMTcyYzQ4IiBmb250LXdlaWdodD0iNjUwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPlRvZG9QYW5lbDwvdGV4dD48dGV4dCB4PSI0NDgiIHk9IjM4MiIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7kuJrliqHljLrln588L3RleHQ+PHJlY3QgeD0iNzA1IiB5PSIzMjAiIHdpZHRoPSIyMTUiIGhlaWdodD0iMTAwIiByeD0iMTYiIGZpbGw9IiNlZGY0ZmYiIHN0cm9rZT0iI2M1ZDRlNiIvPjxyZWN0IHg9IjcwNSIgeT0iMzM1IiB3aWR0aD0iNCIgaGVpZ2h0PSI3MCIgcng9IjIiIGZpbGw9IiMyNTYzZWIiLz48dGV4dCB4PSI3MjMiIHk9IjM1MiIgZm9udC1zaXplPSIxOSIgZmlsbD0iIzE3MmM0OCIgZm9udC13ZWlnaHQ9IjY1MCIgdGV4dC1hbmNob3I9InN0YXJ0Ij5Gb290ZXI8L3RleHQ+PHRleHQgeD0iNzIzIiB5PSIzODIiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+54mI5p2D5LiO6ZO+5o6lPC90ZXh0PjxwYXRoIGQ9Ik0gNDkwIDI0MiBMIDI2MiAzMjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzI1NjNlYiIgc3Ryb2tlLXdpZHRoPSIyLjUiIG1hcmtlci1lbmQ9InVybCgjYXJyb3cpIi8+PHRleHQgeD0iMzc2IiB5PSIyODIiIGZvbnQtc2l6ZT0iMTUiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPuWMheWQqzwvdGV4dD48cGF0aCBkPSJNIDU0MCAyNDIgTCA1MzcgMzIwIiBmaWxsPSJub25lIiBzdHJva2U9IiMyNTYzZWIiIHN0cm9rZS13aWR0aD0iMi41IiBtYXJrZXItZW5kPSJ1cmwoI2Fycm93KSIvPjxwYXRoIGQ9Ik0gNTQwIDI0MiBMIDgxMiAzMjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzI1NjNlYiIgc3Ryb2tlLXdpZHRoPSIyLjUiIG1hcmtlci1lbmQ9InVybCgjYXJyb3cpIi8+PHRleHQgeD0iNjc2IiB5PSIyODIiIGZvbnQtc2l6ZT0iMTUiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPuWMheWQqzwvdGV4dD48cmVjdCB4PSIxNTUiIHk9IjQ4MCIgd2lkdGg9IjIxNSIgaGVpZ2h0PSI4OCIgcng9IjE2IiBmaWxsPSIjZThmN2YyIiBzdHJva2U9IiNjNWQ0ZTYiLz48cmVjdCB4PSIxNTUiIHk9IjQ5NSIgd2lkdGg9IjQiIGhlaWdodD0iNTgiIHJ4PSIyIiBmaWxsPSIjMDA4Njc1Ii8+PHRleHQgeD0iMTczIiB5PSI1MTIiIGZvbnQtc2l6ZT0iMTgiIGZpbGw9IiMxNzJjNDgiIGZvbnQtd2VpZ2h0PSI2NTAiIHRleHQtYW5jaG9yPSJzdGFydCI+TG9nbyAvIE5hdjwvdGV4dD48dGV4dCB4PSIxNzMiIHk9IjU0MiIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7lho3mi4blsI/nu4Tku7Y8L3RleHQ+PHJlY3QgeD0iNDMwIiB5PSI0ODAiIHdpZHRoPSIyMTUiIGhlaWdodD0iODgiIHJ4PSIxNiIgZmlsbD0iI2U4ZjdmMiIgc3Ryb2tlPSIjYzVkNGU2Ii8+PHJlY3QgeD0iNDMwIiB5PSI0OTUiIHdpZHRoPSI0IiBoZWlnaHQ9IjU4IiByeD0iMiIgZmlsbD0iIzAwODY3NSIvPjx0ZXh0IHg9IjQ0OCIgeT0iNTEyIiBmb250LXNpemU9IjE4IiBmaWxsPSIjMTcyYzQ4IiBmb250LXdlaWdodD0iNjUwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPlRvZG9JbnB1dDwvdGV4dD48dGV4dCB4PSI0NDgiIHk9IjU0MiIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7ovpPlhaXmlrDlop48L3RleHQ+PHJlY3QgeD0iNzA1IiB5PSI0ODAiIHdpZHRoPSIyMTUiIGhlaWdodD0iODgiIHJ4PSIxNiIgZmlsbD0iI2U4ZjdmMiIgc3Ryb2tlPSIjYzVkNGU2Ii8+PHJlY3QgeD0iNzA1IiB5PSI0OTUiIHdpZHRoPSI0IiBoZWlnaHQ9IjU4IiByeD0iMiIgZmlsbD0iIzAwODY3NSIvPjx0ZXh0IHg9IjcyMyIgeT0iNTEyIiBmb250LXNpemU9IjE4IiBmaWxsPSIjMTcyYzQ4IiBmb250LXdlaWdodD0iNjUwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPlRvZG9MaXN0PC90ZXh0Pjx0ZXh0IHg9IjcyMyIgeT0iNTQyIiBmb250LXNpemU9IjE2IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuWIl+ihqOa4suafkzwvdGV4dD48cGF0aCBkPSJNIDI2MiA0MjAgTCAyNjIgNDgwIiBmaWxsPSJub25lIiBzdHJva2U9IiMyNTYzZWIiIHN0cm9rZS13aWR0aD0iMi41IiBtYXJrZXItZW5kPSJ1cmwoI2Fycm93KSIvPjxwYXRoIGQ9Ik0gNTM3IDQyMCBMIDUzNyA0ODAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzI1NjNlYiIgc3Ryb2tlLXdpZHRoPSIyLjUiIG1hcmtlci1lbmQ9InVybCgjYXJyb3cpIi8+PHBhdGggZD0iTSA4MTIgNDIwIEwgODEyIDQ4MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMjU2M2ViIiBzdHJva2Utd2lkdGg9IjIuNSIgbWFya2VyLWVuZD0idXJsKCNhcnJvdykiLz48cmVjdCB4PSIzNSIgeT0iNTkyIiB3aWR0aD0iMTAxMCIgaGVpZ2h0PSI0OCIgcng9IjE2IiBmaWxsPSIjZmZmIiBzdHJva2U9IiNjNWQ0ZTYiLz48dGV4dCB4PSI1MyIgeT0iNjIyIiBmb250LXNpemU9IjE3IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPumhtemdoiA9IOe7hOS7tuagke+8m+e7hOWQiOS8mOS6jue7p+aJv++8jOS4gOS4que7hOS7tuWPqui0n+i0o+S4gOS4qua4heaZsOeahOiBjOi0o+OAgjwvdGV4dD48L3N2Zz4=" tabindex="0"/></figure>
+<p><em>图 2：组件从上到下组合成树。根组件返回子树，子树再返回更小的组件；浏览器最终看到的页面由整棵组件树渲染而来。</em></p>
+<div class="codebox"><div class="codehead"><span>TEXT</span><button aria-label="复制这段代码" class="copy" type="button">复制</button></div><pre><code class="language-text">JSX 源码 + 组件函数 + State/Props
+             │ 编译与执行
+             ▼
+          React 元素（虚拟 DOM 树）
+             │ 协调（diff）
+             ▼
+          差异更新
+             │ react-dom 提交
+             ▼
+          真实 DOM → 浏览器绘制
+</code></pre></div>
+<p>关键关系：</p>
+<ol>
+<li><strong>编写时</strong>决定组件结构、Props 与 State 的组织。</li>
+<li><strong>运行时</strong>执行组件函数，生成界面描述，React 计算差异并更新 DOM。</li>
+<li>修改源码后，开发服务器会热更新；生产环境需要重新构建再部署。</li>
+<li>浏览器最终看到的永远是标准 DOM，React 只是更新它的方式。</li>
+</ol>
+<h3 id="24">2.4 核心心智模型：声明式</h3>
+<p>命令式是“告诉我每一步怎么做”；声明式是“告诉我结果是什么，你来想办法”。React 要求你从命令式切换为声明式：</p>
+<div class="codebox"><div class="codehead"><span>JSX</span><button aria-label="复制这段代码" class="copy" type="button">复制</button></div><pre><code class="language-jsx">// 命令式思维：我要先清空列表，再遍历插入节点……
+// 声明式思维：列表数据是什么，界面就渲染成什么
+function List({ items }) {
+  return (
+    &lt;ul&gt;
+      {items.map((item) =&gt; (
+        &lt;li key={item.id}&gt;{item.name}&lt;/li&gt;
+      ))}
+    &lt;/ul&gt;
+  );
+}
+</code></pre></div>
+<p>这个思维转变是 React 学习里最重要的一步：<strong>把“如何更新”交给框架，把“数据是什么”留给自己。</strong></p>
+<h2 id="3-jsx">3. 核心概念一：JSX 与组件</h2>
+<h3 id="31-jsx">3.1 JSX 是什么</h3>
+<p>JSX 是 JavaScript 的语法扩展，写起来像 HTML，但本质是函数调用。同一段结构有两种等价写法：</p>
+<div class="codebox"><div class="codehead"><span>JSX</span><button aria-label="复制这段代码" class="copy" type="button">复制</button></div><pre><code class="language-jsx">// JSX 写法
+const element = &lt;h1 className="title"&gt;你好，React&lt;/h1&gt;;
+
+// 等价于编译后的调用
+const element = React.createElement('h1', { className: 'title' }, '你好，React');
+</code></pre></div>
+<figure><img alt="图 3：从 JSX 到真实 DOM" aria-label="放大查看：图 3：从 JSX 到真实 DOM" class="diagram" loading="lazy" role="button" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDgwIiBoZWlnaHQ9IjU0NiIgdmlld0JveD0iMCAwIDEwODAgNTQ2IiByb2xlPSJpbWciIGFyaWEtbGFiZWxsZWRieT0idGl0bGUgZGVzYyI+Cjx0aXRsZSBpZD0idGl0bGUiPuS7jiBKU1gg5Yiw55yf5a6eIERPTTwvdGl0bGU+PGRlc2MgaWQ9ImRlc2MiPuWGmSBKU1jjgIHnvJbmiJDlhYPntKDjgIHmnoTlu7romZrmi5/moJHvvIzlho3kuqTnu5nmtY/op4jlmajmuLLmn5PjgII8L2Rlc2M+CjxkZWZzPjxtYXJrZXIgaWQ9ImFycm93IiBtYXJrZXJXaWR0aD0iOCIgbWFya2VySGVpZ2h0PSI4IiByZWZYPSI3IiByZWZZPSIzLjUiIG9yaWVudD0iYXV0byI+PHBhdGggZD0iTTAsMCBMNywzLjUgTDAsNyIgZmlsbD0iIzI1NjNlYiIvPjwvbWFya2VyPjwvZGVmcz4KPHN0eWxlPnRleHR7Zm9udC1mYW1pbHk6IlBpbmdGYW5nIFNDIiwiTm90byBTYW5zIENKSyBTQyIsIk1pY3Jvc29mdCBZYUhlaSIsc2Fucy1zZXJpZn08L3N0eWxlPgo8cmVjdCB3aWR0aD0iMTA4MCIgaGVpZ2h0PSI1NDYiIHJ4PSIyMiIgZmlsbD0iI2Y3ZmFmZiIvPgo8dGV4dCB4PSIzNSIgeT0iMzciIGZvbnQtc2l6ZT0iMTMiIGZpbGw9IiMyNTYzZWIiIGZvbnQtd2VpZ2h0PSI3MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+UkVBQ1QgLyAwMzwvdGV4dD48dGV4dCB4PSIzNSIgeT0iNzgiIGZvbnQtc2l6ZT0iMjkiIGZpbGw9IiMxNzJjNDgiIGZvbnQtd2VpZ2h0PSI3MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+5LuOIEpTWCDliLDnnJ/lrp4gRE9NPC90ZXh0Pjx0ZXh0IHg9IjM1IiB5PSIxMTAiIGZvbnQtc2l6ZT0iMTciIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+5YaZIEpTWOOAgee8luaIkOWFg+e0oOOAgeaehOW7uuiZmuaLn+agke+8jOWGjeS6pOe7mea1j+iniOWZqOa4suafk+OAgjwvdGV4dD4KPHJlY3QgeD0iMzUiIHk9IjE2NSIgd2lkdGg9IjI0MCIgaGVpZ2h0PSIxNTAiIHJ4PSIxNiIgZmlsbD0iI2YxZWNmZCIgc3Ryb2tlPSIjYzVkNGU2Ii8+PHJlY3QgeD0iMzUiIHk9IjE4MCIgd2lkdGg9IjQiIGhlaWdodD0iMTIwIiByeD0iMiIgZmlsbD0iIzZkMjhkOSIvPjx0ZXh0IHg9IjUzIiB5PSIxOTciIGZvbnQtc2l6ZT0iMjEiIGZpbGw9IiMxNzJjNDgiIGZvbnQtd2VpZ2h0PSI2NTAiIHRleHQtYW5jaG9yPSJzdGFydCI+SlNYIOa6kOeggTwvdGV4dD48dGV4dCB4PSI1MyIgeT0iMjI3IiBmb250LXNpemU9IjE2IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPiZsdDtoMSZndDvkvaDlpb0mbHQ7L2gxJmd0OzwvdGV4dD48dGV4dCB4PSI1MyIgeT0iMjUyIiBmb250LXNpemU9IjE2IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPiZsdDtCdXR0b24gb25DbGljaz17Zm59LyZndDs8L3RleHQ+PHJlY3QgeD0iMzM1IiB5PSIxNjUiIHdpZHRoPSIyNDAiIGhlaWdodD0iMTUwIiByeD0iMTYiIGZpbGw9IiNlZGY0ZmYiIHN0cm9rZT0iI2M1ZDRlNiIvPjxyZWN0IHg9IjMzNSIgeT0iMTgwIiB3aWR0aD0iNCIgaGVpZ2h0PSIxMjAiIHJ4PSIyIiBmaWxsPSIjMjU2M2ViIi8+PHRleHQgeD0iMzUzIiB5PSIxOTciIGZvbnQtc2l6ZT0iMjEiIGZpbGw9IiMxNzJjNDgiIGZvbnQtd2VpZ2h0PSI2NTAiIHRleHQtYW5jaG9yPSJzdGFydCI+UmVhY3QuY3JlYXRlRWxlbWVudDwvdGV4dD48dGV4dCB4PSIzNTMiIHk9IjIyNyIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7mj4/ov7DnlYzpnaLnmoTmma7pgJrlr7nosaE8L3RleHQ+PHRleHQgeD0iMzUzIiB5PSIyNTIiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+UmVhY3Qg5YWD57Sg77yIZWxlbWVudO+8iTwvdGV4dD48cmVjdCB4PSI2MzUiIHk9IjE2NSIgd2lkdGg9IjI0MCIgaGVpZ2h0PSIxNTAiIHJ4PSIxNiIgZmlsbD0iI2U4ZjdmMiIgc3Ryb2tlPSIjYzVkNGU2Ii8+PHJlY3QgeD0iNjM1IiB5PSIxODAiIHdpZHRoPSI0IiBoZWlnaHQ9IjEyMCIgcng9IjIiIGZpbGw9IiMwMDg2NzUiLz48dGV4dCB4PSI2NTMiIHk9IjE5NyIgZm9udC1zaXplPSIyMSIgZmlsbD0iIzE3MmM0OCIgZm9udC13ZWlnaHQ9IjY1MCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7omZrmi58gRE9NIOagkTwvdGV4dD48dGV4dCB4PSI2NTMiIHk9IjIyNyIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7lhYPntKDnu4TmiJDnmoTmoJE8L3RleHQ+PHRleHQgeD0iNjUzIiB5PSIyNTIiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+5Y+v5q+U6L6D44CB5Y+v5aSN55SoPC90ZXh0PjxyZWN0IHg9IjkzNSIgeT0iMTY1IiB3aWR0aD0iMTM1IiBoZWlnaHQ9IjE1MCIgcng9IjE2IiBmaWxsPSIjZmZmM2U2IiBzdHJva2U9IiNjNWQ0ZTYiLz48cmVjdCB4PSI5MzUiIHk9IjE4MCIgd2lkdGg9IjQiIGhlaWdodD0iMTIwIiByeD0iMiIgZmlsbD0iI2I3NWExOCIvPjx0ZXh0IHg9Ijk1MyIgeT0iMTk3IiBmb250LXNpemU9IjE5IiBmaWxsPSIjMTcyYzQ4IiBmb250LXdlaWdodD0iNjUwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuecn+WuniBET008L3RleHQ+PHRleHQgeD0iOTUzIiB5PSIyMjciIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+5rWP6KeI5Zmo6IqC54K5PC90ZXh0Pjx0ZXh0IHg9Ijk1MyIgeT0iMjUyIiBmb250LXNpemU9IjE2IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPumhtemdouS4iueahOe7k+aenDwvdGV4dD48cGF0aCBkPSJNIDI3NSAyNDAgTCAzMzUgMjQwIiBmaWxsPSJub25lIiBzdHJva2U9IiMyNTYzZWIiIHN0cm9rZS13aWR0aD0iMi41IiBtYXJrZXItZW5kPSJ1cmwoI2Fycm93KSIvPjx0ZXh0IHg9IjMwNSIgeT0iMjIyIiBmb250LXNpemU9IjE1IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7nvJbor5E8L3RleHQ+PHBhdGggZD0iTSA1NzUgMjQwIEwgNjM1IDI0MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMjU2M2ViIiBzdHJva2Utd2lkdGg9IjIuNSIgbWFya2VyLWVuZD0idXJsKCNhcnJvdykiLz48dGV4dCB4PSI2MDUiIHk9IjIyMiIgZm9udC1zaXplPSIxNSIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+5Yib5bu6PC90ZXh0PjxwYXRoIGQ9Ik0gODc1IDI0MCBMIDkzNSAyNDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzI1NjNlYiIgc3Ryb2tlLXdpZHRoPSIyLjUiIG1hcmtlci1lbmQ9InVybCgjYXJyb3cpIi8+PHRleHQgeD0iOTA1IiB5PSIyMjIiIGZvbnQtc2l6ZT0iMTUiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPua4suafkzwvdGV4dD48dGV4dCB4PSI0NiIgeT0iMzg2IiBmb250LXNpemU9IjE5IiBmaWxsPSIjMTcyYzQ4IiBmb250LXdlaWdodD0iNzAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPue7hOS7tuWHveaVsDwvdGV4dD48dGV4dCB4PSI0NiIgeT0iNDIwIiBmb250LXNpemU9IjE3IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPlVJIOaYr+aVsOaNrueahOWHveaVsO+8mnJlbmRlcihzdGF0ZSkg4oaSIOWFg+e0oCDihpIgRE9NPC90ZXh0PjxyZWN0IHg9IjM1IiB5PSI0NzMiIHdpZHRoPSIxMDEwIiBoZWlnaHQ9IjQ4IiByeD0iMTYiIGZpbGw9IiNmZmYiIHN0cm9rZT0iI2M1ZDRlNiIvPjx0ZXh0IHg9IjUzIiB5PSI1MDMiIGZvbnQtc2l6ZT0iMTciIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+SlNYIOS4jeaYryBIVE1M77ya5a6D5pivIEphdmFTY3JpcHQg55qE6K+t5rOV5omp5bGV77yM5pyA57uI57yW6K+R5Li6IFJlYWN0IOWFg+e0oOOAgjwvdGV4dD48L3N2Zz4=" tabindex="0"/></figure>
+<p><em>图 3：JSX 编译为 React.createElement 调用，得到普通对象（React 元素）；元素组成虚拟树，最后由 react-dom 渲染成真实 DOM。</em></p>
+<p>JSX 的规则要点：</p>
+<div aria-label="可横向滚动的表格" class="table-wrap" role="region" tabindex="0"><table>
+<thead>
+<tr>
+<th>规则</th>
+<th>示例</th>
+<th>为什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>必须有一个根元素</td>
+<td><code>&lt;div&gt;...&lt;/div&gt;</code> 或片段 <code>&lt;&gt;...</code></td>
+<td>组件必须返回单一结构</td>
+</tr>
+<tr>
+<td>表达式用花括号</td>
+<td><code>{count}</code>、<code>{items.length}</code></td>
+<td>在 JSX 中嵌入 JavaScript 表达式</td>
+</tr>
+<tr>
+<td><code>class</code> 写作 <code>className</code></td>
+<td><code>&lt;h1 className="title"&gt;</code></td>
+<td><code>class</code> 是 JS 保留字</td>
+</tr>
+<tr>
+<td>属性名用驼峰</td>
+<td><code>onClick</code>、<code>tabIndex</code></td>
+<td>对应 DOM 属性的 JS 命名</td>
+</tr>
+<tr>
+<td>标签可自闭合</td>
+<td><code>&lt;img src={url} alt="" /&gt;</code></td>
+<td>与 HTML 的宽松写法不同</td>
+</tr>
+</tbody>
+</table></div>
+<div class="codebox"><div class="codehead"><span>JSX</span><button aria-label="复制这段代码" class="copy" type="button">复制</button></div><pre><code class="language-jsx">function Profile({ user }) {
+  return (
+    &lt;div className="card"&gt;
+      &lt;img src={user.avatar} alt={`${user.name} 的头像`} /&gt;
+      &lt;h2&gt;{user.name}&lt;/h2&gt;
+      {user.bio ? &lt;p&gt;{user.bio}&lt;/p&gt; : &lt;p&gt;这个人很神秘，没有写简介。&lt;/p&gt;}
+    &lt;/div&gt;
+  );
+}
+</code></pre></div>
+<p><strong>JSX 不是 HTML。</strong> 它没有 HTML 的宽松容错；<code>onclick</code> 与 <code>onClick</code> 是两个东西，<code>class</code> 与 <code>className</code> 也是两个东西。写 JSX 时按 JavaScript 的规则思考，而不是按 HTML 的规则。<a href="https://react.dev/learn/writing-markup-with-jsx">JSX 深入</a></p>
+<h3 id="32">3.2 组件：函数的另一种形式</h3>
+<p>组件是返回 JSX 的 JavaScript 函数。组件名必须以大写字母开头，React 用大小写区分“组件”和“原生标签”：</p>
+<div class="codebox"><div class="codehead"><span>JSX</span><button aria-label="复制这段代码" class="copy" type="button">复制</button></div><pre><code class="language-jsx">function Greeting() {
+  return &lt;p&gt;你好！&lt;/p&gt;;
+}
+
+// 使用组件：像写 HTML 标签一样写组件名
+function App() {
+  return (
+    &lt;div&gt;
+      &lt;Greeting /&gt;
+      &lt;Greeting /&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre></div>
+<p>组件可以像函数一样复用、组合、传参。组件每次渲染，函数体都会重新执行一遍——理解这一点是后面理解渲染性能的基础。</p>
+<h3 id="33-props">3.3 Props：向组件传数据</h3>
+<p>Props 是组件的入参，由父组件传入、子组件只读使用。<strong>组件不能修改自己的 props</strong>；需要变化的数据应放在 State 里：</p>
+<div class="codebox"><div class="codehead"><span>JSX</span><button aria-label="复制这段代码" class="copy" type="button">复制</button></div><pre><code class="language-jsx">function Avatar({ name, size = 64 }) {
+  return &lt;img src={`https://example.com/${name}.png`} width={size} height={size} alt={name} /&gt;;
+}
+
+function App() {
+  return &lt;Avatar name="react" size={96} /&gt;;
+}
+</code></pre></div>
+<p>Props 是单向的：数据从父组件流向子组件。子组件想把变化告诉父组件时，通过父组件传下来的<strong>回调函数</strong>触发，而不是直接改父组件的数据。这是第 4 章状态提升的基础。</p>
+<h3 id="34">3.4 组件树与文件组织</h3>
+<p>一个页面通常是一棵组件树：根组件组合区域组件，区域组件再拆分小组件。<strong>组合优于继承</strong>：用 Props 传入内容，而不是通过“继承父类”扩展界面。</p>
+<div class="codebox"><div class="codehead"><span>JSX</span><button aria-label="复制这段代码" class="copy" type="button">复制</button></div><pre><code class="language-jsx">function Layout({ header, children }) {
+  return (
+    &lt;div&gt;
+      &lt;header&gt;{header}&lt;/header&gt;
+      &lt;main&gt;{children}&lt;/main&gt;
+    &lt;/div&gt;
+  );
+}
+
+// 使用：把任意内容作为 children 传入
+&lt;Layout header={&lt;Nav /&gt;}&gt;
+  &lt;Article /&gt;
+&lt;/Layout&gt;
+</code></pre></div>
+<p><code>children</code> 是 Props 的一个特殊约定：标签之间的内容会作为 <code>children</code> 传入。这是 React 实现“插槽式布局”的核心手法。<a href="https://react.dev/learn/thinking-in-react">组合 vs 继承</a></p>
+<h2 id="4-state">4. 核心概念二：State 与事件</h2>
+<h3 id="41-usestate">4.1 useState：组件的记忆</h3>
+<p>组件需要记忆变化的数据，用 <code>useState</code> 声明：</p>
+<div class="codebox"><div class="codehead"><span>JSX</span><button aria-label="复制这段代码" class="copy" type="button">复制</button></div><pre><code class="language-jsx">import { useState } from 'react';
+
+function Counter() {
+  const [count, setCount] = useState(0); // 初始值 0
+  return (
+    &lt;div&gt;
+      &lt;output&gt;{count}&lt;/output&gt;
+      &lt;button onClick={() =&gt; setCount(count + 1)}&gt;+1&lt;/button&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre></div>
+<p>要点：</p>
+<ul>
+<li><code>useState(0)</code> 返回一个数组：当前值 <code>count</code> 与更新函数 <code>setCount</code>。</li>
+<li>调用 <code>setCount(newValue)</code> 会<strong>调度一次重新渲染</strong>：组件函数重新执行，拿到新值。</li>
+<li>直接修改变量（<code>count = count + 1</code>）不会触发渲染；必须通过更新函数。</li>
+<li>State 是组件私有的：同一个组件渲染两次，它们的 State 互不影响。</li>
+</ul>
+<h3 id="42">4.2 事件处理与受控组件</h3>
+<p>React 事件用驼峰属性绑定：<code>onClick</code>、<code>onChange</code>、<code>onSubmit</code> 等。表单元素把“值”与“变化事件”绑定到一起，就成了<strong>受控组件</strong>——输入框的值由 State 决定：</p>
+<div class="codebox"><div class="codehead"><span>JSX</span><button aria-label="复制这段代码" class="copy" type="button">复制</button></div><pre><code class="language-jsx">function NameForm() {
+  const [name, setName] = useState('');
+  return (
+    &lt;form onSubmit={(e) =&gt; { e.preventDefault(); console.log('提交：', name); }}&gt;
+      &lt;input
+        value={name}
+        onChange={(e) =&gt; setName(e.target.value)}
+        placeholder="输入你的名字"
+      /&gt;
+      &lt;button type="submit"&gt;提交&lt;/button&gt;
+    &lt;/form&gt;
+  );
+}
+</code></pre></div>
+<p><code>onChange</code> 里 <code>setName(e.target.value)</code> 让输入框的每一次敲击都写进 State，State 再回流到 <code>value</code>，形成单向闭环。<strong>受控组件让“表单当前值”永远与 State 一致</strong>，方便校验、清空、回显。</p>
+<h3 id="43">4.3 单向数据流与状态提升</h3>
+<figure><img alt="图 4：单向数据流与状态提升" aria-label="放大查看：图 4：单向数据流与状态提升" class="diagram" loading="lazy" role="button" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDgwIiBoZWlnaHQ9IjY5MyIgdmlld0JveD0iMCAwIDEwODAgNjkzIiByb2xlPSJpbWciIGFyaWEtbGFiZWxsZWRieT0idGl0bGUgZGVzYyI+Cjx0aXRsZSBpZD0idGl0bGUiPuWNleWQkeaVsOaNrua1geS4jueKtuaAgeaPkOWNhzwvdGl0bGU+PGRlc2MgaWQ9ImRlc2MiPueQhuino+aVsOaNruS7juWTquadpeOAgeW+gOWTquWOu++8jOaYr+e7hOS7tuiuvuiuoeeahOesrOS4gOivvuOAgjwvZGVzYz4KPGRlZnM+PG1hcmtlciBpZD0iYXJyb3ciIG1hcmtlcldpZHRoPSI4IiBtYXJrZXJIZWlnaHQ9IjgiIHJlZlg9IjciIHJlZlk9IjMuNSIgb3JpZW50PSJhdXRvIj48cGF0aCBkPSJNMCwwIEw3LDMuNSBMMCw3IiBmaWxsPSIjMjU2M2ViIi8+PC9tYXJrZXI+PC9kZWZzPgo8c3R5bGU+dGV4dHtmb250LWZhbWlseToiUGluZ0ZhbmcgU0MiLCJOb3RvIFNhbnMgQ0pLIFNDIiwiTWljcm9zb2Z0IFlhSGVpIixzYW5zLXNlcmlmfTwvc3R5bGU+CjxyZWN0IHdpZHRoPSIxMDgwIiBoZWlnaHQ9IjY5MyIgcng9IjIyIiBmaWxsPSIjZjdmYWZmIi8+Cjx0ZXh0IHg9IjM1IiB5PSIzNyIgZm9udC1zaXplPSIxMyIgZmlsbD0iIzI1NjNlYiIgZm9udC13ZWlnaHQ9IjcwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij5SRUFDVCAvIDA0PC90ZXh0Pjx0ZXh0IHg9IjM1IiB5PSI3OCIgZm9udC1zaXplPSIyOSIgZmlsbD0iIzE3MmM0OCIgZm9udC13ZWlnaHQ9IjcwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7ljZXlkJHmlbDmja7mtYHkuI7nirbmgIHmj5DljYc8L3RleHQ+PHRleHQgeD0iMzUiIHk9IjExMCIgZm9udC1zaXplPSIxNyIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7nkIbop6PmlbDmja7ku47lk6rmnaXjgIHlvoDlk6rljrvvvIzmmK/nu4Tku7borr7orqHnmoTnrKzkuIDor77jgII8L3RleHQ+CjxyZWN0IHg9IjM0MCIgeT0iMTUwIiB3aWR0aD0iNDAwIiBoZWlnaHQ9Ijk2IiByeD0iMTYiIGZpbGw9IiNmMWVjZmQiIHN0cm9rZT0iI2M1ZDRlNiIvPjxyZWN0IHg9IjM0MCIgeT0iMTY1IiB3aWR0aD0iNCIgaGVpZ2h0PSI2NiIgcng9IjIiIGZpbGw9IiM2ZDI4ZDkiLz48dGV4dCB4PSIzNTgiIHk9IjE4MiIgZm9udC1zaXplPSIyMSIgZmlsbD0iIzE3MmM0OCIgZm9udC13ZWlnaHQ9IjY1MCIgdGV4dC1hbmNob3I9InN0YXJ0Ij5BcHDvvJrnirbmgIEgb3duZXLvvIjmlbDmja7mupDvvIk8L3RleHQ+PHRleHQgeD0iMzU4IiB5PSIyMTIiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+dXNlU3RhdGUg5L+d5a2Y5pWw5o2uPC90ZXh0Pjx0ZXh0IHg9IjM1OCIgeT0iMjM3IiBmb250LXNpemU9IjE2IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPnNldFN0YXRlIOinpuWPkeabtOaWsDwvdGV4dD48cmVjdCB4PSIxMjAiIHk9IjMzMCIgd2lkdGg9IjIwMCIgaGVpZ2h0PSIxMDQiIHJ4PSIxNiIgZmlsbD0iI2VkZjRmZiIgc3Ryb2tlPSIjYzVkNGU2Ii8+PHJlY3QgeD0iMTIwIiB5PSIzNDUiIHdpZHRoPSI0IiBoZWlnaHQ9Ijc0IiByeD0iMiIgZmlsbD0iIzI1NjNlYiIvPjx0ZXh0IHg9IjEzOCIgeT0iMzYyIiBmb250LXNpemU9IjE5IiBmaWxsPSIjMTcyYzQ4IiBmb250LXdlaWdodD0iNjUwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuWtkOe7hOS7tiBBPC90ZXh0Pjx0ZXh0IHg9IjEzOCIgeT0iMzkyIiBmb250LXNpemU9IjE2IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPnByb3BzIOWPquivu+aOpeaUtjwvdGV4dD48dGV4dCB4PSIxMzgiIHk9IjQxNyIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7kuovku7blm57osIPkuIrmiqU8L3RleHQ+PHJlY3QgeD0iNDYwIiB5PSIzMzAiIHdpZHRoPSIyMDAiIGhlaWdodD0iMTA0IiByeD0iMTYiIGZpbGw9IiNlZGY0ZmYiIHN0cm9rZT0iI2M1ZDRlNiIvPjxyZWN0IHg9IjQ2MCIgeT0iMzQ1IiB3aWR0aD0iNCIgaGVpZ2h0PSI3NCIgcng9IjIiIGZpbGw9IiMyNTYzZWIiLz48dGV4dCB4PSI0NzgiIHk9IjM2MiIgZm9udC1zaXplPSIxOSIgZmlsbD0iIzE3MmM0OCIgZm9udC13ZWlnaHQ9IjY1MCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7lrZDnu4Tku7YgQjwvdGV4dD48dGV4dCB4PSI0NzgiIHk9IjM5MiIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij5wcm9wcyDlj6ror7vmjqXmlLY8L3RleHQ+PHRleHQgeD0iNDc4IiB5PSI0MTciIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+5LqL5Lu25Zue6LCD5LiK5oqlPC90ZXh0PjxyZWN0IHg9Ijc2MCIgeT0iMzMwIiB3aWR0aD0iMjAwIiBoZWlnaHQ9IjEwNCIgcng9IjE2IiBmaWxsPSIjZWRmNGZmIiBzdHJva2U9IiNjNWQ0ZTYiLz48cmVjdCB4PSI3NjAiIHk9IjM0NSIgd2lkdGg9IjQiIGhlaWdodD0iNzQiIHJ4PSIyIiBmaWxsPSIjMjU2M2ViIi8+PHRleHQgeD0iNzc4IiB5PSIzNjIiIGZvbnQtc2l6ZT0iMTkiIGZpbGw9IiMxNzJjNDgiIGZvbnQtd2VpZ2h0PSI2NTAiIHRleHQtYW5jaG9yPSJzdGFydCI+5a2Q57uE5Lu2IEM8L3RleHQ+PHRleHQgeD0iNzc4IiB5PSIzOTIiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+cHJvcHMg5Y+q6K+75o6l5pS2PC90ZXh0Pjx0ZXh0IHg9Ijc3OCIgeT0iNDE3IiBmb250LXNpemU9IjE2IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuS6i+S7tuWbnuiwg+S4iuaKpTwvdGV4dD48cGF0aCBkPSJNIDQ1NSAyNDYgTCAyMjAgMzMwIiBmaWxsPSJub25lIiBzdHJva2U9IiMyNTYzZWIiIHN0cm9rZS13aWR0aD0iMi41IiBtYXJrZXItZW5kPSJ1cmwoI2Fycm93KSIvPjx0ZXh0IHg9IjMzNyIgeT0iMjg4IiBmb250LXNpemU9IjE1IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5wcm9wcyDmlbDmja7lkJHkuIs8L3RleHQ+PHBhdGggZD0iTSA1MjAgMjQ2IEwgNTYwIDMzMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMjU2M2ViIiBzdHJva2Utd2lkdGg9IjIuNSIgbWFya2VyLWVuZD0idXJsKCNhcnJvdykiLz48dGV4dCB4PSI1NDAiIHk9IjI5MCIgZm9udC1zaXplPSIxNSIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+cHJvcHM8L3RleHQ+PHBhdGggZD0iTSA1MjAgMjQ2IEwgODYwIDMzMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMjU2M2ViIiBzdHJva2Utd2lkdGg9IjIuNSIgbWFya2VyLWVuZD0idXJsKCNhcnJvdykiLz48dGV4dCB4PSI2OTAiIHk9IjI5MCIgZm9udC1zaXplPSIxNSIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+cHJvcHM8L3RleHQ+PHBhdGggZD0iTSAyMjAgNDM0IEwgNDU1IDQ5OCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMjU2M2ViIiBzdHJva2Utd2lkdGg9IjIuNSIgbWFya2VyLWVuZD0idXJsKCNhcnJvdykiIHN0cm9rZS1kYXNoYXJyYXk9IjcgNSIvPjx0ZXh0IHg9IjMzNyIgeT0iNDcwIiBmb250LXNpemU9IjE1IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7kuovku7blkJHkuIo8L3RleHQ+PHBhdGggZD0iTSA1NjAgNDM0IEwgNTIwIDQ5OCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMjU2M2ViIiBzdHJva2Utd2lkdGg9IjIuNSIgbWFya2VyLWVuZD0idXJsKCNhcnJvdykiIHN0cm9rZS1kYXNoYXJyYXk9IjcgNSIvPjx0ZXh0IHg9IjU0MCIgeT0iNDcwIiBmb250LXNpemU9IjE1IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7lm57osIM8L3RleHQ+PHBhdGggZD0iTSA4NjAgNDM0IEwgNTIwIDQ5OCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMjU2M2ViIiBzdHJva2Utd2lkdGg9IjIuNSIgbWFya2VyLWVuZD0idXJsKCNhcnJvdykiIHN0cm9rZS1kYXNoYXJyYXk9IjcgNSIvPjx0ZXh0IHg9IjY5MCIgeT0iNDcwIiBmb250LXNpemU9IjE1IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7lm57osIM8L3RleHQ+PHJlY3QgeD0iMzQwIiB5PSI0OTgiIHdpZHRoPSI0MDAiIGhlaWdodD0iOTYiIHJ4PSIxNiIgZmlsbD0iI2U4ZjdmMiIgc3Ryb2tlPSIjYzVkNGU2Ii8+PHJlY3QgeD0iMzQwIiB5PSI1MTMiIHdpZHRoPSI0IiBoZWlnaHQ9IjY2IiByeD0iMiIgZmlsbD0iIzAwODY3NSIvPjx0ZXh0IHg9IjM1OCIgeT0iNTMwIiBmb250LXNpemU9IjIwIiBmaWxsPSIjMTcyYzQ4IiBmb250LXdlaWdodD0iNjUwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPueKtuaAgeaPkOWNh+WIsOWFseWQjOeItue7hOS7tjwvdGV4dD48dGV4dCB4PSIzNTgiIHk9IjU2MCIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7lpJrkuKrlrZDnu4Tku7blhbHkuqvlkIzkuIDku73mlbDmja48L3RleHQ+PHRleHQgeD0iMzU4IiB5PSI1ODUiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+5L+u5pS56ZuG5Lit5Zyo54i257uE5Lu2PC90ZXh0Pjx0ZXh0IHg9IjQ2IiB5PSIzOTgiIGZvbnQtc2l6ZT0iMTkiIGZpbGw9IiMxNzJjNDgiIGZvbnQtd2VpZ2h0PSI3MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+5Y2V5ZCR5pWw5o2u5rWBPC90ZXh0Pjx0ZXh0IHg9IjQ2IiB5PSI0MzIiIGZvbnQtc2l6ZT0iMTciIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+5pWw5o2u5rK/57uE5Lu25qCR5ZCR5LiL5rWB5Yqo77yb5L+u5pS56YCa6L+H5LqL5Lu25Zue6LCD5ZCR5LiK5Lyg6YCS44CCPC90ZXh0PjxyZWN0IHg9IjM1IiB5PSI2MjAiIHdpZHRoPSIxMDEwIiBoZWlnaHQ9IjQ4IiByeD0iMTYiIGZpbGw9IiNmZmYiIHN0cm9rZT0iI2M1ZDRlNiIvPjx0ZXh0IHg9IjUzIiB5PSI2NTAiIGZvbnQtc2l6ZT0iMTciIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+U3RhdGUg5piv57uE5Lu256eB5pyJ55qE77yb6ZyA6KaB5YWx5Lqr5pe25o+Q5Y2H5Yiw5pyA6L+R55qE5YWx5ZCM54i257uE5Lu244CCPC90ZXh0Pjwvc3ZnPg==" tabindex="0"/></figure>
+<p><em>图 4：State 保存在组件内部；数据沿组件树向下流动（Props），修改通过回调函数向上传递（事件）。多个子组件需要共享同一份数据时，把状态提升到最近的共同父组件。</em></p>
+<p>当两个子组件需要同一份数据时，把 State 提升到它们的共同父组件，通过 Props 下发，通过回调更新：</p>
+<div class="codebox"><div class="codehead"><span>JSX</span><button aria-label="复制这段代码" class="copy" type="button">复制</button></div><pre><code class="language-jsx">function Parent() {
+  const [items, setItems] = useState(['甲', '乙']);
+
+  function addItem(text) {
+    setItems([...items, text]); // 用新数组替换，而不是修改原数组
+  }
+
+  return (
+    &lt;div&gt;
+      &lt;Input onAdd={addItem} /&gt;
+      &lt;List items={items} /&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre></div>
+<p>“状态提升”是 React 里最频繁出现的重构手法：先让数据待在最贴近使用处，等发现多个组件需要共享时再上移。不要一开始就把所有状态放进全局。</p>
+<h3 id="44">4.4 状态更新是异步的：批量处理</h3>
+<p>同一事件内的多次 <code>setCount</code> 不会立即生效，React 会批量合并：</p>
+<div class="codebox"><div class="codehead"><span>JSX</span><button aria-label="复制这段代码" class="copy" type="button">复制</button></div><pre><code class="language-jsx">setCount(count + 1);
+setCount(count + 1);
+// 结果不是 +2，而是 +1：两次都基于同一个旧 count
+</code></pre></div>
+<p>需要基于“上一次的值”更新时，用函数式更新：</p>
+<div class="codebox"><div class="codehead"><span>JSX</span><button aria-label="复制这段代码" class="copy" type="button">复制</button></div><pre><code class="language-jsx">setCount((prev) =&gt; prev + 1);
+setCount((prev) =&gt; prev + 1); // 这次是 +2
+</code></pre></div>
+<p>另外，<code>setCount(count + 1)</code> 之后立刻读取 <code>count</code>，拿到的仍是旧值——State 要到下一次渲染才更新。理解这一点能避免大量“为什么数据没变”的困惑。<a href="https://react.dev/learn/queueing-a-series-of-state-updates">State 更新队列</a></p>
+<h2 id="5">5. 核心概念三：列表与条件渲染</h2>
+<h3 id="51-key">5.1 列表渲染与 key</h3>
+<p>把数组映射成列表是 React 最常用的操作，<code>map</code> 返回一组 JSX：</p>
+<div class="codebox"><div class="codehead"><span>JSX</span><button aria-label="复制这段代码" class="copy" type="button">复制</button></div><pre><code class="language-jsx">function TodoList({ todos }) {
+  return (
+    &lt;ul&gt;
+      {todos.map((todo) =&gt; (
+        &lt;li key={todo.id}&gt;{todo.text}&lt;/li&gt;
+      ))}
+    &lt;/ul&gt;
+  );
+}
+</code></pre></div>
+<p><code>key</code> 是给 React 的提示：列表中哪个元素对应哪份数据。规则：</p>
+<div aria-label="可横向滚动的表格" class="table-wrap" role="region" tabindex="0"><table>
+<thead>
+<tr>
+<th>做法</th>
+<th>是否推荐</th>
+<th>原因</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>用数据自带的稳定 id</td>
+<td>✅ 推荐</td>
+<td>数据变化时 React 能准确对应</td>
+</tr>
+<tr>
+<td>用数组下标 index</td>
+<td>⚠️ 仅在列表静态时可用</td>
+<td>插入 / 删除会让后续项的对应关系错位</td>
+</tr>
+<tr>
+<td>用随机数</td>
+<td>❌ 不要</td>
+<td>每次渲染都变，破坏对应关系甚至引发状态错乱</td>
+</tr>
+</tbody>
+</table></div>
+<p><code>key</code> 不是传给组件的 Props：组件内部读不到 <code>key</code>。它的唯一作用是帮助 React 在更新时识别元素。<a href="https://react.dev/learn/rendering-lists">渲染列表</a></p>
+<h3 id="52">5.2 条件渲染</h3>
+<p>JSX 里用 JavaScript 表达式做条件：</p>
+<div class="codebox"><div class="codehead"><span>JSX</span><button aria-label="复制这段代码" class="copy" type="button">复制</button></div><pre><code class="language-jsx">function Status({ loading, error, data }) {
+  if (loading) return &lt;p&gt;加载中…&lt;/p&gt;;
+  if (error) return &lt;p className="error"&gt;出错了：{error}&lt;/p&gt;;
+  return &lt;p&gt;数据：{data}&lt;/p&gt;;
+}
+</code></pre></div>
+<p>常见的几种写法：</p>
+<div class="codebox"><div class="codehead"><span>JSX</span><button aria-label="复制这段代码" class="copy" type="button">复制</button></div><pre><code class="language-jsx">{isLoggedIn ? &lt;LogoutButton /&gt; : &lt;LoginButton /&gt;}   // 三目
+{isLoggedIn &amp;&amp; &lt;LogoutButton /&gt;}                     // 短路：满足才渲染
+{items.length &gt; 0 || &lt;EmptyHint /&gt;}                  // 或：不满足时渲染
+</code></pre></div>
+<p>注意 <code>&amp;&amp;</code> 的坑：<code>{items.length &amp;&amp; &lt;List /&gt;}</code> 在 <code>items.length</code> 为 0 时会渲染出 <code>0</code>。要用 <code>{items.length &gt; 0 &amp;&amp; &lt;List /&gt;}</code>。<a href="https://react.dev/learn/conditional-rendering">条件渲染</a></p>
+<h3 id="53">5.3 组合练习：一个带过滤的列表</h3>
+<p>把第 4、5 章的知识合起来：状态、事件、受控组件、条件渲染、列表渲染。</p>
+<div class="codebox"><div class="codehead"><span>JSX</span><button aria-label="复制这段代码" class="copy" type="button">复制</button></div><pre><code class="language-jsx">import { useState } from 'react';
+
+const initialItems = [
+  { id: 1, name: '学习 JSX', done: true },
+  { id: 2, name: '学习 State', done: false },
+  { id: 3, name: '学习列表渲染', done: false },
+];
+
+export default function FilterList() {
+  const [items, setItems] = useState(initialItems);
+  const [filter, setFilter] = useState('all');
+
+  const visible = items.filter((item) =&gt;
+    filter === 'all' ? true : filter === 'done' ? item.done : !item.done
+  );
+
+  function toggle(id) {
+    setItems(items.map((item) =&gt; (item.id === id ? { ...item, done: !item.done } : item)));
+  }
+
+  return (
+    &lt;div&gt;
+      &lt;select value={filter} onChange={(e) =&gt; setFilter(e.target.value)}&gt;
+        &lt;option value="all"&gt;全部&lt;/option&gt;
+        &lt;option value="done"&gt;已完成&lt;/option&gt;
+        &lt;option value="todo"&gt;未完成&lt;/option&gt;
+      &lt;/select&gt;
+      &lt;ul&gt;
+        {visible.map((item) =&gt; (
+          &lt;li key={item.id}&gt;
+            &lt;label&gt;
+              &lt;input type="checkbox" checked={item.done} onChange={() =&gt; toggle(item.id)} /&gt;
+              {item.name}
+            &lt;/label&gt;
+          &lt;/li&gt;
+        ))}
+      &lt;/ul&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre></div>
+<p>这段代码演示了三个重要模式：<strong>派生状态用计算而不是复制</strong>（<code>visible</code> 由 <code>items</code> 与 <code>filter</code> 实时算出）、<strong>更新用不可变方式</strong>（<code>map</code> 返回新数组）、<strong>checked 受控</strong>（勾选状态来自数据）。</p>
+<h2 id="6-hooks">6. 核心概念四：Hooks 深入</h2>
+<h3 id="61-useeffect">6.1 useEffect：副作用的管理</h3>
+<p>渲染本身应该是“纯”的：同样的输入得到同样的界面。但真实应用需要请求数据、订阅事件、操作定时器——这些“渲染之外的动作”叫副作用，用 <code>useEffect</code> 声明：</p>
+<div class="codebox"><div class="codehead"><span>JSX</span><button aria-label="复制这段代码" class="copy" type="button">复制</button></div><pre><code class="language-jsx">import { useEffect, useState } from 'react';
+
+function Clock() {
+  const [now, setNow] = useState(new Date());
+
+  useEffect(() =&gt; {
+    const timer = setInterval(() =&gt; setNow(new Date()), 1000);
+    return () =&gt; clearInterval(timer); // 清理函数：卸载时执行
+  }, []); // 空依赖：只挂载时执行一次
+
+  return &lt;p&gt;现在时间：{now.toLocaleTimeString()}&lt;/p&gt;;
+}
+</code></pre></div>
+<figure><img alt="图 5：组件生命周期与副作用" aria-label="放大查看：图 5：组件生命周期与副作用" class="diagram" loading="lazy" role="button" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDgwIiBoZWlnaHQ9IjU2NSIgdmlld0JveD0iMCAwIDEwODAgNTY1IiByb2xlPSJpbWciIGFyaWEtbGFiZWxsZWRieT0idGl0bGUgZGVzYyI+Cjx0aXRsZSBpZD0idGl0bGUiPue7hOS7tueUn+WRveWRqOacn+S4juWJr+S9nOeUqDwvdGl0bGU+PGRlc2MgaWQ9ImRlc2MiPueQhuino+e7hOS7tuS7juaMgui9veWIsOWNuOi9veeahOS4ieS4qumYtuaute+8jOS7peWPiiBlZmZlY3Qg55qE5pe25py644CCPC9kZXNjPgo8ZGVmcz48bWFya2VyIGlkPSJhcnJvdyIgbWFya2VyV2lkdGg9IjgiIG1hcmtlckhlaWdodD0iOCIgcmVmWD0iNyIgcmVmWT0iMy41IiBvcmllbnQ9ImF1dG8iPjxwYXRoIGQ9Ik0wLDAgTDcsMy41IEwwLDciIGZpbGw9IiMyNTYzZWIiLz48L21hcmtlcj48L2RlZnM+CjxzdHlsZT50ZXh0e2ZvbnQtZmFtaWx5OiJQaW5nRmFuZyBTQyIsIk5vdG8gU2FucyBDSksgU0MiLCJNaWNyb3NvZnQgWWFIZWkiLHNhbnMtc2VyaWZ9PC9zdHlsZT4KPHJlY3Qgd2lkdGg9IjEwODAiIGhlaWdodD0iNTY1IiByeD0iMjIiIGZpbGw9IiNmN2ZhZmYiLz4KPHRleHQgeD0iMzUiIHk9IjM3IiBmb250LXNpemU9IjEzIiBmaWxsPSIjMjU2M2ViIiBmb250LXdlaWdodD0iNzAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPlJFQUNUIC8gMDU8L3RleHQ+PHRleHQgeD0iMzUiIHk9Ijc4IiBmb250LXNpemU9IjI5IiBmaWxsPSIjMTcyYzQ4IiBmb250LXdlaWdodD0iNzAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPue7hOS7tueUn+WRveWRqOacn+S4juWJr+S9nOeUqDwvdGV4dD48dGV4dCB4PSIzNSIgeT0iMTEwIiBmb250LXNpemU9IjE3IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPueQhuino+e7hOS7tuS7juaMgui9veWIsOWNuOi9veeahOS4ieS4qumYtuaute+8jOS7peWPiiBlZmZlY3Qg55qE5pe25py644CCPC90ZXh0Pgo8cmVjdCB4PSIzNSIgeT0iMTYwIiB3aWR0aD0iMjkwIiBoZWlnaHQ9IjE4MCIgcng9IjE2IiBmaWxsPSIjZWRmNGZmIiBzdHJva2U9IiNjNWQ0ZTYiLz48cmVjdCB4PSIzNSIgeT0iMTc1IiB3aWR0aD0iNCIgaGVpZ2h0PSIxNTAiIHJ4PSIyIiBmaWxsPSIjMjU2M2ViIi8+PHRleHQgeD0iNTMiIHk9IjE5MiIgZm9udC1zaXplPSIyMSIgZmlsbD0iIzE3MmM0OCIgZm9udC13ZWlnaHQ9IjY1MCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7mjILovb0gTW91bnQ8L3RleHQ+PHRleHQgeD0iNTMiIHk9IjIyMiIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7nu4Tku7bpppbmrKHlh7rnjrA8L3RleHQ+PHRleHQgeD0iNTMiIHk9IjI0NyIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7miafooYwgZWZmZWN077yI5aaC6K+35rGC77yJPC90ZXh0Pjx0ZXh0IHg9IjUzIiB5PSIyNzIiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+5riF55CG5Ye95pWw5pqC5a2YPC90ZXh0PjxyZWN0IHg9IjM5NSIgeT0iMTYwIiB3aWR0aD0iMjkwIiBoZWlnaHQ9IjE4MCIgcng9IjE2IiBmaWxsPSIjZmZmM2U2IiBzdHJva2U9IiNjNWQ0ZTYiLz48cmVjdCB4PSIzOTUiIHk9IjE3NSIgd2lkdGg9IjQiIGhlaWdodD0iMTUwIiByeD0iMiIgZmlsbD0iI2I3NWExOCIvPjx0ZXh0IHg9IjQxMyIgeT0iMTkyIiBmb250LXNpemU9IjIxIiBmaWxsPSIjMTcyYzQ4IiBmb250LXdlaWdodD0iNjUwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuabtOaWsCBVcGRhdGU8L3RleHQ+PHRleHQgeD0iNDEzIiB5PSIyMjIiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+cHJvcHMgLyBzdGF0ZSDlj5jljJY8L3RleHQ+PHRleHQgeD0iNDEzIiB5PSIyNDciIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+57uE5Lu26YeN5paw5riy5p+TPC90ZXh0Pjx0ZXh0IHg9IjQxMyIgeT0iMjcyIiBmb250LXNpemU9IjE2IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuS+nei1luWPmOWMluaXtumHjei3kSBlZmZlY3Q8L3RleHQ+PHJlY3QgeD0iNzU1IiB5PSIxNjAiIHdpZHRoPSIyOTAiIGhlaWdodD0iMTgwIiByeD0iMTYiIGZpbGw9IiNlOGY3ZjIiIHN0cm9rZT0iI2M1ZDRlNiIvPjxyZWN0IHg9Ijc1NSIgeT0iMTc1IiB3aWR0aD0iNCIgaGVpZ2h0PSIxNTAiIHJ4PSIyIiBmaWxsPSIjMDA4Njc1Ii8+PHRleHQgeD0iNzczIiB5PSIxOTIiIGZvbnQtc2l6ZT0iMjEiIGZpbGw9IiMxNzJjNDgiIGZvbnQtd2VpZ2h0PSI2NTAiIHRleHQtYW5jaG9yPSJzdGFydCI+5Y246L29IFVubW91bnQ8L3RleHQ+PHRleHQgeD0iNzczIiB5PSIyMjIiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+57uE5Lu25LuO5qCR5Lit56e76ZmkPC90ZXh0Pjx0ZXh0IHg9Ijc3MyIgeT0iMjQ3IiBmb250LXNpemU9IjE2IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuaJp+ihjOa4heeQhuWHveaVsDwvdGV4dD48dGV4dCB4PSI3NzMiIHk9IjI3MiIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7lj5bmtojorqLpmIUgLyDlrprml7blmag8L3RleHQ+PHBhdGggZD0iTSAzMjUgMjUwIEwgMzk1IDI1MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMjU2M2ViIiBzdHJva2Utd2lkdGg9IjIuNSIgbWFya2VyLWVuZD0idXJsKCNhcnJvdykiLz48cGF0aCBkPSJNIDY4NSAyNTAgTCA3NTUgMjUwIiBmaWxsPSJub25lIiBzdHJva2U9IiMyNTYzZWIiIHN0cm9rZS13aWR0aD0iMi41IiBtYXJrZXItZW5kPSJ1cmwoI2Fycm93KSIvPjx0ZXh0IHg9IjQ2IiB5PSI0MTUiIGZvbnQtc2l6ZT0iMTkiIGZpbGw9IiMxNzJjNDgiIGZvbnQtd2VpZ2h0PSI3MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+dXNlRWZmZWN0KGZuLCBkZXBzKTwvdGV4dD48dGV4dCB4PSI0NiIgeT0iNDQ5IiBmb250LXNpemU9IjE3IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPmRlcHMg5Li656m677ya5Y+q5omn6KGM5LiA5qyh77ybZGVwcyDlj5jljJbvvJrlr7nlupTmm7TmlrDlkI7ph43ot5HvvJvov5Tlm57muIXnkIblh73mlbDjgII8L3RleHQ+PHJlY3QgeD0iMzUiIHk9IjQ5MiIgd2lkdGg9IjEwMTAiIGhlaWdodD0iNDgiIHJ4PSIxNiIgZmlsbD0iI2ZmZiIgc3Ryb2tlPSIjYzVkNGU2Ii8+PHRleHQgeD0iNTMiIHk9IjUyMiIgZm9udC1zaXplPSIxNyIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7lia/kvZznlKjmjIfmuLLmn5PkuYvlpJbnmoTigJzlpJbpg6jliqjkvZzigJ3vvJror7fmsYLjgIHorqLpmIXjgIHlrprml7blmajjgIHnm7TmjqXmk43kvZwgRE9N44CCPC90ZXh0Pjwvc3ZnPg==" tabindex="0"/></figure>
+<p><em>图 5：组件经历挂载、更新、卸载三个阶段。effect 在挂载后执行；依赖变化时在更新后重跑；返回的清理函数在下次 effect 前与卸载时执行。</em></p>
+<p><code>useEffect(fn, deps)</code> 的执行时机：</p>
+<div aria-label="可横向滚动的表格" class="table-wrap" role="region" tabindex="0"><table>
+<thead>
+<tr>
+<th>依赖数组</th>
+<th>执行时机</th>
+<th>典型用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>不传</td>
+<td>每次渲染后</td>
+<td>少见；通常意味着设计有问题</td>
+</tr>
+<tr>
+<td><code>[]</code></td>
+<td>仅挂载后执行一次</td>
+<td>请求初始数据、订阅</td>
+</tr>
+<tr>
+<td><code>[a, b]</code></td>
+<td><code>a</code> 或 <code>b</code> 变化后执行</td>
+<td>依赖外部数据重新请求</td>
+</tr>
+<tr>
+<td>返回清理函数</td>
+<td>下次 effect 前 + 卸载时</td>
+<td>取消订阅、清定时器、断开连接</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>不要在 effect 里手动同步 State。</strong> <code>useEffect(() =&gt; setX(compute(x)), [x])</code> 会造成“渲染 → effect → 再渲染”的额外循环；能直接计算的值应该在渲染期间计算。<a href="https://react.dev/learn/lifecycle-of-reactive-effects">Effect 的时机</a></p>
+<h3 id="62-useref">6.2 useRef：不触发渲染的“抽屉”</h3>
+<p><code>useRef</code> 返回一个稳定的容器对象，<code>.current</code> 可以保存任意值。与 State 的区别是：<strong>修改 ref 不会触发重新渲染</strong>。</p>
+<div class="codebox"><div class="codehead"><span>JSX</span><button aria-label="复制这段代码" class="copy" type="button">复制</button></div><pre><code class="language-jsx">import { useRef } from 'react';
+
+function AutofocusInput() {
+  const inputRef = useRef(null);
+  return (
+    &lt;input
+      ref={inputRef}
+      onFocus={() =&gt; console.log('焦点元素：', inputRef.current)}
+    /&gt;
+  );
+}
+</code></pre></div>
+<p>常用场景：访问 DOM 节点（focus、测量尺寸）、保存定时器 id、保存“上一次的值”。React 19 中，<code>ref</code> 可以作为普通 prop 传给函数组件（不再需要 <code>forwardRef</code>）。<a href="https://react.dev/learn/referencing-values-with-refs">ref 的用法</a></p>
+<h3 id="63-usememo-usecallback">6.3 useMemo 与 useCallback：缓存计算与引用</h3>
+<p>默认情况下组件每次渲染都会重新执行全部代码。当计算昂贵、或子组件因引用变化被反复重渲染时，可以用缓存：</p>
+<div class="codebox"><div class="codehead"><span>JSX</span><button aria-label="复制这段代码" class="copy" type="button">复制</button></div><pre><code class="language-jsx">import { useMemo, useCallback } from 'react';
+
+function Dashboard({ rows }) {
+  // 仅当 rows 变化时才重新计算
+  const stats = useMemo(() =&gt; expensiveSummary(rows), [rows]);
+
+  // 仅当依赖变化时才更换函数引用
+  const handleClick = useCallback(() =&gt; setPage(1), []);
+
+  return &lt;StatsView data={stats} onClick={handleClick} /&gt;;
+}
+</code></pre></div>
+<p>重要提醒：<code>useMemo</code> / <code>useCallback</code> 是<strong>优化手段，不是语义保证</strong>。React 可能随时丢弃缓存重新计算，因此不能依赖它们保证“只执行一次”。<strong>先测量，再优化</strong>；过早把每个值都包上缓存反而增加复杂度。<a href="https://react.dev/reference/react/useMemo">useMemo</a> · <a href="https://react.dev/reference/react/useCallback">useCallback</a></p>
+<h3 id="64-hook">6.4 自定义 Hook：封装可复用逻辑</h3>
+<p>以 <code>use</code> 开头的函数就是自定义 Hook，可以把“状态 + 副作用”的逻辑打包复用：</p>
+<div class="codebox"><div class="codehead"><span>JSX</span><button aria-label="复制这段代码" class="copy" type="button">复制</button></div><pre><code class="language-jsx">import { useEffect, useState } from 'react';
+
+function useDocumentTitle(title) {
+  useEffect(() =&gt; {
+    document.title = title;
+  }, [title]);
+}
+
+function useWindowSize() {
+  const [size, setSize] = useState({ width: window.innerWidth, height: window.innerHeight });
+  useEffect(() =&gt; {
+    const onResize = () =&gt; setSize({ width: window.innerWidth, height: window.innerHeight });
+    window.addEventListener('resize', onResize);
+    return () =&gt; window.removeEventListener('resize', onResize);
+  }, []);
+  return size;
+}
+</code></pre></div>
+<div class="codebox"><div class="codehead"><span>JSX</span><button aria-label="复制这段代码" class="copy" type="button">复制</button></div><pre><code class="language-jsx">function Page() {
+  useDocumentTitle('我的页面');
+  const { width } = useWindowSize();
+  return &lt;p&gt;窗口宽度：{width}&lt;/p&gt;;
+}
+</code></pre></div>
+<p>自定义 Hook 是 React 生态里最常见的抽象方式：请求数据的 <code>useFetch</code>、表单的 <code>useForm</code>、主题的 <code>useTheme</code> 都是这种模式。<strong>Hook 之间可以互相调用</strong>，但只能在组件或自定义 Hook 的顶层调用。</p>
+<h3 id="65-hooks">6.5 Hooks 规则</h3>
+<figure><img alt="图 8：Hooks：函数组件的工具箱" aria-label="放大查看：图 8：Hooks：函数组件的工具箱" class="diagram" loading="lazy" role="button" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDgwIiBoZWlnaHQ9IjYyNiIgdmlld0JveD0iMCAwIDEwODAgNjI2IiByb2xlPSJpbWciIGFyaWEtbGFiZWxsZWRieT0idGl0bGUgZGVzYyI+Cjx0aXRsZSBpZD0idGl0bGUiPkhvb2tz77ya5Ye95pWw57uE5Lu255qE5bel5YW3566xPC90aXRsZT48ZGVzYyBpZD0iZGVzYyI+5oyJ5Zy65pmv6YCJ5bel5YW377yM6ICM5LiN5piv6K6w5L2P5q+P5LiA5LiqIEFQSSDnmoTnu4boioLjgII8L2Rlc2M+CjxkZWZzPjxtYXJrZXIgaWQ9ImFycm93IiBtYXJrZXJXaWR0aD0iOCIgbWFya2VySGVpZ2h0PSI4IiByZWZYPSI3IiByZWZZPSIzLjUiIG9yaWVudD0iYXV0byI+PHBhdGggZD0iTTAsMCBMNywzLjUgTDAsNyIgZmlsbD0iIzI1NjNlYiIvPjwvbWFya2VyPjwvZGVmcz4KPHN0eWxlPnRleHR7Zm9udC1mYW1pbHk6IlBpbmdGYW5nIFNDIiwiTm90byBTYW5zIENKSyBTQyIsIk1pY3Jvc29mdCBZYUhlaSIsc2Fucy1zZXJpZn08L3N0eWxlPgo8cmVjdCB3aWR0aD0iMTA4MCIgaGVpZ2h0PSI2MjYiIHJ4PSIyMiIgZmlsbD0iI2Y3ZmFmZiIvPgo8dGV4dCB4PSIzNSIgeT0iMzciIGZvbnQtc2l6ZT0iMTMiIGZpbGw9IiMyNTYzZWIiIGZvbnQtd2VpZ2h0PSI3MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+UkVBQ1QgLyAwODwvdGV4dD48dGV4dCB4PSIzNSIgeT0iNzgiIGZvbnQtc2l6ZT0iMjkiIGZpbGw9IiMxNzJjNDgiIGZvbnQtd2VpZ2h0PSI3MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+SG9va3PvvJrlh73mlbDnu4Tku7bnmoTlt6XlhbfnrrE8L3RleHQ+PHRleHQgeD0iMzUiIHk9IjExMCIgZm9udC1zaXplPSIxNyIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7mjInlnLrmma/pgInlt6XlhbfvvIzogIzkuI3mmK/orrDkvY/mr4/kuIDkuKogQVBJIOeahOe7huiKguOAgjwvdGV4dD4KPHRleHQgeD0iMzYiIHk9IjE3NiIgZm9udC1zaXplPSIxOSIgZmlsbD0iIzE3MmM0OCIgZm9udC13ZWlnaHQ9IjcwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7luLjnlKggSG9va3M8L3RleHQ+PHJlY3QgeD0iMzUiIHk9IjE5NSIgd2lkdGg9IjIzMCIgaGVpZ2h0PSIxMTgiIHJ4PSIxNiIgZmlsbD0iI2VkZjRmZiIgc3Ryb2tlPSIjYzVkNGU2Ii8+PHJlY3QgeD0iMzUiIHk9IjIxMCIgd2lkdGg9IjQiIGhlaWdodD0iODgiIHJ4PSIyIiBmaWxsPSIjMjU2M2ViIi8+PHRleHQgeD0iNTMiIHk9IjIyNyIgZm9udC1zaXplPSIyMCIgZmlsbD0iIzE3MmM0OCIgZm9udC13ZWlnaHQ9IjY1MCIgdGV4dC1hbmNob3I9InN0YXJ0Ij51c2VTdGF0ZTwvdGV4dD48dGV4dCB4PSI1MyIgeT0iMjU3IiBmb250LXNpemU9IjE2IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPue7hOS7tuWGheWPr+WPmOeKtuaAgTwvdGV4dD48dGV4dCB4PSI1MyIgeT0iMjgyIiBmb250LXNpemU9IjE2IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPui/lOWbniBb5YC8LCDmm7TmlrDlh73mlbBdPC90ZXh0PjxyZWN0IHg9IjI5NSIgeT0iMTk1IiB3aWR0aD0iMjMwIiBoZWlnaHQ9IjExOCIgcng9IjE2IiBmaWxsPSIjZmZmM2U2IiBzdHJva2U9IiNjNWQ0ZTYiLz48cmVjdCB4PSIyOTUiIHk9IjIxMCIgd2lkdGg9IjQiIGhlaWdodD0iODgiIHJ4PSIyIiBmaWxsPSIjYjc1YTE4Ii8+PHRleHQgeD0iMzEzIiB5PSIyMjciIGZvbnQtc2l6ZT0iMjAiIGZpbGw9IiMxNzJjNDgiIGZvbnQtd2VpZ2h0PSI2NTAiIHRleHQtYW5jaG9yPSJzdGFydCI+dXNlRWZmZWN0PC90ZXh0Pjx0ZXh0IHg9IjMxMyIgeT0iMjU3IiBmb250LXNpemU9IjE2IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuWJr+S9nOeUqOaXtuacujwvdGV4dD48dGV4dCB4PSIzMTMiIHk9IjI4MiIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7kvp3otZbmlbDnu4TmjqfliLbmiafooYw8L3RleHQ+PHJlY3QgeD0iNTU1IiB5PSIxOTUiIHdpZHRoPSIyMzAiIGhlaWdodD0iMTE4IiByeD0iMTYiIGZpbGw9IiNlOGY3ZjIiIHN0cm9rZT0iI2M1ZDRlNiIvPjxyZWN0IHg9IjU1NSIgeT0iMjEwIiB3aWR0aD0iNCIgaGVpZ2h0PSI4OCIgcng9IjIiIGZpbGw9IiMwMDg2NzUiLz48dGV4dCB4PSI1NzMiIHk9IjIyNyIgZm9udC1zaXplPSIyMCIgZmlsbD0iIzE3MmM0OCIgZm9udC13ZWlnaHQ9IjY1MCIgdGV4dC1hbmNob3I9InN0YXJ0Ij51c2VSZWY8L3RleHQ+PHRleHQgeD0iNTczIiB5PSIyNTciIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+6Leo5riy5p+T5L+d5a2Y5YC8PC90ZXh0Pjx0ZXh0IHg9IjU3MyIgeT0iMjgyIiBmb250LXNpemU9IjE2IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuS4jeinpuWPkemHjeaWsOa4suafkzwvdGV4dD48cmVjdCB4PSI4MTUiIHk9IjE5NSIgd2lkdGg9IjIzMCIgaGVpZ2h0PSIxMTgiIHJ4PSIxNiIgZmlsbD0iI2YxZWNmZCIgc3Ryb2tlPSIjYzVkNGU2Ii8+PHJlY3QgeD0iODE1IiB5PSIyMTAiIHdpZHRoPSI0IiBoZWlnaHQ9Ijg4IiByeD0iMiIgZmlsbD0iIzZkMjhkOSIvPjx0ZXh0IHg9IjgzMyIgeT0iMjI3IiBmb250LXNpemU9IjIwIiBmaWxsPSIjMTcyYzQ4IiBmb250LXdlaWdodD0iNjUwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPnVzZU1lbW88L3RleHQ+PHRleHQgeD0iODMzIiB5PSIyNTciIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+57yT5a2Y6K6h566X57uT5p6cPC90ZXh0Pjx0ZXh0IHg9IjgzMyIgeT0iMjgyIiBmb250LXNpemU9IjE2IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuS+nei1luS4jeWPmOWImeWkjeeUqDwvdGV4dD48cmVjdCB4PSIzNSIgeT0iMzk1IiB3aWR0aD0iMjMwIiBoZWlnaHQ9IjExOCIgcng9IjE2IiBmaWxsPSIjZWRmNGZmIiBzdHJva2U9IiNjNWQ0ZTYiLz48cmVjdCB4PSIzNSIgeT0iNDEwIiB3aWR0aD0iNCIgaGVpZ2h0PSI4OCIgcng9IjIiIGZpbGw9IiMyNTYzZWIiLz48dGV4dCB4PSI1MyIgeT0iNDI3IiBmb250LXNpemU9IjIwIiBmaWxsPSIjMTcyYzQ4IiBmb250LXdlaWdodD0iNjUwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPnVzZUNhbGxiYWNrPC90ZXh0Pjx0ZXh0IHg9IjUzIiB5PSI0NTciIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+57yT5a2Y5Ye95pWw5byV55SoPC90ZXh0Pjx0ZXh0IHg9IjUzIiB5PSI0ODIiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+6YWN5ZCIIG1lbW8g5L2/55SoPC90ZXh0PjxyZWN0IHg9IjI5NSIgeT0iMzk1IiB3aWR0aD0iMjMwIiBoZWlnaHQ9IjExOCIgcng9IjE2IiBmaWxsPSIjZThmN2YyIiBzdHJva2U9IiNjNWQ0ZTYiLz48cmVjdCB4PSIyOTUiIHk9IjQxMCIgd2lkdGg9IjQiIGhlaWdodD0iODgiIHJ4PSIyIiBmaWxsPSIjMDA4Njc1Ii8+PHRleHQgeD0iMzEzIiB5PSI0MjciIGZvbnQtc2l6ZT0iMjAiIGZpbGw9IiMxNzJjNDgiIGZvbnQtd2VpZ2h0PSI2NTAiIHRleHQtYW5jaG9yPSJzdGFydCI+dXNlQ29udGV4dDwvdGV4dD48dGV4dCB4PSIzMTMiIHk9IjQ1NyIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7ot6jlsYLnuqflhbHkuqvmlbDmja48L3RleHQ+PHRleHQgeD0iMzEzIiB5PSI0ODIiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+6YG/5YWN6YCQ5bGC5LygIHByb3BzPC90ZXh0PjxyZWN0IHg9IjU1NSIgeT0iMzk1IiB3aWR0aD0iMjMwIiBoZWlnaHQ9IjExOCIgcng9IjE2IiBmaWxsPSIjZjFlY2ZkIiBzdHJva2U9IiNjNWQ0ZTYiLz48cmVjdCB4PSI1NTUiIHk9IjQxMCIgd2lkdGg9IjQiIGhlaWdodD0iODgiIHJ4PSIyIiBmaWxsPSIjNmQyOGQ5Ii8+PHRleHQgeD0iNTczIiB5PSI0MjciIGZvbnQtc2l6ZT0iMjAiIGZpbGw9IiMxNzJjNDgiIGZvbnQtd2VpZ2h0PSI2NTAiIHRleHQtYW5jaG9yPSJzdGFydCI+6Ieq5a6a5LmJIEhvb2s8L3RleHQ+PHRleHQgeD0iNTczIiB5PSI0NTciIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+5LulIHVzZSDlvIDlpLQ8L3RleHQ+PHRleHQgeD0iNTczIiB5PSI0ODIiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+5bCB6KOF5Y+v5aSN55So6YC76L6RPC90ZXh0PjxyZWN0IHg9IjgxNSIgeT0iMzk1IiB3aWR0aD0iMjMwIiBoZWlnaHQ9IjExOCIgcng9IjE2IiBmaWxsPSIjZmZmM2U2IiBzdHJva2U9IiNjNWQ0ZTYiLz48cmVjdCB4PSI4MTUiIHk9IjQxMCIgd2lkdGg9IjQiIGhlaWdodD0iODgiIHJ4PSIyIiBmaWxsPSIjYjc1YTE4Ii8+PHRleHQgeD0iODMzIiB5PSI0MjciIGZvbnQtc2l6ZT0iMjAiIGZpbGw9IiMxNzJjNDgiIGZvbnQtd2VpZ2h0PSI2NTAiIHRleHQtYW5jaG9yPSJzdGFydCI+6KeE5YiZPC90ZXh0Pjx0ZXh0IHg9IjgzMyIgeT0iNDU3IiBmb250LXNpemU9IjE2IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPumhtuWxguiwg+eUqDwvdGV4dD48dGV4dCB4PSI4MzMiIHk9IjQ4MiIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7kuI3og73lnKjmnaHku7YgLyDlvqrnjq/kuK3osIPnlKg8L3RleHQ+PHJlY3QgeD0iMzUiIHk9IjU1MyIgd2lkdGg9IjEwMTAiIGhlaWdodD0iNDgiIHJ4PSIxNiIgZmlsbD0iI2ZmZiIgc3Ryb2tlPSIjYzVkNGU2Ii8+PHRleHQgeD0iNTMiIHk9IjU4MyIgZm9udC1zaXplPSIxNyIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij5Ib29rcyDorqnlh73mlbDnu4Tku7bmi6XmnInnirbmgIHkuI7lia/kvZznlKjog73lipvvvJvpobrluo/nqLPlrprmmK/lroPku6zlt6XkvZznmoTliY3mj5DjgII8L3RleHQ+PC9zdmc+" tabindex="0"/></figure>
+<p><em>图 8：常用 Hooks 按场景分类：状态（useState）、副作用（useEffect）、引用（useRef）、缓存（useMemo / useCallback）、共享（useContext），以及以 use 开头的自定义 Hook。</em></p>
+<p>Hooks 有两条铁律：</p>
+<ol>
+<li><strong>只在顶层调用。</strong> 不要在条件、循环或嵌套函数里调用 Hook。React 依赖调用顺序来记住每个 Hook 属于哪个状态。</li>
+<li><strong>只在 React 函数中调用。</strong> 组件函数或自定义 Hook 里调用；普通函数里不能调用。</li>
+</ol>
+<div class="codebox"><div class="codehead"><span>JSX</span><button aria-label="复制这段代码" class="copy" type="button">复制</button></div><pre><code class="language-jsx">// ❌ 错误：条件里调用 Hook，渲染顺序会不稳定
+if (visible) {
+  const [x, setX] = useState(0);
+}
+
+// ✅ 正确：条件放到 Hook 内部或之后
+const [x, setX] = useState(0);
+if (visible) { /* 逻辑照常 */ }
+</code></pre></div>
+<p>React 提供 eslint-plugin-react-hooks 自动检查这些规则。<a href="https://react.dev/reference/rules/rules-of-hooks">Hook 规则</a></p>
+<h2 id="7-dom">7. 实现原理：从虚拟 DOM 到并发渲染</h2>
+<h3 id="71-react-dom">7.1 React 元素与虚拟 DOM</h3>
+<p>React 元素（element）是描述界面的普通对象，不是真实 DOM 节点。每次渲染，组件函数返回新的元素树，React 在内存中维护这棵树——这就是“虚拟 DOM”。</p>
+<figure><img alt="图 6：虚拟 DOM 与协调（diff）" aria-label="放大查看：图 6：虚拟 DOM 与协调（diff）" class="diagram" loading="lazy" role="button" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDgwIiBoZWlnaHQ9IjU4NiIgdmlld0JveD0iMCAwIDEwODAgNTg2IiByb2xlPSJpbWciIGFyaWEtbGFiZWxsZWRieT0idGl0bGUgZGVzYyI+Cjx0aXRsZSBpZD0idGl0bGUiPuiZmuaLnyBET00g5LiO5Y2P6LCD77yIZGlmZu+8iTwvdGl0bGU+PGRlc2MgaWQ9ImRlc2MiPueKtuaAgeWPmOWMliDihpIg6YeN5paw55Sf5oiQ5YWD57Sg5qCRIOKGkiDmr5TovoPlt67lvIIg4oaSIOaJuemHj+abtOaWsOecn+WuniBET03jgII8L2Rlc2M+CjxkZWZzPjxtYXJrZXIgaWQ9ImFycm93IiBtYXJrZXJXaWR0aD0iOCIgbWFya2VySGVpZ2h0PSI4IiByZWZYPSI3IiByZWZZPSIzLjUiIG9yaWVudD0iYXV0byI+PHBhdGggZD0iTTAsMCBMNywzLjUgTDAsNyIgZmlsbD0iIzI1NjNlYiIvPjwvbWFya2VyPjwvZGVmcz4KPHN0eWxlPnRleHR7Zm9udC1mYW1pbHk6IlBpbmdGYW5nIFNDIiwiTm90byBTYW5zIENKSyBTQyIsIk1pY3Jvc29mdCBZYUhlaSIsc2Fucy1zZXJpZn08L3N0eWxlPgo8cmVjdCB3aWR0aD0iMTA4MCIgaGVpZ2h0PSI1ODYiIHJ4PSIyMiIgZmlsbD0iI2Y3ZmFmZiIvPgo8dGV4dCB4PSIzNSIgeT0iMzciIGZvbnQtc2l6ZT0iMTMiIGZpbGw9IiMyNTYzZWIiIGZvbnQtd2VpZ2h0PSI3MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+UkVBQ1QgLyAwNjwvdGV4dD48dGV4dCB4PSIzNSIgeT0iNzgiIGZvbnQtc2l6ZT0iMjkiIGZpbGw9IiMxNzJjNDgiIGZvbnQtd2VpZ2h0PSI3MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+6Jma5oufIERPTSDkuI7ljY/osIPvvIhkaWZm77yJPC90ZXh0Pjx0ZXh0IHg9IjM1IiB5PSIxMTAiIGZvbnQtc2l6ZT0iMTciIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+54q25oCB5Y+Y5YyWIOKGkiDph43mlrDnlJ/miJDlhYPntKDmoJEg4oaSIOavlOi+g+W3ruW8giDihpIg5om56YeP5pu05paw55yf5a6eIERPTeOAgjwvdGV4dD4KPHJlY3QgeD0iMzUiIHk9IjE1NSIgd2lkdGg9IjMwMCIgaGVpZ2h0PSIxMjAiIHJ4PSIxNiIgZmlsbD0iI2VkZjRmZiIgc3Ryb2tlPSIjYzVkNGU2Ii8+PHJlY3QgeD0iMzUiIHk9IjE3MCIgd2lkdGg9IjQiIGhlaWdodD0iOTAiIHJ4PSIyIiBmaWxsPSIjMjU2M2ViIi8+PHRleHQgeD0iNTMiIHk9IjE4NyIgZm9udC1zaXplPSIyMCIgZmlsbD0iIzE3MmM0OCIgZm9udC13ZWlnaHQ9IjY1MCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7kuIrkuIDmrKHomZrmi58gRE9NPC90ZXh0Pjx0ZXh0IHg9IjUzIiB5PSIyMTciIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+57uE5Lu254q25oCBIFMxIOeahOWFg+e0oOagkTwvdGV4dD48dGV4dCB4PSI1MyIgeT0iMjQyIiBmb250LXNpemU9IjE2IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuS/neWtmOS4uuWPr+avlOi+g+W/q+eFpzwvdGV4dD48cmVjdCB4PSIzOTUiIHk9IjE1NSIgd2lkdGg9IjMwMCIgaGVpZ2h0PSIxMjAiIHJ4PSIxNiIgZmlsbD0iI2ZmZjNlNiIgc3Ryb2tlPSIjYzVkNGU2Ii8+PHJlY3QgeD0iMzk1IiB5PSIxNzAiIHdpZHRoPSI0IiBoZWlnaHQ9IjkwIiByeD0iMiIgZmlsbD0iI2I3NWExOCIvPjx0ZXh0IHg9IjQxMyIgeT0iMTg3IiBmb250LXNpemU9IjIwIiBmaWxsPSIjMTcyYzQ4IiBmb250LXdlaWdodD0iNjUwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPui/meS4gOasoeiZmuaLnyBET008L3RleHQ+PHRleHQgeD0iNDEzIiB5PSIyMTciIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+54q25oCBIFMyIOmHjeaWsOeUn+aIkOeahOagkTwvdGV4dD48dGV4dCB4PSI0MTMiIHk9IjI0MiIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7kuI7ml6fmoJHpgJDlsYLmr5TovoM8L3RleHQ+PHJlY3QgeD0iNzU1IiB5PSIxNTUiIHdpZHRoPSIzMDAiIGhlaWdodD0iMTIwIiByeD0iMTYiIGZpbGw9IiNmMWVjZmQiIHN0cm9rZT0iI2M1ZDRlNiIvPjxyZWN0IHg9Ijc1NSIgeT0iMTcwIiB3aWR0aD0iNCIgaGVpZ2h0PSI5MCIgcng9IjIiIGZpbGw9IiM2ZDI4ZDkiLz48dGV4dCB4PSI3NzMiIHk9IjE4NyIgZm9udC1zaXplPSIyMCIgZmlsbD0iIzE3MmM0OCIgZm9udC13ZWlnaHQ9IjY1MCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7lt67lvILnu5PmnpzvvIhkaWZm77yJPC90ZXh0Pjx0ZXh0IHg9Ijc3MyIgeT0iMjE3IiBmb250LXNpemU9IjE2IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuS7heWPmOWMlueahOiKgueCuTwvdGV4dD48dGV4dCB4PSI3NzMiIHk9IjI0MiIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7mj5LlhaUgLyDmm7TmlrAgLyDliKDpmaQ8L3RleHQ+PHBhdGggZD0iTSAzMzUgMjE1IEwgMzk1IDIxNSIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMjU2M2ViIiBzdHJva2Utd2lkdGg9IjIuNSIgbWFya2VyLWVuZD0idXJsKCNhcnJvdykiLz48dGV4dCB4PSIzNjUiIHk9IjE5NyIgZm9udC1zaXplPSIxNSIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+5a+55q+UPC90ZXh0PjxwYXRoIGQ9Ik0gNjk1IDIxNSBMIDc1NSAyMTUiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzI1NjNlYiIgc3Ryb2tlLXdpZHRoPSIyLjUiIG1hcmtlci1lbmQ9InVybCgjYXJyb3cpIi8+PHRleHQgeD0iNzI1IiB5PSIxOTciIGZvbnQtc2l6ZT0iMTUiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPuW3ruW8gjwvdGV4dD48cmVjdCB4PSIzOTUiIHk9IjM4MCIgd2lkdGg9IjY2MCIgaGVpZ2h0PSIxMDAiIHJ4PSIxNiIgZmlsbD0iI2U4ZjdmMiIgc3Ryb2tlPSIjYzVkNGU2Ii8+PHJlY3QgeD0iMzk1IiB5PSIzOTUiIHdpZHRoPSI0IiBoZWlnaHQ9IjcwIiByeD0iMiIgZmlsbD0iIzAwODY3NSIvPjx0ZXh0IHg9IjQxMyIgeT0iNDEyIiBmb250LXNpemU9IjIxIiBmaWxsPSIjMTcyYzQ4IiBmb250LXdlaWdodD0iNjUwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPlJlYWN0IOWPquaKiuWPmOWMluaPkOS6pOe7meecn+WuniBET008L3RleHQ+PHRleHQgeD0iNDEzIiB5PSI0NDIiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+5pyA5bCP5YyWIERPTSDmk43kvZwg4oaSIOWHj+WwkemHjeaOkuS4jumHjee7mDwvdGV4dD48dGV4dCB4PSI0MTMiIHk9IjQ2NyIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij5rZXkg5biu5YqpIFJlYWN0IOivhuWIq+WIl+ihqOS4reWTquS6m+WFg+e0oOS/neaMgeS4jeWPmDwvdGV4dD48cGF0aCBkPSJNIDQ1NSAyNzUgTCA0NTUgMzgwIiBmaWxsPSJub25lIiBzdHJva2U9IiMyNTYzZWIiIHN0cm9rZS13aWR0aD0iMi41IiBtYXJrZXItZW5kPSJ1cmwoI2Fycm93KSIvPjx0ZXh0IHg9IjUwOSIgeT0iMzMwIiBmb250LXNpemU9IjE1IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7ku4Xmj5DkuqTlj5jljJY8L3RleHQ+PHRleHQgeD0iNDYiIHk9IjQzOCIgZm9udC1zaXplPSIxOSIgZmlsbD0iIzE3MmM0OCIgZm9udC13ZWlnaHQ9IjcwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7kuLrku4DkuYjnlKjomZrmi58gRE9NPC90ZXh0Pjx0ZXh0IHg9IjQ2IiB5PSI0NzIiIGZvbnQtc2l6ZT0iMTciIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+55u05o6l5Zyo5rWP6KeI5Zmo5pON5L2cIERPTSDmmILotLXvvJvlhYjmlLnlhoXlrZjkuK3nmoTlr7nosaHvvIzlho3kuIDmrKHmibnph4/mj5DkuqTjgII8L3RleHQ+PHJlY3QgeD0iMzUiIHk9IjUxMyIgd2lkdGg9IjEwMTAiIGhlaWdodD0iNDgiIHJ4PSIxNiIgZmlsbD0iI2ZmZiIgc3Ryb2tlPSIjYzVkNGU2Ii8+PHRleHQgeD0iNTMiIHk9IjU0MyIgZm9udC1zaXplPSIxNyIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7omZrmi58gRE9NIOaYr+aJi+auteiAjOmdnuebruagh++8muebruagh+aYr+KAnOeUqOacgOWwj+S7o+S7t+iuqeeVjOmdouS4jueKtuaAgeS4gOiHtOKAneOAgjwvdGV4dD48L3N2Zz4=" tabindex="0"/></figure>
+<p><em>图 6：状态变化后生成新的元素树，React 将新旧两棵树逐层比较，找出差异，再以最小代价更新真实 DOM。</em></p>
+<p>为什么需要中间层：直接操作真实 DOM 昂贵（触发重排、重绘、事件绑定重建）。先在内存对象上计算“哪些地方变了”，再一次批量提交，能显著减少昂贵的浏览器操作。<strong>虚拟 DOM 是手段，不是目标</strong>——目标是让界面与状态以可控成本保持一致。</p>
+<h3 id="72-reconciliation">7.2 协调（Reconciliation）：找出差异</h3>
+<p>协调是 React 比较新旧元素树、得出更新计划的过程。它基于两个经验假设：</p>
+<ol>
+<li><strong>不同类型的元素产生不同子树。</strong> <code>&lt;div&gt;</code> 变成 <code>&lt;p&gt;</code>，React 直接重建整棵子树，不再深比较。</li>
+<li><strong>同类型元素尽量复用。</strong> 通过 <code>key</code> 识别列表中哪些元素保持同一身份。</li>
+</ol>
+<div class="codebox"><div class="codehead"><span>JSX</span><button aria-label="复制这段代码" class="copy" type="button">复制</button></div><pre><code class="language-jsx">// 位置 1：类型相同，只更新文本
+{isOpen ? &lt;p&gt;展开&lt;/p&gt; : &lt;p&gt;收起&lt;/p&gt;}   // React 复用 &lt;p&gt;，只改文本
+
+// 位置 2：类型不同，整棵重建
+{isOpen ? &lt;p&gt;展开&lt;/p&gt; : &lt;span&gt;收起&lt;/span&gt;}  // &lt;p&gt; 销毁，&lt;span&gt; 新建
+</code></pre></div>
+<p>理解“类型变化会重建子树”很重要：如果一个组件的位置在条件切换时被不同类型包裹，它的 State 会丢失——因为整个子树被重建了。</p>
+<h3 id="73-render-commit">7.3 渲染流程：render 与 commit</h3>
+<p>一次状态更新分为两个阶段：</p>
+<figure><img alt="图 7：一次状态更新如何到达界面" aria-label="放大查看：图 7：一次状态更新如何到达界面" class="diagram" loading="lazy" role="button" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDgwIiBoZWlnaHQ9IjU0NSIgdmlld0JveD0iMCAwIDEwODAgNTQ1IiByb2xlPSJpbWciIGFyaWEtbGFiZWxsZWRieT0idGl0bGUgZGVzYyI+Cjx0aXRsZSBpZD0idGl0bGUiPuS4gOasoeeKtuaAgeabtOaWsOWmguS9leWIsOi+vueVjOmdojwvdGl0bGU+PGRlc2MgaWQ9ImRlc2MiPuaKiuKAnOaVsOaNruWPmOWMluKAnee/u+ivkeaIkOKAnOeVjOmdouWPmOWMluKAneeahOS4pOmYtuautei/h+eoi+OAgjwvZGVzYz4KPGRlZnM+PG1hcmtlciBpZD0iYXJyb3ciIG1hcmtlcldpZHRoPSI4IiBtYXJrZXJIZWlnaHQ9IjgiIHJlZlg9IjciIHJlZlk9IjMuNSIgb3JpZW50PSJhdXRvIj48cGF0aCBkPSJNMCwwIEw3LDMuNSBMMCw3IiBmaWxsPSIjMjU2M2ViIi8+PC9tYXJrZXI+PC9kZWZzPgo8c3R5bGU+dGV4dHtmb250LWZhbWlseToiUGluZ0ZhbmcgU0MiLCJOb3RvIFNhbnMgQ0pLIFNDIiwiTWljcm9zb2Z0IFlhSGVpIixzYW5zLXNlcmlmfTwvc3R5bGU+CjxyZWN0IHdpZHRoPSIxMDgwIiBoZWlnaHQ9IjU0NSIgcng9IjIyIiBmaWxsPSIjZjdmYWZmIi8+Cjx0ZXh0IHg9IjM1IiB5PSIzNyIgZm9udC1zaXplPSIxMyIgZmlsbD0iIzI1NjNlYiIgZm9udC13ZWlnaHQ9IjcwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij5SRUFDVCAvIDA3PC90ZXh0Pjx0ZXh0IHg9IjM1IiB5PSI3OCIgZm9udC1zaXplPSIyOSIgZmlsbD0iIzE3MmM0OCIgZm9udC13ZWlnaHQ9IjcwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7kuIDmrKHnirbmgIHmm7TmlrDlpoLkvZXliLDovr7nlYzpnaI8L3RleHQ+PHRleHQgeD0iMzUiIHk9IjExMCIgZm9udC1zaXplPSIxNyIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7miorigJzmlbDmja7lj5jljJbigJ3nv7vor5HmiJDigJznlYzpnaLlj5jljJbigJ3nmoTkuKTpmLbmrrXov4fnqIvjgII8L3RleHQ+CjxyZWN0IHg9IjM1IiB5PSIxNjUiIHdpZHRoPSIyMzAiIGhlaWdodD0iMTMwIiByeD0iMTYiIGZpbGw9IiNmZmYzZTYiIHN0cm9rZT0iI2M1ZDRlNiIvPjxyZWN0IHg9IjM1IiB5PSIxODAiIHdpZHRoPSI0IiBoZWlnaHQ9IjEwMCIgcng9IjIiIGZpbGw9IiNiNzVhMTgiLz48dGV4dCB4PSI1MyIgeT0iMTk3IiBmb250LXNpemU9IjIwIiBmaWxsPSIjMTcyYzQ4IiBmb250LXdlaWdodD0iNjUwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuinpuWPkea4suafkzwvdGV4dD48dGV4dCB4PSI1MyIgeT0iMjI3IiBmb250LXNpemU9IjE2IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuWIneasoeaMgui9vTwvdGV4dD48dGV4dCB4PSI1MyIgeT0iMjUyIiBmb250LXNpemU9IjE2IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPnNldFN0YXRlIC8g54i257uE5Lu25pu05pawPC90ZXh0Pjx0ZXh0IHg9IjUzIiB5PSIyNzciIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+57uE5Lu25YaF54q25oCB5Y+Y5YyWPC90ZXh0PjxyZWN0IHg9IjMzMCIgeT0iMTY1IiB3aWR0aD0iMjMwIiBoZWlnaHQ9IjEzMCIgcng9IjE2IiBmaWxsPSIjZWRmNGZmIiBzdHJva2U9IiNjNWQ0ZTYiLz48cmVjdCB4PSIzMzAiIHk9IjE4MCIgd2lkdGg9IjQiIGhlaWdodD0iMTAwIiByeD0iMiIgZmlsbD0iIzI1NjNlYiIvPjx0ZXh0IHg9IjM0OCIgeT0iMTk3IiBmb250LXNpemU9IjIwIiBmaWxsPSIjMTcyYzQ4IiBmb250LXdlaWdodD0iNjUwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPnJlbmRlciDpmLbmrrU8L3RleHQ+PHRleHQgeD0iMzQ4IiB5PSIyMjciIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+6LCD55So57uE5Lu25Ye95pWwPC90ZXh0Pjx0ZXh0IHg9IjM0OCIgeT0iMjUyIiBmb250LXNpemU9IjE2IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPueUn+aIkOaWsOeahOWFg+e0oOagkTwvdGV4dD48dGV4dCB4PSIzNDgiIHk9IjI3NyIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij5SZWFjdCDlhoXpg6jorqHnrpflt67lvII8L3RleHQ+PHJlY3QgeD0iNjI1IiB5PSIxNjUiIHdpZHRoPSIyMzAiIGhlaWdodD0iMTMwIiByeD0iMTYiIGZpbGw9IiNmMWVjZmQiIHN0cm9rZT0iI2M1ZDRlNiIvPjxyZWN0IHg9IjYyNSIgeT0iMTgwIiB3aWR0aD0iNCIgaGVpZ2h0PSIxMDAiIHJ4PSIyIiBmaWxsPSIjNmQyOGQ5Ii8+PHRleHQgeD0iNjQzIiB5PSIxOTciIGZvbnQtc2l6ZT0iMjAiIGZpbGw9IiMxNzJjNDgiIGZvbnQtd2VpZ2h0PSI2NTAiIHRleHQtYW5jaG9yPSJzdGFydCI+Y29tbWl0IOmYtuautTwvdGV4dD48dGV4dCB4PSI2NDMiIHk9IjIyNyIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7miorlj5jljJblhpnlhaXnnJ/lrp4gRE9NPC90ZXh0Pjx0ZXh0IHg9IjY0MyIgeT0iMjUyIiBmb250LXNpemU9IjE2IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuaJp+ihjCBsYXlvdXQgZWZmZWN0PC90ZXh0Pjx0ZXh0IHg9IjY0MyIgeT0iMjc3IiBmb250LXNpemU9IjE2IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuinpuWPkSByZWYg5Zue6LCDPC90ZXh0PjxyZWN0IHg9Ijg4MCIgeT0iMTY1IiB3aWR0aD0iMTY1IiBoZWlnaHQ9IjEzMCIgcng9IjE2IiBmaWxsPSIjZThmN2YyIiBzdHJva2U9IiNjNWQ0ZTYiLz48cmVjdCB4PSI4ODAiIHk9IjE4MCIgd2lkdGg9IjQiIGhlaWdodD0iMTAwIiByeD0iMiIgZmlsbD0iIzAwODY3NSIvPjx0ZXh0IHg9Ijg5OCIgeT0iMTk3IiBmb250LXNpemU9IjE5IiBmaWxsPSIjMTcyYzQ4IiBmb250LXdlaWdodD0iNjUwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPua1j+iniOWZqOe7mOWItjwvdGV4dD48dGV4dCB4PSI4OTgiIHk9IjIyNyIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7ph43mjpIgLyDph43nu5g8L3RleHQ+PHRleHQgeD0iODk4IiB5PSIyNTIiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+55So5oi355yL5Yiw5paw55WM6Z2iPC90ZXh0PjxwYXRoIGQ9Ik0gMjY1IDIzMCBMIDMzMCAyMzAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzI1NjNlYiIgc3Ryb2tlLXdpZHRoPSIyLjUiIG1hcmtlci1lbmQ9InVybCgjYXJyb3cpIi8+PHBhdGggZD0iTSA1NjAgMjMwIEwgNjI1IDIzMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMjU2M2ViIiBzdHJva2Utd2lkdGg9IjIuNSIgbWFya2VyLWVuZD0idXJsKCNhcnJvdykiLz48cGF0aCBkPSJNIDg1NSAyMzAgTCA4ODAgMjMwIiBmaWxsPSJub25lIiBzdHJva2U9IiMyNTYzZWIiIHN0cm9rZS13aWR0aD0iMi41IiBtYXJrZXItZW5kPSJ1cmwoI2Fycm93KSIvPjx0ZXh0IHg9IjQ2IiB5PSIzOTUiIGZvbnQtc2l6ZT0iMTkiIGZpbGw9IiMxNzJjNDgiIGZvbnQtd2VpZ2h0PSI3MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+5LiA5p2h5pu05paw6ZO+6LevPC90ZXh0Pjx0ZXh0IHg9IjQ2IiB5PSI0MjkiIGZvbnQtc2l6ZT0iMTciIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+c2V0U3RhdGUg4oaSIOe7hOS7tuWHveaVsOmHjeaWsOaJp+ihjCDihpIg5paw5YWD57Sg5qCRIOKGkiDlt67lvIIg4oaSIOaPkOS6pCBET03jgII8L3RleHQ+PHJlY3QgeD0iMzUiIHk9IjQ3MiIgd2lkdGg9IjEwMTAiIGhlaWdodD0iNDgiIHJ4PSIxNiIgZmlsbD0iI2ZmZiIgc3Ryb2tlPSIjYzVkNGU2Ii8+PHRleHQgeD0iNTMiIHk9IjUwMiIgZm9udC1zaXplPSIxNyIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7muLLmn5PpmLbmrrXlj6/og73ooqvmiZPmlq3vvIjlubblj5HnibnmgKfvvInvvJtjb21taXQg6Zi25q615oyJ6aG65bqP5o+Q5Lqk57uZIERPTeOAgjwvdGV4dD48L3N2Zz4=" tabindex="0"/></figure>
+<p><em>图 7：setState 触发渲染阶段（重新执行组件、生成新元素树、计算差异），随后是提交阶段（把变化写入真实 DOM、执行 effect 与 ref 回调），最后浏览器绘制。</em></p>
+<div aria-label="可横向滚动的表格" class="table-wrap" role="region" tabindex="0"><table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>做什么</th>
+<th>特点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>render（渲染阶段）</td>
+<td>调用组件函数，生成元素树，计算差异</td>
+<td>可能被中断（并发特性）；不触碰真实 DOM</td>
+</tr>
+<tr>
+<td>commit（提交阶段）</td>
+<td>把差异应用到真实 DOM，执行 layout effect</td>
+<td>顺序执行，不可中断</td>
+</tr>
+<tr>
+<td>浏览器绘制</td>
+<td>重排、重绘、显示结果</td>
+<td>React 无法控制</td>
+</tr>
+</tbody>
+</table></div>
+<p>React 19 及 18+ 支持并发特性（<code>useTransition</code>、<code>useDeferredValue</code> 等），让渲染阶段可以被打断、可以标记低优先级更新，从而避免大更新阻塞输入响应。这解释了为什么“渲染阶段的代码要纯”：它可能被暂停、重放或丢弃。<a href="https://react.dev/learn/render-and-commit">渲染与提交</a></p>
+<h3 id="74-fiber">7.4 Fiber：可中断的渲染工作单元</h3>
+<p>“虚拟 DOM 比较”回答了<strong>改哪里</strong>，但没有回答<strong>怎么一步步算出来</strong>。React 15 时代的协调器是递归的：一旦开始渲染整棵组件树，浏览器就无法响应输入，大型界面会明显卡顿。React 16+ 引入 <strong>Fiber 架构</strong>解决了这个问题。</p>
+<p>Fiber 是渲染的最小工作单元：每个组件、每个 DOM 元素都对应一个 fiber 节点。与元素树不同，fiber 节点之间用指针连接成链表：</p>
+<ul>
+<li><code>child</code>：第一个子节点。</li>
+<li><code>sibling</code>：下一个兄弟节点。</li>
+<li><code>return</code>：父节点，渲染完成后沿它向上回溯。</li>
+</ul>
+<figure><img alt="图 13：Fiber：可中断的渲染工作单元" aria-label="放大查看：图 13：Fiber：可中断的渲染工作单元" class="diagram" loading="lazy" role="button" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDgwIiBoZWlnaHQ9IjU4NiIgdmlld0JveD0iMCAwIDEwODAgNTg2IiByb2xlPSJpbWciIGFyaWEtbGFiZWxsZWRieT0idGl0bGUgZGVzYyI+Cjx0aXRsZSBpZD0idGl0bGUiPkZpYmVy77ya5Y+v5Lit5pat55qE5riy5p+T5bel5L2c5Y2V5YWDPC90aXRsZT48ZGVzYyBpZD0iZGVzYyI+57uE5Lu25qCR5o+P6L+w4oCc5piv5LuA5LmI4oCd77yMRmliZXIg6ZO+6KGo5o+P6L+w4oCc5oCO5LmI5LiA5q2l5q2l566X5Ye65p2l4oCd44CCPC9kZXNjPgo8ZGVmcz48bWFya2VyIGlkPSJhcnJvdyIgbWFya2VyV2lkdGg9IjgiIG1hcmtlckhlaWdodD0iOCIgcmVmWD0iNyIgcmVmWT0iMy41IiBvcmllbnQ9ImF1dG8iPjxwYXRoIGQ9Ik0wLDAgTDcsMy41IEwwLDciIGZpbGw9IiMyNTYzZWIiLz48L21hcmtlcj48L2RlZnM+CjxzdHlsZT50ZXh0e2ZvbnQtZmFtaWx5OiJQaW5nRmFuZyBTQyIsIk5vdG8gU2FucyBDSksgU0MiLCJNaWNyb3NvZnQgWWFIZWkiLHNhbnMtc2VyaWZ9PC9zdHlsZT4KPHJlY3Qgd2lkdGg9IjEwODAiIGhlaWdodD0iNTg2IiByeD0iMjIiIGZpbGw9IiNmN2ZhZmYiLz4KPHRleHQgeD0iMzUiIHk9IjM3IiBmb250LXNpemU9IjEzIiBmaWxsPSIjMjU2M2ViIiBmb250LXdlaWdodD0iNzAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPlJFQUNUIC8gMTM8L3RleHQ+PHRleHQgeD0iMzUiIHk9Ijc4IiBmb250LXNpemU9IjI5IiBmaWxsPSIjMTcyYzQ4IiBmb250LXdlaWdodD0iNzAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPkZpYmVy77ya5Y+v5Lit5pat55qE5riy5p+T5bel5L2c5Y2V5YWDPC90ZXh0Pjx0ZXh0IHg9IjM1IiB5PSIxMTAiIGZvbnQtc2l6ZT0iMTciIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+57uE5Lu25qCR5o+P6L+w4oCc5piv5LuA5LmI4oCd77yMRmliZXIg6ZO+6KGo5o+P6L+w4oCc5oCO5LmI5LiA5q2l5q2l566X5Ye65p2l4oCd44CCPC90ZXh0Pgo8cmVjdCB4PSIzNSIgeT0iMTUwIiB3aWR0aD0iMjQwIiBoZWlnaHQ9IjMzMCIgcng9IjE2IiBmaWxsPSIjZmZmIiBzdHJva2U9IiNjNWQ0ZTYiLz48dGV4dCB4PSI1NSIgeT0iMTgwIiBmb250LXNpemU9IjE5IiBmaWxsPSIjMTcyYzQ4IiBmb250LXdlaWdodD0iNzAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPue7hOS7tuagke+8iOWFg+e0oO+8iTwvdGV4dD48cmVjdCB4PSI1NSIgeT0iMjA1IiB3aWR0aD0iMjAwIiBoZWlnaHQ9IjUyIiByeD0iMTYiIGZpbGw9IiNmMWVjZmQiIHN0cm9rZT0iI2M1ZDRlNiIvPjxyZWN0IHg9IjU1IiB5PSIyMjAiIHdpZHRoPSI0IiBoZWlnaHQ9IjIyIiByeD0iMiIgZmlsbD0iIzZkMjhkOSIvPjx0ZXh0IHg9IjczIiB5PSIyMzciIGZvbnQtc2l6ZT0iMTgiIGZpbGw9IiMxNzJjNDgiIGZvbnQtd2VpZ2h0PSI2NTAiIHRleHQtYW5jaG9yPSJzdGFydCI+QXBwPC90ZXh0PjxyZWN0IHg9IjU1IiB5PSIyNzgiIHdpZHRoPSIyMDAiIGhlaWdodD0iNTIiIHJ4PSIxNiIgZmlsbD0iI2VkZjRmZiIgc3Ryb2tlPSIjYzVkNGU2Ii8+PHJlY3QgeD0iNTUiIHk9IjI5MyIgd2lkdGg9IjQiIGhlaWdodD0iMjIiIHJ4PSIyIiBmaWxsPSIjMjU2M2ViIi8+PHRleHQgeD0iNzMiIHk9IjMxMCIgZm9udC1zaXplPSIxNyIgZmlsbD0iIzE3MmM0OCIgZm9udC13ZWlnaHQ9IjY1MCIgdGV4dC1hbmNob3I9InN0YXJ0Ij5IZWFkZXI8L3RleHQ+PHJlY3QgeD0iNTUiIHk9IjM1MSIgd2lkdGg9IjIwMCIgaGVpZ2h0PSI1MiIgcng9IjE2IiBmaWxsPSIjZWRmNGZmIiBzdHJva2U9IiNjNWQ0ZTYiLz48cmVjdCB4PSI1NSIgeT0iMzY2IiB3aWR0aD0iNCIgaGVpZ2h0PSIyMiIgcng9IjIiIGZpbGw9IiMyNTYzZWIiLz48dGV4dCB4PSI3MyIgeT0iMzgzIiBmb250LXNpemU9IjE3IiBmaWxsPSIjMTcyYzQ4IiBmb250LXdlaWdodD0iNjUwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPlBhbmVsPC90ZXh0PjxyZWN0IHg9IjU1IiB5PSI0MjQiIHdpZHRoPSIyMDAiIGhlaWdodD0iNTIiIHJ4PSIxNiIgZmlsbD0iI2VkZjRmZiIgc3Ryb2tlPSIjYzVkNGU2Ii8+PHJlY3QgeD0iNTUiIHk9IjQzOSIgd2lkdGg9IjQiIGhlaWdodD0iMjIiIHJ4PSIyIiBmaWxsPSIjMjU2M2ViIi8+PHRleHQgeD0iNzMiIHk9IjQ1NiIgZm9udC1zaXplPSIxNyIgZmlsbD0iIzE3MmM0OCIgZm9udC13ZWlnaHQ9IjY1MCIgdGV4dC1hbmNob3I9InN0YXJ0Ij5Gb290ZXI8L3RleHQ+PHBhdGggZD0iTSAxNTUgMjU3IEwgMTU1IDI3OCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMjU2M2ViIiBzdHJva2Utd2lkdGg9IjIuNSIgbWFya2VyLWVuZD0idXJsKCNhcnJvdykiLz48cGF0aCBkPSJNIDE1NSAzMzAgTCAxNTUgMzUxIiBmaWxsPSJub25lIiBzdHJva2U9IiMyNTYzZWIiIHN0cm9rZS13aWR0aD0iMi41IiBtYXJrZXItZW5kPSJ1cmwoI2Fycm93KSIvPjxwYXRoIGQ9Ik0gMTU1IDQwMyBMIDE1NSA0MjQiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzI1NjNlYiIgc3Ryb2tlLXdpZHRoPSIyLjUiIG1hcmtlci1lbmQ9InVybCgjYXJyb3cpIi8+PHRleHQgeD0iNDYiIHk9IjUyOCIgZm9udC1zaXplPSIxNyIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7nu4Tku7bmoJEgPSDltYzlpZflhbPns7s8L3RleHQ+PHRleHQgeD0iNDYiIHk9IjU2MCIgZm9udC1zaXplPSIxNyIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij5GaWJlciDmoJEgPSDlt6XkvZzljZXlhYPpk77ooag8L3RleHQ+PHBhdGggZD0iTSAyNzUgMzE1IEwgMzQwIDMxNSIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMjU2M2ViIiBzdHJva2Utd2lkdGg9IjIuNSIgbWFya2VyLWVuZD0idXJsKCNhcnJvdykiLz48dGV4dCB4PSIzMDgiIHk9IjI5NyIgZm9udC1zaXplPSIxNSIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+57yW6K+RICsg5Yib5bu6PC90ZXh0PjxyZWN0IHg9IjM0MCIgeT0iMTUwIiB3aWR0aD0iNzA1IiBoZWlnaHQ9IjMzMCIgcng9IjE2IiBmaWxsPSIjZmZmIiBzdHJva2U9IiNjNWQ0ZTYiLz48dGV4dCB4PSIzNjAiIHk9IjE4MCIgZm9udC1zaXplPSIxOSIgZmlsbD0iIzE3MmM0OCIgZm9udC13ZWlnaHQ9IjcwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij5GaWJlciDoioLngrnpk77ooajvvIjlj6/kuK3mlq3nmoTlt6XkvZzljZXlhYPvvIk8L3RleHQ+PHJlY3QgeD0iMzYwIiB5PSIyMDUiIHdpZHRoPSIxNDAiIGhlaWdodD0iOTAiIHJ4PSIxNiIgZmlsbD0iI2YxZWNmZCIgc3Ryb2tlPSIjYzVkNGU2Ii8+PHJlY3QgeD0iMzYwIiB5PSIyMjAiIHdpZHRoPSI0IiBoZWlnaHQ9IjYwIiByeD0iMiIgZmlsbD0iIzZkMjhkOSIvPjx0ZXh0IHg9IjM3OCIgeT0iMjM3IiBmb250LXNpemU9IjE3IiBmaWxsPSIjMTcyYzQ4IiBmb250LXdlaWdodD0iNjUwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPmZpYmVyKEFwcCk8L3RleHQ+PHRleHQgeD0iMzc4IiB5PSIyNjciIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+Y2hpbGQgLyByZXR1cm4g5oyH6ZKIPC90ZXh0PjxyZWN0IHg9IjU0MCIgeT0iMjA1IiB3aWR0aD0iMTQwIiBoZWlnaHQ9IjkwIiByeD0iMTYiIGZpbGw9IiNlZGY0ZmYiIHN0cm9rZT0iI2M1ZDRlNiIvPjxyZWN0IHg9IjU0MCIgeT0iMjIwIiB3aWR0aD0iNCIgaGVpZ2h0PSI2MCIgcng9IjIiIGZpbGw9IiMyNTYzZWIiLz48dGV4dCB4PSI1NTgiIHk9IjIzNyIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzE3MmM0OCIgZm9udC13ZWlnaHQ9IjY1MCIgdGV4dC1hbmNob3I9InN0YXJ0Ij5maWJlcihIZWFkZXIpPC90ZXh0Pjx0ZXh0IHg9IjU1OCIgeT0iMjY3IiBmb250LXNpemU9IjE2IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPmNoaWxkIC8gcmV0dXJuPC90ZXh0PjxyZWN0IHg9IjcyMCIgeT0iMjA1IiB3aWR0aD0iMTQwIiBoZWlnaHQ9IjkwIiByeD0iMTYiIGZpbGw9IiNlZGY0ZmYiIHN0cm9rZT0iI2M1ZDRlNiIvPjxyZWN0IHg9IjcyMCIgeT0iMjIwIiB3aWR0aD0iNCIgaGVpZ2h0PSI2MCIgcng9IjIiIGZpbGw9IiMyNTYzZWIiLz48dGV4dCB4PSI3MzgiIHk9IjIzNyIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzE3MmM0OCIgZm9udC13ZWlnaHQ9IjY1MCIgdGV4dC1hbmNob3I9InN0YXJ0Ij5maWJlcihQYW5lbCk8L3RleHQ+PHRleHQgeD0iNzM4IiB5PSIyNjciIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+Y2hpbGQgLyBzaWJsaW5nIC8gcmV0dXJuPC90ZXh0PjxyZWN0IHg9IjkwMCIgeT0iMjA1IiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjkwIiByeD0iMTYiIGZpbGw9IiNlZGY0ZmYiIHN0cm9rZT0iI2M1ZDRlNiIvPjxyZWN0IHg9IjkwMCIgeT0iMjIwIiB3aWR0aD0iNCIgaGVpZ2h0PSI2MCIgcng9IjIiIGZpbGw9IiMyNTYzZWIiLz48dGV4dCB4PSI5MTgiIHk9IjIzNyIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzE3MmM0OCIgZm9udC13ZWlnaHQ9IjY1MCIgdGV4dC1hbmNob3I9InN0YXJ0Ij5maWJlcihGb290ZXIpPC90ZXh0Pjx0ZXh0IHg9IjkxOCIgeT0iMjY3IiBmb250LXNpemU9IjE2IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPnNpYmxpbmcgLyByZXR1cm48L3RleHQ+PHBhdGggZD0iTSA1MDAgMjUwIEwgNTQwIDI1MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMjU2M2ViIiBzdHJva2Utd2lkdGg9IjIuNSIgbWFya2VyLWVuZD0idXJsKCNhcnJvdykiLz48cGF0aCBkPSJNIDY4MCAyNTAgTCA3MjAgMjUwIiBmaWxsPSJub25lIiBzdHJva2U9IiMyNTYzZWIiIHN0cm9rZS13aWR0aD0iMi41IiBtYXJrZXItZW5kPSJ1cmwoI2Fycm93KSIvPjxwYXRoIGQ9Ik0gODYwIDI1MCBMIDkwMCAyNTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzI1NjNlYiIgc3Ryb2tlLXdpZHRoPSIyLjUiIG1hcmtlci1lbmQ9InVybCgjYXJyb3cpIi8+PHJlY3QgeD0iNTQwIiB5PSIzNDAiIHdpZHRoPSIxNDAiIGhlaWdodD0iODAiIHJ4PSIxNiIgZmlsbD0iI2U4ZjdmMiIgc3Ryb2tlPSIjYzVkNGU2Ii8+PHJlY3QgeD0iNTQwIiB5PSIzNTUiIHdpZHRoPSI0IiBoZWlnaHQ9IjUwIiByeD0iMiIgZmlsbD0iIzAwODY3NSIvPjx0ZXh0IHg9IjU1OCIgeT0iMzcyIiBmb250LXNpemU9IjE2IiBmaWxsPSIjMTcyYzQ4IiBmb250LXdlaWdodD0iNjUwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPmZpYmVyKEl0ZW0xKTwvdGV4dD48dGV4dCB4PSI1NTgiIHk9IjQwMiIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij5jaGlsZCAvIHJldHVybjwvdGV4dD48cmVjdCB4PSI3MjAiIHk9IjM0MCIgd2lkdGg9IjE0MCIgaGVpZ2h0PSI4MCIgcng9IjE2IiBmaWxsPSIjZThmN2YyIiBzdHJva2U9IiNjNWQ0ZTYiLz48cmVjdCB4PSI3MjAiIHk9IjM1NSIgd2lkdGg9IjQiIGhlaWdodD0iNTAiIHJ4PSIyIiBmaWxsPSIjMDA4Njc1Ii8+PHRleHQgeD0iNzM4IiB5PSIzNzIiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiMxNzJjNDgiIGZvbnQtd2VpZ2h0PSI2NTAiIHRleHQtYW5jaG9yPSJzdGFydCI+ZmliZXIoSXRlbTIpPC90ZXh0Pjx0ZXh0IHg9IjczOCIgeT0iNDAyIiBmb250LXNpemU9IjE2IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPnJldHVybjwvdGV4dD48cGF0aCBkPSJNIDc5MCAyOTUgTCA2MTAgMzQwIiBmaWxsPSJub25lIiBzdHJva2U9IiMyNTYzZWIiIHN0cm9rZS13aWR0aD0iMi41IiBtYXJrZXItZW5kPSJ1cmwoI2Fycm93KSIgc3Ryb2tlLWRhc2hhcnJheT0iNyA1Ii8+PHRleHQgeD0iNzAwIiB5PSIzMTIiIGZvbnQtc2l6ZT0iMTUiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPmNoaWxkPC90ZXh0PjxwYXRoIGQ9Ik0gNjgwIDM4MCBMIDcyMCAzODAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzI1NjNlYiIgc3Ryb2tlLXdpZHRoPSIyLjUiIG1hcmtlci1lbmQ9InVybCgjYXJyb3cpIi8+PHRleHQgeD0iNzAwIiB5PSIzNjUiIGZvbnQtc2l6ZT0iMTUiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPnNpYmxpbmc8L3RleHQ+PHRleHQgeD0iMzYwIiB5PSI0NzAiIGZvbnQtc2l6ZT0iMTciIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+cmV0dXJuIOaMh+mSiOaMh+WbnueItuiKgueCue+8jOS+m+a4suafk+WujOaIkOWQjuWQkeS4iuWbnua6r++8m+avj+S4quiKgueCuemDveaQuuW4pueKtuaAgeOAgeWJr+S9nOeUqOS4juabtOaWsOmYn+WIl+OAgjwvdGV4dD48cmVjdCB4PSIzNSIgeT0iNTEzIiB3aWR0aD0iMTAxMCIgaGVpZ2h0PSI0OCIgcng9IjE2IiBmaWxsPSIjZmZmIiBzdHJva2U9IiNjNWQ0ZTYiLz48dGV4dCB4PSI1MyIgeT0iNTQzIiBmb250LXNpemU9IjE3IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPlJlYWN0IDE1IOeahOmAkuW9kua4suafk+S4gOaXpuW8gOWni+S4jeiDveS4reaWre+8m0ZpYmVyIOaKiua4suafk+aLhuaIkOWwj+W3peS9nOWNleWFg++8jOS4uuaaguWBnOOAgeaBouWkjeS4juS8mOWFiOe6p+iwg+W6puaJk+S4i+WfuuehgOOAgjwvdGV4dD48L3N2Zz4=" tabindex="0"/></figure>
+<p><em>图 13：组件树描述“界面是什么”，Fiber 链表描述“怎么一步步算出来”。每个 fiber 携带该节点的状态、副作用与更新队列。</em></p>
+<p>Fiber 的价值在于把一次完整的渲染拆成<strong>许多可以独立推进的小步骤</strong>：渲染器算几个节点就停下来，把控制权交还浏览器处理输入，再继续。这让渲染“可中断、可恢复、可丢弃”，是并发调度的地基。<a href="https://github.com/acdlite/react-fiber-architecture">Fiber 架构（React 内部资料）</a></p>
+<h3 id="75">7.5 双缓存：渲染不被打断才能提交</h3>
+<p>如果渲染中途被打断，用户会看到“半成品”界面吗？不会。React 同时维护两棵 Fiber 树：</p>
+<div aria-label="可横向滚动的表格" class="table-wrap" role="region" tabindex="0"><table>
+<thead>
+<tr>
+<th>树</th>
+<th>作用</th>
+<th>特点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>current 树</td>
+<td>用户当前看到的界面</td>
+<td>稳定，不修改</td>
+</tr>
+<tr>
+<td>workInProgress 树</td>
+<td>本次更新正在构建的结果</td>
+<td>从 current 复制而来，逐步修改</td>
+</tr>
+</tbody>
+</table></div>
+<figure><img alt="图 14：双缓存：渲染不被打断才能提交" aria-label="放大查看：图 14：双缓存：渲染不被打断才能提交" class="diagram" loading="lazy" role="button" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDgwIiBoZWlnaHQ9IjU3OCIgdmlld0JveD0iMCAwIDEwODAgNTc4IiByb2xlPSJpbWciIGFyaWEtbGFiZWxsZWRieT0idGl0bGUgZGVzYyI+Cjx0aXRsZSBpZD0idGl0bGUiPuWPjOe8k+WtmO+8mua4suafk+S4jeiiq+aJk+aWreaJjeiDveaPkOS6pDwvdGl0bGU+PGRlc2MgaWQ9ImRlc2MiPuS4pOajteagkeS6pOabv+S9v+eUqO+8muS4gOajteWxleekuu+8jOS4gOajteaehOW7uu+8m+aPkOS6pOaXtuaVtOS9k+WIh+aNouOAgjwvZGVzYz4KPGRlZnM+PG1hcmtlciBpZD0iYXJyb3ciIG1hcmtlcldpZHRoPSI4IiBtYXJrZXJIZWlnaHQ9IjgiIHJlZlg9IjciIHJlZlk9IjMuNSIgb3JpZW50PSJhdXRvIj48cGF0aCBkPSJNMCwwIEw3LDMuNSBMMCw3IiBmaWxsPSIjMjU2M2ViIi8+PC9tYXJrZXI+PC9kZWZzPgo8c3R5bGU+dGV4dHtmb250LWZhbWlseToiUGluZ0ZhbmcgU0MiLCJOb3RvIFNhbnMgQ0pLIFNDIiwiTWljcm9zb2Z0IFlhSGVpIixzYW5zLXNlcmlmfTwvc3R5bGU+CjxyZWN0IHdpZHRoPSIxMDgwIiBoZWlnaHQ9IjU3OCIgcng9IjIyIiBmaWxsPSIjZjdmYWZmIi8+Cjx0ZXh0IHg9IjM1IiB5PSIzNyIgZm9udC1zaXplPSIxMyIgZmlsbD0iIzI1NjNlYiIgZm9udC13ZWlnaHQ9IjcwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij5SRUFDVCAvIDE0PC90ZXh0Pjx0ZXh0IHg9IjM1IiB5PSI3OCIgZm9udC1zaXplPSIyOSIgZmlsbD0iIzE3MmM0OCIgZm9udC13ZWlnaHQ9IjcwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7lj4znvJPlrZjvvJrmuLLmn5PkuI3ooqvmiZPmlq3miY3og73mj5DkuqQ8L3RleHQ+PHRleHQgeD0iMzUiIHk9IjExMCIgZm9udC1zaXplPSIxNyIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7kuKTmo7XmoJHkuqTmm7/kvb/nlKjvvJrkuIDmo7XlsZXnpLrvvIzkuIDmo7XmnoTlu7rvvJvmj5DkuqTml7bmlbTkvZPliIfmjaLjgII8L3RleHQ+Cjx0ZXh0IHg9IjQ2IiB5PSIxNzUiIGZvbnQtc2l6ZT0iMTkiIGZpbGw9IiMxNzJjNDgiIGZvbnQtd2VpZ2h0PSI3MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+Y3VycmVudCDmoJHvvIjnlKjmiLflvZPliY3nnIvliLDnmoTnlYzpnaLvvIk8L3RleHQ+PHJlY3QgeD0iMTAwIiB5PSIxOTUiIHdpZHRoPSIxNjAiIGhlaWdodD0iNTIiIHJ4PSIxNiIgZmlsbD0iI2VkZjRmZiIgc3Ryb2tlPSIjYzVkNGU2Ii8+PHJlY3QgeD0iMTAwIiB5PSIyMTAiIHdpZHRoPSI0IiBoZWlnaHQ9IjIyIiByeD0iMiIgZmlsbD0iIzI1NjNlYiIvPjx0ZXh0IHg9IjExOCIgeT0iMjI3IiBmb250LXNpemU9IjE3IiBmaWxsPSIjMTcyYzQ4IiBmb250LXdlaWdodD0iNjUwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPmRpdjwvdGV4dD48cmVjdCB4PSIzMDAiIHk9IjE5NSIgd2lkdGg9IjE2MCIgaGVpZ2h0PSI1MiIgcng9IjE2IiBmaWxsPSIjZWRmNGZmIiBzdHJva2U9IiNjNWQ0ZTYiLz48cmVjdCB4PSIzMDAiIHk9IjIxMCIgd2lkdGg9IjQiIGhlaWdodD0iMjIiIHJ4PSIyIiBmaWxsPSIjMjU2M2ViIi8+PHRleHQgeD0iMzE4IiB5PSIyMjciIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiMxNzJjNDgiIGZvbnQtd2VpZ2h0PSI2NTAiIHRleHQtYW5jaG9yPSJzdGFydCI+SGVhZGVyPC90ZXh0PjxyZWN0IHg9IjUwMCIgeT0iMTk1IiB3aWR0aD0iMTYwIiBoZWlnaHQ9IjUyIiByeD0iMTYiIGZpbGw9IiNlZGY0ZmYiIHN0cm9rZT0iI2M1ZDRlNiIvPjxyZWN0IHg9IjUwMCIgeT0iMjEwIiB3aWR0aD0iNCIgaGVpZ2h0PSIyMiIgcng9IjIiIGZpbGw9IiMyNTYzZWIiLz48dGV4dCB4PSI1MTgiIHk9IjIyNyIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzE3MmM0OCIgZm9udC13ZWlnaHQ9IjY1MCIgdGV4dC1hbmNob3I9InN0YXJ0Ij5MaXN0PC90ZXh0PjxyZWN0IHg9IjcyMCIgeT0iMTk1IiB3aWR0aD0iMTYwIiBoZWlnaHQ9IjUyIiByeD0iMTYiIGZpbGw9IiNlZGY0ZmYiIHN0cm9rZT0iI2M1ZDRlNiIvPjxyZWN0IHg9IjcyMCIgeT0iMjEwIiB3aWR0aD0iNCIgaGVpZ2h0PSIyMiIgcng9IjIiIGZpbGw9IiMyNTYzZWIiLz48dGV4dCB4PSI3MzgiIHk9IjIyNyIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzE3MmM0OCIgZm9udC13ZWlnaHQ9IjY1MCIgdGV4dC1hbmNob3I9InN0YXJ0Ij5Gb290ZXI8L3RleHQ+PHBhdGggZD0iTSAyNjAgMjIxIEwgMzAwIDIyMSIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMjU2M2ViIiBzdHJva2Utd2lkdGg9IjIuNSIgbWFya2VyLWVuZD0idXJsKCNhcnJvdykiLz48cGF0aCBkPSJNIDQ2MCAyMjEgTCA1MDAgMjIxIiBmaWxsPSJub25lIiBzdHJva2U9IiMyNTYzZWIiIHN0cm9rZS13aWR0aD0iMi41IiBtYXJrZXItZW5kPSJ1cmwoI2Fycm93KSIvPjxwYXRoIGQ9Ik0gNjYwIDIyMSBMIDcyMCAyMjEiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzI1NjNlYiIgc3Ryb2tlLXdpZHRoPSIyLjUiIG1hcmtlci1lbmQ9InVybCgjYXJyb3cpIi8+PHRleHQgeD0iNDYiIHk9IjMzMCIgZm9udC1zaXplPSIxOSIgZmlsbD0iIzE3MmM0OCIgZm9udC13ZWlnaHQ9IjcwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij53b3JrSW5Qcm9ncmVzcyDmoJHvvIjmnKzmrKHmm7TmlrDmraPlnKjmnoTlu7rvvIk8L3RleHQ+PHJlY3QgeD0iMTAwIiB5PSIzNTAiIHdpZHRoPSIxNjAiIGhlaWdodD0iNTIiIHJ4PSIxNiIgZmlsbD0iI2ZmZjNlNiIgc3Ryb2tlPSIjYzVkNGU2Ii8+PHJlY3QgeD0iMTAwIiB5PSIzNjUiIHdpZHRoPSI0IiBoZWlnaHQ9IjIyIiByeD0iMiIgZmlsbD0iI2I3NWExOCIvPjx0ZXh0IHg9IjExOCIgeT0iMzgyIiBmb250LXNpemU9IjE3IiBmaWxsPSIjMTcyYzQ4IiBmb250LXdlaWdodD0iNjUwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPmRpdjwvdGV4dD48cmVjdCB4PSIzMDAiIHk9IjM1MCIgd2lkdGg9IjE2MCIgaGVpZ2h0PSI1MiIgcng9IjE2IiBmaWxsPSIjZmZmM2U2IiBzdHJva2U9IiNjNWQ0ZTYiLz48cmVjdCB4PSIzMDAiIHk9IjM2NSIgd2lkdGg9IjQiIGhlaWdodD0iMjIiIHJ4PSIyIiBmaWxsPSIjYjc1YTE4Ii8+PHRleHQgeD0iMzE4IiB5PSIzODIiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiMxNzJjNDgiIGZvbnQtd2VpZ2h0PSI2NTAiIHRleHQtYW5jaG9yPSJzdGFydCI+SGVhZGVyPC90ZXh0PjxyZWN0IHg9IjUwMCIgeT0iMzUwIiB3aWR0aD0iMTYwIiBoZWlnaHQ9IjUyIiByeD0iMTYiIGZpbGw9IiNmZmYzZTYiIHN0cm9rZT0iI2M1ZDRlNiIvPjxyZWN0IHg9IjUwMCIgeT0iMzY1IiB3aWR0aD0iNCIgaGVpZ2h0PSIyMiIgcng9IjIiIGZpbGw9IiNiNzVhMTgiLz48dGV4dCB4PSI1MTgiIHk9IjM4MiIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzE3MmM0OCIgZm9udC13ZWlnaHQ9IjY1MCIgdGV4dC1hbmNob3I9InN0YXJ0Ij5MaXN0PC90ZXh0PjxyZWN0IHg9IjcyMCIgeT0iMzUwIiB3aWR0aD0iMTYwIiBoZWlnaHQ9IjUyIiByeD0iMTYiIGZpbGw9IiNmZmYzZTYiIHN0cm9rZT0iI2M1ZDRlNiIvPjxyZWN0IHg9IjcyMCIgeT0iMzY1IiB3aWR0aD0iNCIgaGVpZ2h0PSIyMiIgcng9IjIiIGZpbGw9IiNiNzVhMTgiLz48dGV4dCB4PSI3MzgiIHk9IjM4MiIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzE3MmM0OCIgZm9udC13ZWlnaHQ9IjY1MCIgdGV4dC1hbmNob3I9InN0YXJ0Ij5Gb290ZXI8L3RleHQ+PHBhdGggZD0iTSAyNjAgMzc2IEwgMzAwIDM3NiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMjU2M2ViIiBzdHJva2Utd2lkdGg9IjIuNSIgbWFya2VyLWVuZD0idXJsKCNhcnJvdykiLz48cGF0aCBkPSJNIDQ2MCAzNzYgTCA1MDAgMzc2IiBmaWxsPSJub25lIiBzdHJva2U9IiMyNTYzZWIiIHN0cm9rZS13aWR0aD0iMi41IiBtYXJrZXItZW5kPSJ1cmwoI2Fycm93KSIvPjxwYXRoIGQ9Ik0gNjYwIDM3NiBMIDcyMCAzNzYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzI1NjNlYiIgc3Ryb2tlLXdpZHRoPSIyLjUiIG1hcmtlci1lbmQ9InVybCgjYXJyb3cpIi8+PHBhdGggZD0iTSAxODAgMjQ3IEwgMTgwIDM1MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMjU2M2ViIiBzdHJva2Utd2lkdGg9IjIuNSIgbWFya2VyLWVuZD0idXJsKCNhcnJvdykiIHN0cm9rZS1kYXNoYXJyYXk9IjcgNSIvPjx0ZXh0IHg9IjI0MCIgeT0iMzAwIiBmb250LXNpemU9IjE1IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5yZW5kZXIg6Zi25q61CuaehOW7uuaWsOagkTwvdGV4dD48cGF0aCBkPSJNIDgwMCAyNDcgTCA4MDAgMzUwIiBmaWxsPSJub25lIiBzdHJva2U9IiMyNTYzZWIiIHN0cm9rZS13aWR0aD0iMi41IiBtYXJrZXItZW5kPSJ1cmwoI2Fycm93KSIgc3Ryb2tlLWRhc2hhcnJheT0iNyA1Ii8+PHRleHQgeD0iODcyIiB5PSIzMDAiIGZvbnQtc2l6ZT0iMTUiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPnJlbmRlciDpmLbmrrUK5p6E5bu65paw5qCRPC90ZXh0PjxwYXRoIGQ9Ik0gNTAwIDQwMiBMIDUwMCA0NzAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzI1NjNlYiIgc3Ryb2tlLXdpZHRoPSIyLjUiIG1hcmtlci1lbmQ9InVybCgjYXJyb3cpIi8+PHRleHQgeD0iNjYwIiB5PSI0NDAiIGZvbnQtc2l6ZT0iMTUiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPmNvbW1pdO+8muS4gOasoeaAp+WIh+aNoiBjdXJyZW50IOaMh+mSiDwvdGV4dD48cmVjdCB4PSIzNSIgeT0iNTA1IiB3aWR0aD0iMTAxMCIgaGVpZ2h0PSI0OCIgcng9IjE2IiBmaWxsPSIjZmZmIiBzdHJva2U9IiNjNWQ0ZTYiLz48dGV4dCB4PSI1MyIgeT0iNTM1IiBmb250LXNpemU9IjE3IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPueUqOaIt+WPqueci+WIsOaPkOS6pOWQjueahOe7k+aenO+8mua4suafk+S4remAlOiiq+S4ouW8g+OAgeiiq+aJk+aWre+8jOWxj+W5leS4iueahCBjdXJyZW50IOagkemDveS4jeS8muWHuueOsOKAnOWNiuaIkOWTgeKAneOAgjwvdGV4dD48L3N2Zz4=" tabindex="0"/></figure>
+<p><em>图 14：render 阶段构建 workInProgress 树，commit 阶段一次性把 current 指针切到新树。被丢弃的中间结果对用户不可见。</em></p>
+<p>这个机制叫 <strong>双缓存（double buffering）</strong>，与图形学里的概念同源：一边展示、一边绘制，绘制完成后整体切换。它带来两个重要性质：</p>
+<ol>
+<li><strong>渲染可丢弃</strong>：高优先级更新插入时，正在构建的 workInProgress 树直接作废重来，用户看到的 current 树不受影响。</li>
+<li><strong>commit 是原子切换</strong>：所有 DOM 变化在 commit 阶段一次性应用，不会出现“改了一半”的中间态。</li>
+</ol>
+<p>这也再次说明为什么<strong>渲染阶段的代码必须是纯的</strong>：它可能在提交前被多次执行或丢弃，任何对外部世界的修改都会造成不可预测的重复。</p>
+<h3 id="76-hooks">7.6 Hooks 的实现：为什么调用顺序是铁律</h3>
+<p>函数组件没有“实例”，那么 <code>useState</code> 的状态存在哪里？答案：<strong>存在 fiber 节点的 <code>memoizedState</code> 链表上。</strong></p>
+<p>组件每执行一次，React 就按调用顺序把 Hooks 依次挂到链表尾部：</p>
+<div class="codebox"><div class="codehead"><span>JSX</span><button aria-label="复制这段代码" class="copy" type="button">复制</button></div><pre><code class="language-jsx">function Counter() {
+  const [count, setCount] = useState(0);  // hook 节点 1：保存 count
+  useEffect(() =&gt; {...}, [count]);        // hook 节点 2：保存 effect 与依赖
+  const ref = useRef(null);               // hook 节点 3：保存 ref 对象
+}
+</code></pre></div>
+<figure><img alt="图 15：Hooks 的实现：按调用顺序挂链表" aria-label="放大查看：图 15：Hooks 的实现：按调用顺序挂链表" class="diagram" loading="lazy" role="button" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDgwIiBoZWlnaHQ9IjU4NiIgdmlld0JveD0iMCAwIDEwODAgNTg2IiByb2xlPSJpbWciIGFyaWEtbGFiZWxsZWRieT0idGl0bGUgZGVzYyI+Cjx0aXRsZSBpZD0idGl0bGUiPkhvb2tzIOeahOWunueOsO+8muaMieiwg+eUqOmhuuW6j+aMgumTvuihqDwvdGl0bGU+PGRlc2MgaWQ9ImRlc2MiPuWHveaVsOe7hOS7tuayoeacieWunuS+i++8jOeKtuaAgeWtmOWcqCBmaWJlciDoioLngrnnmoTpk77ooajkuK3vvJvpobrluo/ljbPouqvku73jgII8L2Rlc2M+CjxkZWZzPjxtYXJrZXIgaWQ9ImFycm93IiBtYXJrZXJXaWR0aD0iOCIgbWFya2VySGVpZ2h0PSI4IiByZWZYPSI3IiByZWZZPSIzLjUiIG9yaWVudD0iYXV0byI+PHBhdGggZD0iTTAsMCBMNywzLjUgTDAsNyIgZmlsbD0iIzI1NjNlYiIvPjwvbWFya2VyPjwvZGVmcz4KPHN0eWxlPnRleHR7Zm9udC1mYW1pbHk6IlBpbmdGYW5nIFNDIiwiTm90byBTYW5zIENKSyBTQyIsIk1pY3Jvc29mdCBZYUhlaSIsc2Fucy1zZXJpZn08L3N0eWxlPgo8cmVjdCB3aWR0aD0iMTA4MCIgaGVpZ2h0PSI1ODYiIHJ4PSIyMiIgZmlsbD0iI2Y3ZmFmZiIvPgo8dGV4dCB4PSIzNSIgeT0iMzciIGZvbnQtc2l6ZT0iMTMiIGZpbGw9IiMyNTYzZWIiIGZvbnQtd2VpZ2h0PSI3MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+UkVBQ1QgLyAxNTwvdGV4dD48dGV4dCB4PSIzNSIgeT0iNzgiIGZvbnQtc2l6ZT0iMjkiIGZpbGw9IiMxNzJjNDgiIGZvbnQtd2VpZ2h0PSI3MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+SG9va3Mg55qE5a6e546w77ya5oyJ6LCD55So6aG65bqP5oyC6ZO+6KGoPC90ZXh0Pjx0ZXh0IHg9IjM1IiB5PSIxMTAiIGZvbnQtc2l6ZT0iMTciIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+5Ye95pWw57uE5Lu25rKh5pyJ5a6e5L6L77yM54q25oCB5a2Y5ZyoIGZpYmVyIOiKgueCueeahOmTvuihqOS4re+8m+mhuuW6j+WNs+i6q+S7veOAgjwvdGV4dD4KPHJlY3QgeD0iMzUiIHk9IjE3MCIgd2lkdGg9IjMxMCIgaGVpZ2h0PSIxMDAiIHJ4PSIxNiIgZmlsbD0iI2YxZWNmZCIgc3Ryb2tlPSIjYzVkNGU2Ii8+PHJlY3QgeD0iMzUiIHk9IjE4NSIgd2lkdGg9IjQiIGhlaWdodD0iNzAiIHJ4PSIyIiBmaWxsPSIjNmQyOGQ5Ii8+PHRleHQgeD0iNTMiIHk9IjIwMiIgZm9udC1zaXplPSIyMSIgZmlsbD0iIzE3MmM0OCIgZm9udC13ZWlnaHQ9IjY1MCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7nu4Tku7blh73mlbDmiafooYw8L3RleHQ+PHRleHQgeD0iNTMiIHk9IjIzMiIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7mr4/muLLmn5PkuIDmrKHlsLHmiafooYzkuIDmrKE8L3RleHQ+PHRleHQgeD0iNTMiIHk9IjI1NyIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij5Ib29rcyDmjInpobrluo/ooqvosIPnlKg8L3RleHQ+PHJlY3QgeD0iMzk1IiB5PSIxNzAiIHdpZHRoPSIzMTAiIGhlaWdodD0iMTAwIiByeD0iMTYiIGZpbGw9IiNlZGY0ZmYiIHN0cm9rZT0iI2M1ZDRlNiIvPjxyZWN0IHg9IjM5NSIgeT0iMTg1IiB3aWR0aD0iNCIgaGVpZ2h0PSI3MCIgcng9IjIiIGZpbGw9IiMyNTYzZWIiLz48dGV4dCB4PSI0MTMiIHk9IjIwMiIgZm9udC1zaXplPSIyMSIgZmlsbD0iIzE3MmM0OCIgZm9udC13ZWlnaHQ9IjY1MCIgdGV4dC1hbmNob3I9InN0YXJ0Ij5maWJlci5tZW1vaXplZFN0YXRlPC90ZXh0Pjx0ZXh0IHg9IjQxMyIgeT0iMjMyIiBmb250LXNpemU9IjE2IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuaMh+WQkSBob29rIOmTvuihqOWktDwvdGV4dD48dGV4dCB4PSI0MTMiIHk9IjI1NyIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7kv53lrZjmr4/kuKogaG9vayDnmoTmlbDmja48L3RleHQ+PHJlY3QgeD0iNzU1IiB5PSIxNzAiIHdpZHRoPSIzMDAiIGhlaWdodD0iMTAwIiByeD0iMTYiIGZpbGw9IiNlOGY3ZjIiIHN0cm9rZT0iI2M1ZDRlNiIvPjxyZWN0IHg9Ijc1NSIgeT0iMTg1IiB3aWR0aD0iNCIgaGVpZ2h0PSI3MCIgcng9IjIiIGZpbGw9IiMwMDg2NzUiLz48dGV4dCB4PSI3NzMiIHk9IjIwMiIgZm9udC1zaXplPSIyMCIgZmlsbD0iIzE3MmM0OCIgZm9udC13ZWlnaHQ9IjY1MCIgdGV4dC1hbmNob3I9InN0YXJ0Ij5ob29rIOiKgueCuemTvuihqDwvdGV4dD48dGV4dCB4PSI3NzMiIHk9IjIzMiIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij51c2VTdGF0ZSDihpIgdXNlRWZmZWN0IOKGkiB1c2VSZWY8L3RleHQ+PHRleHQgeD0iNzczIiB5PSIyNTciIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+5q+P5Liq6IqC54K55L+d5a2Y54q25oCBIC8g5L6d6LWWPC90ZXh0PjxwYXRoIGQ9Ik0gMzQ1IDIyMCBMIDM5NSAyMjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzI1NjNlYiIgc3Ryb2tlLXdpZHRoPSIyLjUiIG1hcmtlci1lbmQ9InVybCgjYXJyb3cpIi8+PHRleHQgeD0iMzcwIiB5PSIyMDMiIGZvbnQtc2l6ZT0iMTUiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPuaMgui9vTwvdGV4dD48cGF0aCBkPSJNIDcwNSAyMjAgTCA3NTUgMjIwIiBmaWxsPSJub25lIiBzdHJva2U9IiMyNTYzZWIiIHN0cm9rZS13aWR0aD0iMi41IiBtYXJrZXItZW5kPSJ1cmwoI2Fycm93KSIvPjx0ZXh0IHg9IjczMCIgeT0iMjAzIiBmb250LXNpemU9IjE1IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7pgY3ljoY8L3RleHQ+PHJlY3QgeD0iMzUiIHk9IjM5MCIgd2lkdGg9IjMxMCIgaGVpZ2h0PSIxMDAiIHJ4PSIxNiIgZmlsbD0iI2VkZjRmZiIgc3Ryb2tlPSIjYzVkNGU2Ii8+PHJlY3QgeD0iMzUiIHk9IjQwNSIgd2lkdGg9IjQiIGhlaWdodD0iNzAiIHJ4PSIyIiBmaWxsPSIjMjU2M2ViIi8+PHRleHQgeD0iNTMiIHk9IjQyMiIgZm9udC1zaXplPSIyMCIgZmlsbD0iIzE3MmM0OCIgZm9udC13ZWlnaHQ9IjY1MCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7lho3mrKHmiafooYw8L3RleHQ+PHRleHQgeD0iNTMiIHk9IjQ1MiIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7mjInnm7jlkIzpobrluo/orr/pl67pk77ooag8L3RleHQ+PHRleHQgeD0iNTMiIHk9IjQ3NyIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7lpI3nlKjlt7LmnInoioLngrk8L3RleHQ+PHJlY3QgeD0iMzk1IiB5PSIzOTAiIHdpZHRoPSIzMTAiIGhlaWdodD0iMTAwIiByeD0iMTYiIGZpbGw9IiNlOGY3ZjIiIHN0cm9rZT0iI2M1ZDRlNiIvPjxyZWN0IHg9IjM5NSIgeT0iNDA1IiB3aWR0aD0iNCIgaGVpZ2h0PSI3MCIgcng9IjIiIGZpbGw9IiMwMDg2NzUiLz48dGV4dCB4PSI0MTMiIHk9IjQyMiIgZm9udC1zaXplPSIyMCIgZmlsbD0iIzE3MmM0OCIgZm9udC13ZWlnaHQ9IjY1MCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7or7vlj5YgLyDmm7TmlrA8L3RleHQ+PHRleHQgeD0iNDEzIiB5PSI0NTIiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+dXNlU3RhdGUg6L+U5Zue5paw5YC8PC90ZXh0Pjx0ZXh0IHg9IjQxMyIgeT0iNDc3IiBmb250LXNpemU9IjE2IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPnVzZUVmZmVjdCDmo4Dmn6Xkvp3otZY8L3RleHQ+PHJlY3QgeD0iNzU1IiB5PSIzOTAiIHdpZHRoPSIzMDAiIGhlaWdodD0iMTAwIiByeD0iMTYiIGZpbGw9IiNmZmYzZTYiIHN0cm9rZT0iI2M1ZDRlNiIvPjxyZWN0IHg9Ijc1NSIgeT0iNDA1IiB3aWR0aD0iNCIgaGVpZ2h0PSI3MCIgcng9IjIiIGZpbGw9IiNiNzVhMTgiLz48dGV4dCB4PSI3NzMiIHk9IjQyMiIgZm9udC1zaXplPSIyMCIgZmlsbD0iIzE3MmM0OCIgZm9udC13ZWlnaHQ9IjY1MCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7pobrluo/plJnkvY0gPSDmlbDmja7plJnkvY08L3RleHQ+PHRleHQgeD0iNzczIiB5PSI0NTIiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+5p2h5Lu2IC8g5b6q546v5Lit6LCD55SoPC90ZXh0Pjx0ZXh0IHg9Ijc3MyIgeT0iNDc3IiBmb250LXNpemU9IjE2IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPlJlYWN0IOaXoOazleWvueW6lOeKtuaAgTwvdGV4dD48cGF0aCBkPSJNIDE5MCAyNzAgTCAxOTAgMzkwIiBmaWxsPSJub25lIiBzdHJva2U9IiMyNTYzZWIiIHN0cm9rZS13aWR0aD0iMi41IiBtYXJrZXItZW5kPSJ1cmwoI2Fycm93KSIvPjx0ZXh0IHg9IjI2MyIgeT0iMzMwIiBmb250LXNpemU9IjE1IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7kuIvkuIDmrKHmuLLmn5M8L3RleHQ+PHBhdGggZD0iTSA1NTAgMjcwIEwgNTUwIDM5MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMjU2M2ViIiBzdHJva2Utd2lkdGg9IjIuNSIgbWFya2VyLWVuZD0idXJsKCNhcnJvdykiLz48dGV4dCB4PSI2MTMiIHk9IjMzMCIgZm9udC1zaXplPSIxNSIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+5ZCM5LiA6ZO+6KGoPC90ZXh0PjxyZWN0IHg9IjM1IiB5PSI1MTMiIHdpZHRoPSIxMDEwIiBoZWlnaHQ9IjQ4IiByeD0iMTYiIGZpbGw9IiNmZmYiIHN0cm9rZT0iI2M1ZDRlNiIvPjx0ZXh0IHg9IjUzIiB5PSI1NDMiIGZvbnQtc2l6ZT0iMTciIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+SG9va3Mg5rKh5pyJ6a2U5rOV77ya5a6D5Lus5bCx5piv5oyC5ZyoIGZpYmVyIOS4iueahOacieW6j+mTvuihqOOAgumhuuW6j+eos+Wumu+8jOaJjeiDveaKiuKAnOesrOWHoOS4quiwg+eUqOKAneWvueW6lOWIsOKAnOesrOWHoOS7veeKtuaAgeKAneOAgjwvdGV4dD48L3N2Zz4=" tabindex="0"/></figure>
+<p><em>图 15：useState、useEffect、useRef 依次成为 fiber 上的链表节点。下一次渲染按相同顺序遍历链表，读取或复用对应节点的数据。</em></p>
+<p>这就解释了第 6 章的 Hooks 规则为什么是铁律：</p>
+<ul>
+<li><strong>顺序即身份</strong>：React 不知道“这个 useState 是计数值”，只知道“这是第 1 个 hook 节点”。如果某次渲染第 1 个 hook 是 <code>useState</code>、下次变成了 <code>useEffect</code>，状态就会错位。</li>
+<li>所以在条件、循环或嵌套函数里调用 Hooks，等于改变链表结构，React 无法把状态对应到正确的位置。</li>
+</ul>
+<p><strong>“Hooks 有魔法”是常见的误解。</strong> 它们就是挂在 fiber 上的有序链表，仅此而已。<a href="https://react.dev/reference/rules/rules-of-hooks">Hooks 规则背后的原理</a></p>
+<h3 id="77-root">7.7 合成事件：委托到 root 再分发</h3>
+<p>你在 JSX 里写的 <code>onClick</code> 并不会直接绑定到每个 DOM 节点。React 17+ 把所有事件监听器<strong>委托到根容器</strong>（root），利用事件冒泡统一接收，再按 Fiber 树把事件分发给对应的组件：</p>
+<figure><img alt="图 16：合成事件：委托到 root 再分发" aria-label="放大查看：图 16：合成事件：委托到 root 再分发" class="diagram" loading="lazy" role="button" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDgwIiBoZWlnaHQ9IjY3OCIgdmlld0JveD0iMCAwIDEwODAgNjc4IiByb2xlPSJpbWciIGFyaWEtbGFiZWxsZWRieT0idGl0bGUgZGVzYyI+Cjx0aXRsZSBpZD0idGl0bGUiPuWQiOaIkOS6i+S7tu+8muWnlOaJmOWIsCByb290IOWGjeWIhuWPkTwvdGl0bGU+PGRlc2MgaWQ9ImRlc2MiPuWOn+eUn+S6i+S7tuWFiOWGkuazoeWIsOagueWuueWZqO+8jFJlYWN0IOWGjeaMiee7hOS7tuagkeaKiuS6i+S7tuKAnOa0vuWPkeKAnee7meWvueW6lOe7hOS7tuOAgjwvZGVzYz4KPGRlZnM+PG1hcmtlciBpZD0iYXJyb3ciIG1hcmtlcldpZHRoPSI4IiBtYXJrZXJIZWlnaHQ9IjgiIHJlZlg9IjciIHJlZlk9IjMuNSIgb3JpZW50PSJhdXRvIj48cGF0aCBkPSJNMCwwIEw3LDMuNSBMMCw3IiBmaWxsPSIjMjU2M2ViIi8+PC9tYXJrZXI+PC9kZWZzPgo8c3R5bGU+dGV4dHtmb250LWZhbWlseToiUGluZ0ZhbmcgU0MiLCJOb3RvIFNhbnMgQ0pLIFNDIiwiTWljcm9zb2Z0IFlhSGVpIixzYW5zLXNlcmlmfTwvc3R5bGU+CjxyZWN0IHdpZHRoPSIxMDgwIiBoZWlnaHQ9IjY3OCIgcng9IjIyIiBmaWxsPSIjZjdmYWZmIi8+Cjx0ZXh0IHg9IjM1IiB5PSIzNyIgZm9udC1zaXplPSIxMyIgZmlsbD0iIzI1NjNlYiIgZm9udC13ZWlnaHQ9IjcwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij5SRUFDVCAvIDE2PC90ZXh0Pjx0ZXh0IHg9IjM1IiB5PSI3OCIgZm9udC1zaXplPSIyOSIgZmlsbD0iIzE3MmM0OCIgZm9udC13ZWlnaHQ9IjcwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7lkIjmiJDkuovku7bvvJrlp5TmiZjliLAgcm9vdCDlho3liIblj5E8L3RleHQ+PHRleHQgeD0iMzUiIHk9IjExMCIgZm9udC1zaXplPSIxNyIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7ljp/nlJ/kuovku7blhYjlhpLms6HliLDmoLnlrrnlmajvvIxSZWFjdCDlho3mjInnu4Tku7bmoJHmiorkuovku7bigJzmtL7lj5HigJ3nu5nlr7nlupTnu4Tku7bjgII8L3RleHQ+CjxyZWN0IHg9IjM1IiB5PSIxNTAiIHdpZHRoPSIxMDEwIiBoZWlnaHQ9IjIxNSIgcng9IjE2IiBmaWxsPSIjZmZmIiBzdHJva2U9IiNjNWQ0ZTYiLz48dGV4dCB4PSI1NSIgeT0iMTc4IiBmb250LXNpemU9IjE5IiBmaWxsPSIjMTcyYzQ4IiBmb250LXdlaWdodD0iNzAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPua1j+iniOWZqCBET00g5qCRPC90ZXh0PjxyZWN0IHg9IjYwIiB5PSIyMDUiIHdpZHRoPSIxODAiIGhlaWdodD0iNzAiIHJ4PSIxNiIgZmlsbD0iI2YxZWNmZCIgc3Ryb2tlPSIjYzVkNGU2Ii8+PHJlY3QgeD0iNjAiIHk9IjIyMCIgd2lkdGg9IjQiIGhlaWdodD0iNDAiIHJ4PSIyIiBmaWxsPSIjNmQyOGQ5Ii8+PHRleHQgeD0iNzgiIHk9IjIzNyIgZm9udC1zaXplPSIxNyIgZmlsbD0iIzE3MmM0OCIgZm9udC13ZWlnaHQ9IjY1MCIgdGV4dC1hbmNob3I9InN0YXJ0Ij4jcm9vdO+8iOWuueWZqO+8iTwvdGV4dD48dGV4dCB4PSI3OCIgeT0iMjY3IiBmb250LXNpemU9IjE2IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuS6i+S7tuWnlOaJmOaMgui9veeCuTwvdGV4dD48cmVjdCB4PSIzMjAiIHk9IjIwNSIgd2lkdGg9IjE0MCIgaGVpZ2h0PSI3MCIgcng9IjE2IiBmaWxsPSIjZWRmNGZmIiBzdHJva2U9IiNjNWQ0ZTYiLz48cmVjdCB4PSIzMjAiIHk9IjIyMCIgd2lkdGg9IjQiIGhlaWdodD0iNDAiIHJ4PSIyIiBmaWxsPSIjMjU2M2ViIi8+PHRleHQgeD0iMzM4IiB5PSIyMzciIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiMxNzJjNDgiIGZvbnQtd2VpZ2h0PSI2NTAiIHRleHQtYW5jaG9yPSJzdGFydCI+YnV0dG9uIEE8L3RleHQ+PHRleHQgeD0iMzM4IiB5PSIyNjciIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+b25DbGljazwvdGV4dD48cmVjdCB4PSI1NDAiIHk9IjIwNSIgd2lkdGg9IjE0MCIgaGVpZ2h0PSI3MCIgcng9IjE2IiBmaWxsPSIjZWRmNGZmIiBzdHJva2U9IiNjNWQ0ZTYiLz48cmVjdCB4PSI1NDAiIHk9IjIyMCIgd2lkdGg9IjQiIGhlaWdodD0iNDAiIHJ4PSIyIiBmaWxsPSIjMjU2M2ViIi8+PHRleHQgeD0iNTU4IiB5PSIyMzciIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiMxNzJjNDgiIGZvbnQtd2VpZ2h0PSI2NTAiIHRleHQtYW5jaG9yPSJzdGFydCI+YnV0dG9uIEI8L3RleHQ+PHRleHQgeD0iNTU4IiB5PSIyNjciIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+b25DbGljazwvdGV4dD48cmVjdCB4PSI3NjAiIHk9IjIwNSIgd2lkdGg9IjE0MCIgaGVpZ2h0PSI3MCIgcng9IjE2IiBmaWxsPSIjZWRmNGZmIiBzdHJva2U9IiNjNWQ0ZTYiLz48cmVjdCB4PSI3NjAiIHk9IjIyMCIgd2lkdGg9IjQiIGhlaWdodD0iNDAiIHJ4PSIyIiBmaWxsPSIjMjU2M2ViIi8+PHRleHQgeD0iNzc4IiB5PSIyMzciIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiMxNzJjNDgiIGZvbnQtd2VpZ2h0PSI2NTAiIHRleHQtYW5jaG9yPSJzdGFydCI+YnV0dG9uIEM8L3RleHQ+PHRleHQgeD0iNzc4IiB5PSIyNjciIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+b25DbGljazwvdGV4dD48cGF0aCBkPSJNIDM5MCAyNzUgTCAyNDAgMjc1IiBmaWxsPSJub25lIiBzdHJva2U9IiMyNTYzZWIiIHN0cm9rZS13aWR0aD0iMi41IiBtYXJrZXItZW5kPSJ1cmwoI2Fycm93KSIvPjx0ZXh0IHg9IjMxNSIgeT0iMjU4IiBmb250LXNpemU9IjE1IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7lhpLms6E8L3RleHQ+PHBhdGggZD0iTSA2MTAgMjc1IEwgMjQwIDI3NSIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMjU2M2ViIiBzdHJva2Utd2lkdGg9IjIuNSIgbWFya2VyLWVuZD0idXJsKCNhcnJvdykiLz48dGV4dCB4PSI0MjUiIHk9IjI1OCIgZm9udC1zaXplPSIxNSIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+5YaS5rOhPC90ZXh0PjxwYXRoIGQ9Ik0gODMwIDI3NSBMIDI0MCAyNzUiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzI1NjNlYiIgc3Ryb2tlLXdpZHRoPSIyLjUiIG1hcmtlci1lbmQ9InVybCgjYXJyb3cpIi8+PHRleHQgeD0iNTM1IiB5PSIyNTgiIGZvbnQtc2l6ZT0iMTUiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPuWGkuazoTwvdGV4dD48cmVjdCB4PSIzOTUiIHk9IjQwMCIgd2lkdGg9IjY1MCIgaGVpZ2h0PSIxMDAiIHJ4PSIxNiIgZmlsbD0iI2VkZjRmZiIgc3Ryb2tlPSIjYzVkNGU2Ii8+PHJlY3QgeD0iMzk1IiB5PSI0MTUiIHdpZHRoPSI0IiBoZWlnaHQ9IjcwIiByeD0iMiIgZmlsbD0iIzI1NjNlYiIvPjx0ZXh0IHg9IjQxMyIgeT0iNDMyIiBmb250LXNpemU9IjIwIiBmaWxsPSIjMTcyYzQ4IiBmb250LXdlaWdodD0iNjUwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPlJlYWN0IOWQiOaIkOS6i+S7tuezu+e7nzwvdGV4dD48dGV4dCB4PSI0MTMiIHk9IjQ2MiIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7lnKggcm9vdCDkuIrnu5/kuIDnm5HlkKzljp/nlJ/kuovku7Y8L3RleHQ+PHRleHQgeD0iNDEzIiB5PSI0ODciIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+5oyJIGZpYmVyIOagkeaooeaLn+e7hOS7tumXtOeahOWGkuazoeS8oOaSrTwvdGV4dD48dGV4dCB4PSI0MTMiIHk9IjUxMiIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7mj5Dkvpvot6jmtY/op4jlmajkuIDoh7TnmoQgZXZlbnQg5a+56LGhPC90ZXh0PjxwYXRoIGQ9Ik0gMjQwIDI3NSBMIDI0MCA0MDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzI1NjNlYiIgc3Ryb2tlLXdpZHRoPSIyLjUiIG1hcmtlci1lbmQ9InVybCgjYXJyb3cpIi8+PHRleHQgeD0iMzA1IiB5PSIzNDAiIGZvbnQtc2l6ZT0iMTUiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPue7n+S4gOWkhOeQhjwvdGV4dD48dGV4dCB4PSI0NiIgeT0iNTQwIiBmb250LXNpemU9IjE5IiBmaWxsPSIjMTcyYzQ4IiBmb250LXdlaWdodD0iNzAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuaUtuebijwvdGV4dD48dGV4dCB4PSI0NiIgeT0iNTc0IiBmb250LXNpemU9IjE3IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuebkeWQrOWZqOaVsOmHj+WwkeOAgeaOpeWPo+S4gOiHtO+8m+S6i+S7tuS8mOWFiOe6p+WPr+iiq+iwg+W6puWZqOaEn+efpe+8iOeCueWHu+mrmOS8mOWFiOe6p++8jOa7muWKqOS9juS8mOWFiOe6p++8ieOAgjwvdGV4dD48cmVjdCB4PSIzNSIgeT0iNjA2IiB3aWR0aD0iMTAxMCIgaGVpZ2h0PSI0OCIgcng9IjE2IiBmaWxsPSIjZmZmIiBzdHJva2U9IiNjNWQ0ZTYiLz48dGV4dCB4PSI1MyIgeT0iNjM2IiBmb250LXNpemU9IjE3IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuWQiOaIkOS6i+S7tuWvueixoeWcqOS6i+S7tuWkhOeQhue7k+adn+WQjuS8muiiq+WkjeeUqO+8m+S4jeimgeWcqOW8guatpeWbnuiwg+mHjOmVv+acn+S/neWtmOWug++8jOmcgOimgeaXtuWFiOWPluWHuuWtl+auteOAgjwvdGV4dD48L3N2Zz4=" tabindex="0"/></figure>
+<p><em>图 16：按钮的点击事件先冒泡到 root 容器，React 统一接收后，按 Fiber 树找到事件处理器所在的组件并调用。</em></p>
+<p>这样做的收益：</p>
+<ol>
+<li><strong>监听器数量少</strong>：无论页面上有多少个按钮，root 上只挂有限的几个监听器。</li>
+<li><strong>接口一致</strong>：React 包装出合成事件对象（SyntheticEvent），抹平不同浏览器的事件差异；<code>e.stopPropagation()</code> 等在 React 内部按组件树语义工作。</li>
+<li><strong>可感知优先级</strong>：离散事件（点击、输入）优先级高，连续事件（滚动、拖动）优先级低，调度器可以据此安排渲染顺序。</li>
+</ol>
+<p>一个常见坑：<strong>合成事件对象会被复用。</strong> 事件处理函数返回后，事件对象会被回收；在异步回调（<code>setTimeout</code>、<code>fetch.then</code>）里读取 <code>e.target</code> 会拿到空值。需要时先在同步代码里取出字段。<a href="https://react.dev/reference/react-dom/components/common">合成事件参考</a></p>
+<h3 id="78">7.8 并发渲染与优先级调度</h3>
+<p>React 19 及 18+ 的“并发特性”听起来神秘，本质是两件事：</p>
+<ol>
+<li><strong>渲染可中断</strong>：借助 Fiber，渲染可以暂停、让位、重做（第 7.4 节）。</li>
+<li><strong>更新有优先级</strong>：紧急更新（输入、点击）先算，非紧急更新（大列表、过滤结果）后算。</li>
+</ol>
+<div class="codebox"><div class="codehead"><span>JSX</span><button aria-label="复制这段代码" class="copy" type="button">复制</button></div><pre><code class="language-jsx">import { useState, useTransition } from 'react';
+
+function SearchPage() {
+  const [query, setQuery] = useState('');
+  const [results, setResults] = useState([]);
+  const [isPending, startTransition] = useTransition();
+
+  function handleChange(e) {
+    setQuery(e.target.value);            // 紧急：输入框立刻响应
+    startTransition(() =&gt; {              // 非紧急：结果计算可让路
+      setResults(expensiveFilter(allData, e.target.value));
+    });
+  }
+
+  return (
+    &lt;div&gt;
+      &lt;input value={query} onChange={handleChange} /&gt;
+      {isPending &amp;&amp; &lt;p&gt;筛选计算中…&lt;/p&gt;}
+      &lt;List items={results} /&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre></div>
+<figure><img alt="图 17：并发渲染与优先级调度" aria-label="放大查看：图 17：并发渲染与优先级调度" class="diagram" loading="lazy" role="button" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDgwIiBoZWlnaHQ9IjYzMSIgdmlld0JveD0iMCAwIDEwODAgNjMxIiByb2xlPSJpbWciIGFyaWEtbGFiZWxsZWRieT0idGl0bGUgZGVzYyI+Cjx0aXRsZSBpZD0idGl0bGUiPuW5tuWPkea4suafk+S4juS8mOWFiOe6p+iwg+W6pjwvdGl0bGU+PGRlc2MgaWQ9ImRlc2MiPue0p+aApeabtOaWsOWPr+S7peaJk+aWreS9juS8mOWFiOe6p+a4suafk++8m+iiq+aJk+aWreeahOW3peS9nOWPr+S7peS4ouW8g+mHjeWBmuOAgjwvZGVzYz4KPGRlZnM+PG1hcmtlciBpZD0iYXJyb3ciIG1hcmtlcldpZHRoPSI4IiBtYXJrZXJIZWlnaHQ9IjgiIHJlZlg9IjciIHJlZlk9IjMuNSIgb3JpZW50PSJhdXRvIj48cGF0aCBkPSJNMCwwIEw3LDMuNSBMMCw3IiBmaWxsPSIjMjU2M2ViIi8+PC9tYXJrZXI+PC9kZWZzPgo8c3R5bGU+dGV4dHtmb250LWZhbWlseToiUGluZ0ZhbmcgU0MiLCJOb3RvIFNhbnMgQ0pLIFNDIiwiTWljcm9zb2Z0IFlhSGVpIixzYW5zLXNlcmlmfTwvc3R5bGU+CjxyZWN0IHdpZHRoPSIxMDgwIiBoZWlnaHQ9IjYzMSIgcng9IjIyIiBmaWxsPSIjZjdmYWZmIi8+Cjx0ZXh0IHg9IjM1IiB5PSIzNyIgZm9udC1zaXplPSIxMyIgZmlsbD0iIzI1NjNlYiIgZm9udC13ZWlnaHQ9IjcwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij5SRUFDVCAvIDE3PC90ZXh0Pjx0ZXh0IHg9IjM1IiB5PSI3OCIgZm9udC1zaXplPSIyOSIgZmlsbD0iIzE3MmM0OCIgZm9udC13ZWlnaHQ9IjcwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7lubblj5HmuLLmn5PkuI7kvJjlhYjnuqfosIPluqY8L3RleHQ+PHRleHQgeD0iMzUiIHk9IjExMCIgZm9udC1zaXplPSIxNyIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7ntKfmgKXmm7TmlrDlj6/ku6XmiZPmlq3kvY7kvJjlhYjnuqfmuLLmn5PvvJvooqvmiZPmlq3nmoTlt6XkvZzlj6/ku6XkuKLlvIPph43lgZrjgII8L3RleHQ+CjxyZWN0IHg9IjM1IiB5PSIxNTAiIHdpZHRoPSIxMDEwIiBoZWlnaHQ9IjE1MCIgcng9IjE2IiBmaWxsPSIjZmZmIiBzdHJva2U9IiNjNWQ0ZTYiLz48dGV4dCB4PSI1NSIgeT0iMTc4IiBmb250LXNpemU9IjE5IiBmaWxsPSIjMTcyYzQ4IiBmb250LXdlaWdodD0iNzAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPua4suafk+W3peS9nOWNleWFg+eahOaXtumXtOWIh+eJh++8iOekuuaEj++8iTwvdGV4dD48cmVjdCB4PSI2MCIgeT0iMjA1IiB3aWR0aD0iMTgwIiBoZWlnaHQ9IjcwIiByeD0iMTYiIGZpbGw9IiNmZmYzZTYiIHN0cm9rZT0iI2M1ZDRlNiIvPjxyZWN0IHg9IjYwIiB5PSIyMjAiIHdpZHRoPSI0IiBoZWlnaHQ9IjQwIiByeD0iMiIgZmlsbD0iI2I3NWExOCIvPjx0ZXh0IHg9Ijc4IiB5PSIyMzciIGZvbnQtc2l6ZT0iMTciIGZpbGw9IiMxNzJjNDgiIGZvbnQtd2VpZ2h0PSI2NTAiIHRleHQtYW5jaG9yPSJzdGFydCI+5pu05pawIEHvvIjngrnlh7vvvIk8L3RleHQ+PHRleHQgeD0iNzgiIHk9IjI2NyIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7ntKfmgKUgwrcg6auY5LyY5YWI57qnPC90ZXh0PjxyZWN0IHg9IjMyMCIgeT0iMjA1IiB3aWR0aD0iNDgwIiBoZWlnaHQ9IjcwIiByeD0iMTYiIGZpbGw9IiNlZGY0ZmYiIHN0cm9rZT0iI2M1ZDRlNiIvPjxyZWN0IHg9IjMyMCIgeT0iMjIwIiB3aWR0aD0iNCIgaGVpZ2h0PSI0MCIgcng9IjIiIGZpbGw9IiMyNTYzZWIiLz48dGV4dCB4PSIzMzgiIHk9IjIzNyIgZm9udC1zaXplPSIxNyIgZmlsbD0iIzE3MmM0OCIgZm9udC13ZWlnaHQ9IjY1MCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7mm7TmlrAgQu+8iOWkp+WIl+ihqO+8iTwvdGV4dD48dGV4dCB4PSIzMzgiIHk9IjI2NyIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij51c2VUcmFuc2l0aW9uIOagh+iusOS4uuS9juS8mOWFiOe6pzwvdGV4dD48cmVjdCB4PSI4ODAiIHk9IjIwNSIgd2lkdGg9IjEzMCIgaGVpZ2h0PSI3MCIgcng9IjE2IiBmaWxsPSIjZThmN2YyIiBzdHJva2U9IiNjNWQ0ZTYiLz48cmVjdCB4PSI4ODAiIHk9IjIyMCIgd2lkdGg9IjQiIGhlaWdodD0iNDAiIHJ4PSIyIiBmaWxsPSIjMDA4Njc1Ii8+PHRleHQgeD0iODk4IiB5PSIyMzciIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiMxNzJjNDgiIGZvbnQtd2VpZ2h0PSI2NTAiIHRleHQtYW5jaG9yPSJzdGFydCI+5pu05pawIEM8L3RleHQ+PHRleHQgeD0iODk4IiB5PSIyNjciIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+5pmu6YCaPC90ZXh0PjxwYXRoIGQ9Ik0gMjQwIDI0MCBMIDMyMCAyNDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzI1NjNlYiIgc3Ryb2tlLXdpZHRoPSIyLjUiIG1hcmtlci1lbmQ9InVybCgjYXJyb3cpIi8+PHRleHQgeD0iMjgwIiB5PSIyMjIiIGZvbnQtc2l6ZT0iMTUiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPuaJk+aWrTwvdGV4dD48cGF0aCBkPSJNIDgwMCAyNDAgTCA4ODAgMjQwIiBmaWxsPSJub25lIiBzdHJva2U9IiMyNTYzZWIiIHN0cm9rZS13aWR0aD0iMi41IiBtYXJrZXItZW5kPSJ1cmwoI2Fycm93KSIvPjx0ZXh0IHg9IjQ2IiB5PSIzNjAiIGZvbnQtc2l6ZT0iMTkiIGZpbGw9IiMxNzJjNDgiIGZvbnQtd2VpZ2h0PSI3MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+5pe26Ze06L2077ya6auY5LyY5YWI57qn5o+S5YWl77yM5L2O5LyY5YWI57qn6K6p6LevPC90ZXh0PjxyZWN0IHg9IjQ2IiB5PSIzODAiIHdpZHRoPSI5OTYiIGhlaWdodD0iNzIiIHJ4PSIxNiIgZmlsbD0iI2ZmZiIgc3Ryb2tlPSIjYzVkNGU2Ii8+PHJlY3QgeD0iNjAiIHk9IjM5MiIgd2lkdGg9IjEyMCIgaGVpZ2h0PSI0OCIgcng9IjE2IiBmaWxsPSIjYjkxYzFjIiBzdHJva2U9IiNjNWQ0ZTYiLz48dGV4dCB4PSI3NSIgeT0iNDIyIiBmb250LXNpemU9IjE5IiBmaWxsPSIjZmZmIiBmb250LXdlaWdodD0iNzAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPkE8L3RleHQ+PHJlY3QgeD0iMjAwIiB5PSIzOTIiIHdpZHRoPSIzMDAiIGhlaWdodD0iNDgiIHJ4PSIxNiIgZmlsbD0iIzI1NjNlYiIgc3Ryb2tlPSIjYzVkNGU2Ii8+PHRleHQgeD0iMjMwIiB5PSI0MjIiIGZvbnQtc2l6ZT0iMTciIGZpbGw9IiNmZmYiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+Qu+8mua4suafk+S4gOmDqOWIhjwvdGV4dD48cmVjdCB4PSI1MjAiIHk9IjM5MiIgd2lkdGg9IjEyMCIgaGVpZ2h0PSI0OCIgcng9IjE2IiBmaWxsPSIjYjkxYzFjIiBzdHJva2U9IiNjNWQ0ZTYiLz48dGV4dCB4PSI1MzUiIHk9IjQyMiIgZm9udC1zaXplPSIxNyIgZmlsbD0iI2ZmZiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij5BIOWGjeaPkuWFpTwvdGV4dD48cmVjdCB4PSI2NjAiIHk9IjM5MiIgd2lkdGg9IjE0MCIgaGVpZ2h0PSI0OCIgcng9IjE2IiBmaWxsPSIjMDA4Njc1IiBzdHJva2U9IiNjNWQ0ZTYiLz48dGV4dCB4PSI2OTAiIHk9IjQyMiIgZm9udC1zaXplPSIxNyIgZmlsbD0iI2ZmZiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij5CIOmHjeaWsOa4suafkzwvdGV4dD48dGV4dCB4PSI0NiIgeT0iNDkyIiBmb250LXNpemU9IjE5IiBmaWxsPSIjMTcyYzQ4IiBmb250LXdlaWdodD0iNzAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPumFjeWQiCBTdXNwZW5zZTwvdGV4dD48dGV4dCB4PSI0NiIgeT0iNTI2IiBmb250LXNpemU9IjE3IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuS9juS8mOWFiOe6p+abtOaWsOacquWwsee7quaXtuWFiOaYvuekuiBmYWxsYmFja++8iOWKoOi9veWNoOS9je+8ie+8jOaVsOaNruWIsOi+vuWQjuWGjeabv+aNouOAgjwvdGV4dD48cmVjdCB4PSIzNSIgeT0iNTU4IiB3aWR0aD0iMTAxMCIgaGVpZ2h0PSI0OCIgcng9IjE2IiBmaWxsPSIjZmZmIiBzdHJva2U9IiNjNWQ0ZTYiLz48dGV4dCB4PSI1MyIgeT0iNTg4IiBmb250LXNpemU9IjE3IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuW5tuWPkeS4jeaYr+KAnOWQjOaXtuaJp+ihjOKAne+8jOiAjOaYr+KAnOa4suafk+WPr+S4reaWreOAgeaMieS8mOWFiOe6p+iwg+W6puKAne+8jOiuqei+k+WFpeWTjeW6lOS4jeiiq+Wkp+S7u+WKoeWNoeS9j+OAgjwvdGV4dD48L3N2Zz4=" tabindex="0"/></figure>
+<p><em>图 17：时间轴上，高优先级更新（A）可以插入并打断低优先级渲染（B）；被打断的工作作废后重做。配合 Suspense，低优先级内容未就绪时可先显示 fallback。</em></p>
+<p>配合 <code>Suspense</code>：低优先级更新涉及的数据未就绪时，React 先渲染 fallback（加载占位），数据到达后无缝替换，而不是让整页卡住等待。</p>
+<p><strong>并发不是“同时执行多任务”</strong>，而是“渲染按优先级调度、可以被更高优先级打断”。这也是为什么“渲染阶段必须纯”：React 可能丢弃并重放你的组件函数。<a href="https://react.dev/blog/2024/04/25/react-19">并发特性入门</a> · <a href="https://react.dev/reference/react/useTransition">useTransition</a> · <a href="https://react.dev/reference/react/Suspense">Suspense</a></p>
+<h3 id="79-key">7.9 key 为什么重要</h3>
+<p>回到第 5 章的 key：协调阶段用 key 判断列表元素身份。没有 key 或使用下标，插入/删除会让 React 把“错的元素”当成“同一个元素”复用，导致状态错位：</p>
+<div class="codebox"><div class="codehead"><span>JSX</span><button aria-label="复制这段代码" class="copy" type="button">复制</button></div><pre><code class="language-jsx">// 列表头部插入一项，React 靠 key 知道每项身份没变，只插入新节点
+{items.map((item) =&gt; &lt;Row key={item.id} item={item} /&gt;)}
+</code></pre></div>
+<p>用稳定 id 作为 key 是唯一推荐做法；下标 key 只在列表永不增删时安全。</p>
+<h3 id="710">7.10 渲染优化的边界</h3>
+<p>“重新渲染”不等于“性能差”。React 的重渲染是高效的内存比较，真正的成本在于：组件函数体很重、或 commit 阶段 DOM 更新很多。优化的常见顺序：</p>
+<ol>
+<li><strong>先看数据流是否合理</strong>：派生值直接计算，避免多余的中间 State。</li>
+<li><strong>减少大列表的 DOM 成本</strong>：虚拟化（只渲染可视区）、分批渲染。</li>
+<li><strong><code>memo</code> + <code>useCallback</code></strong>：子组件因 props 引用变化被频繁重渲染时，缓存引用并跳过重渲染。</li>
+</ol>
+<div class="codebox"><div class="codehead"><span>JSX</span><button aria-label="复制这段代码" class="copy" type="button">复制</button></div><pre><code class="language-jsx">import { memo } from 'react';
+
+const ExpensiveRow = memo(function ExpensiveRow({ item, onToggle }) {
+  return &lt;Row item={item} onToggle={onToggle} /&gt;;
+});
+</code></pre></div>
+<p><code>memo</code> 让组件在 props 没变化时跳过重新渲染。它只对“props 引用相同”有效，所以常与 <code>useCallback</code> 配合。<strong>不要到处套 memo</strong>——先测量确认瓶颈，再动手。<a href="https://react.dev/learn/performance">性能优化</a></p>
+<h2 id="8-todo">8. 实践一：Todo 应用</h2>
+<h3 id="81">8.1 实验目标</h3>
+<p><strong>目标：</strong> 用一个小 Todo 应用把 JSX、组件、Props、State、列表渲染、事件串成完整闭环。约 30～45 分钟。</p>
+<figure><img alt="图 9：Todo 实践：组件拆分与状态流向" aria-label="放大查看：图 9：Todo 实践：组件拆分与状态流向" class="diagram" loading="lazy" role="button" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDgwIiBoZWlnaHQ9IjYzOCIgdmlld0JveD0iMCAwIDEwODAgNjM4IiByb2xlPSJpbWciIGFyaWEtbGFiZWxsZWRieT0idGl0bGUgZGVzYyI+Cjx0aXRsZSBpZD0idGl0bGUiPlRvZG8g5a6e6Le177ya57uE5Lu25ouG5YiG5LiO54q25oCB5rWB5ZCRPC90aXRsZT48ZGVzYyBpZD0iZGVzYyI+5LiA5Liq5bCP6aG555uu5oqKIEpTWOOAgVByb3Bz44CBU3RhdGXjgIHliJfooajmuLLmn5PkuLLotbfmnaXjgII8L2Rlc2M+CjxkZWZzPjxtYXJrZXIgaWQ9ImFycm93IiBtYXJrZXJXaWR0aD0iOCIgbWFya2VySGVpZ2h0PSI4IiByZWZYPSI3IiByZWZZPSIzLjUiIG9yaWVudD0iYXV0byI+PHBhdGggZD0iTTAsMCBMNywzLjUgTDAsNyIgZmlsbD0iIzI1NjNlYiIvPjwvbWFya2VyPjwvZGVmcz4KPHN0eWxlPnRleHR7Zm9udC1mYW1pbHk6IlBpbmdGYW5nIFNDIiwiTm90byBTYW5zIENKSyBTQyIsIk1pY3Jvc29mdCBZYUhlaSIsc2Fucy1zZXJpZn08L3N0eWxlPgo8cmVjdCB3aWR0aD0iMTA4MCIgaGVpZ2h0PSI2MzgiIHJ4PSIyMiIgZmlsbD0iI2Y3ZmFmZiIvPgo8dGV4dCB4PSIzNSIgeT0iMzciIGZvbnQtc2l6ZT0iMTMiIGZpbGw9IiMyNTYzZWIiIGZvbnQtd2VpZ2h0PSI3MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+UkVBQ1QgLyAwOTwvdGV4dD48dGV4dCB4PSIzNSIgeT0iNzgiIGZvbnQtc2l6ZT0iMjkiIGZpbGw9IiMxNzJjNDgiIGZvbnQtd2VpZ2h0PSI3MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+VG9kbyDlrp7ot7XvvJrnu4Tku7bmi4bliIbkuI7nirbmgIHmtYHlkJE8L3RleHQ+PHRleHQgeD0iMzUiIHk9IjExMCIgZm9udC1zaXplPSIxNyIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7kuIDkuKrlsI/pobnnm67mioogSlNY44CBUHJvcHPjgIFTdGF0ZeOAgeWIl+ihqOa4suafk+S4sui1t+adpeOAgjwvdGV4dD4KPHJlY3QgeD0iMjc3IiB5PSIxNDciIHdpZHRoPSI3NjgiIGhlaWdodD0iMTk5IiByeD0iMTYiIGZpbGw9IiNmZmYiIHN0cm9rZT0iI2M1ZDRlNiIvPjx0ZXh0IHg9IjI5OCIgeT0iMTcxIiBmb250LXNpemU9IjE3IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPueKtuaAgeS7jiBBcHAg5rWB5ZCR5YiX6KGo5LiO57uf6K6h77yb5LqL5Lu25LuO5bqV6YOo57uE5Lu25ZCR5LiK5Zue6LCDPC90ZXh0PjxyZWN0IHg9IjM1IiB5PSIxODciIHdpZHRoPSIxOTAiIGhlaWdodD0iOTIiIHJ4PSIxNiIgZmlsbD0iI2YxZWNmZCIgc3Ryb2tlPSIjYzVkNGU2Ii8+PHJlY3QgeD0iMzUiIHk9IjIwMiIgd2lkdGg9IjQiIGhlaWdodD0iNjIiIHJ4PSIyIiBmaWxsPSIjNmQyOGQ5Ii8+PHRleHQgeD0iNTMiIHk9IjIxOSIgZm9udC1zaXplPSIyMSIgZmlsbD0iIzE3MmM0OCIgZm9udC13ZWlnaHQ9IjY1MCIgdGV4dC1hbmNob3I9InN0YXJ0Ij5BcHA8L3RleHQ+PHRleHQgeD0iNTMiIHk9IjI0OSIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij50b2RvcyDnirbmgIE8L3RleHQ+PHRleHQgeD0iNTMiIHk9IjI3NCIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij51c2VTdGF0ZSArIOa0vueUnzwvdGV4dD48cmVjdCB4PSIzMTAiIHk9IjE4NyIgd2lkdGg9IjE5MCIgaGVpZ2h0PSI5MiIgcng9IjE2IiBmaWxsPSIjZWRmNGZmIiBzdHJva2U9IiNjNWQ0ZTYiLz48cmVjdCB4PSIzMTAiIHk9IjIwMiIgd2lkdGg9IjQiIGhlaWdodD0iNjIiIHJ4PSIyIiBmaWxsPSIjMjU2M2ViIi8+PHRleHQgeD0iMzI4IiB5PSIyMTkiIGZvbnQtc2l6ZT0iMTkiIGZpbGw9IiMxNzJjNDgiIGZvbnQtd2VpZ2h0PSI2NTAiIHRleHQtYW5jaG9yPSJzdGFydCI+VG9kb0lucHV0PC90ZXh0Pjx0ZXh0IHg9IjMyOCIgeT0iMjQ5IiBmb250LXNpemU9IjE2IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPui+k+WFpeahhjwvdGV4dD48dGV4dCB4PSIzMjgiIHk9IjI3NCIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7mj5DkuqTkuovku7Y8L3RleHQ+PHJlY3QgeD0iNTc4IiB5PSIxODciIHdpZHRoPSIxOTAiIGhlaWdodD0iOTIiIHJ4PSIxNiIgZmlsbD0iI2U4ZjdmMiIgc3Ryb2tlPSIjYzVkNGU2Ii8+PHJlY3QgeD0iNTc4IiB5PSIyMDIiIHdpZHRoPSI0IiBoZWlnaHQ9IjYyIiByeD0iMiIgZmlsbD0iIzAwODY3NSIvPjx0ZXh0IHg9IjU5NiIgeT0iMjE5IiBmb250LXNpemU9IjE5IiBmaWxsPSIjMTcyYzQ4IiBmb250LXdlaWdodD0iNjUwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPlRvZG9MaXN0PC90ZXh0Pjx0ZXh0IHg9IjU5NiIgeT0iMjQ5IiBmb250LXNpemU9IjE2IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPm1hcCDmuLLmn5PliJfooag8L3RleHQ+PHRleHQgeD0iNTk2IiB5PSIyNzQiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+a2V5IOWumuS9jeWFg+e0oDwvdGV4dD48cmVjdCB4PSI4NDUiIHk9IjE4NyIgd2lkdGg9IjE4MCIgaGVpZ2h0PSI5MiIgcng9IjE2IiBmaWxsPSIjZmZmM2U2IiBzdHJva2U9IiNjNWQ0ZTYiLz48cmVjdCB4PSI4NDUiIHk9IjIwMiIgd2lkdGg9IjQiIGhlaWdodD0iNjIiIHJ4PSIyIiBmaWxsPSIjYjc1YTE4Ii8+PHRleHQgeD0iODYzIiB5PSIyMTkiIGZvbnQtc2l6ZT0iMTgiIGZpbGw9IiMxNzJjNDgiIGZvbnQtd2VpZ2h0PSI2NTAiIHRleHQtYW5jaG9yPSJzdGFydCI+VG9kb0l0ZW08L3RleHQ+PHRleHQgeD0iODYzIiB5PSIyNDkiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+5Yu+6YCJIC8g5Yig6ZmkPC90ZXh0Pjx0ZXh0IHg9Ijg2MyIgeT0iMjc0IiBmb250LXNpemU9IjE2IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuavj+ihjOS4gOS4que7hOS7tjwvdGV4dD48cGF0aCBkPSJNIDIyNSAyMzIgTCAzMTAgMjMyIiBmaWxsPSJub25lIiBzdHJva2U9IiMyNTYzZWIiIHN0cm9rZS13aWR0aD0iMi41IiBtYXJrZXItZW5kPSJ1cmwoI2Fycm93KSIvPjx0ZXh0IHg9IjI2OCIgeT0iMTY4IiBmb250LXNpemU9IjE1IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7mlrDlop48L3RleHQ+PHBhdGggZD0iTSA1MDAgMjMyIEwgNTc4IDIzMiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMjU2M2ViIiBzdHJva2Utd2lkdGg9IjIuNSIgbWFya2VyLWVuZD0idXJsKCNhcnJvdykiLz48dGV4dCB4PSI1MzgiIHk9IjE3MCIgZm9udC1zaXplPSIxNSIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+5pWw5o2uPC90ZXh0PjxwYXRoIGQ9Ik0gNzY4IDIzMiBMIDg0NSAyMzIiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzI1NjNlYiIgc3Ryb2tlLXdpZHRoPSIyLjUiIG1hcmtlci1lbmQ9InVybCgjYXJyb3cpIi8+PHRleHQgeD0iODA2IiB5PSIxNzAiIGZvbnQtc2l6ZT0iMTUiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPua4suafkzwvdGV4dD48cmVjdCB4PSIzMTAiIHk9IjQyOSIgd2lkdGg9IjM4NSIgaGVpZ2h0PSIxMDciIHJ4PSIxNiIgZmlsbD0iI2VkZjRmZiIgc3Ryb2tlPSIjYzVkNGU2Ii8+PHJlY3QgeD0iMzEwIiB5PSI0NDQiIHdpZHRoPSI0IiBoZWlnaHQ9Ijc3IiByeD0iMiIgZmlsbD0iIzI1NjNlYiIvPjx0ZXh0IHg9IjMyOCIgeT0iNDYxIiBmb250LXNpemU9IjIwIiBmaWxsPSIjMTcyYzQ4IiBmb250LXdlaWdodD0iNjUwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPua0vueUn+aVsOaNrjwvdGV4dD48dGV4dCB4PSIzMjgiIHk9IjQ5MSIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7liankvZnmnKrlrozmiJDmlbA8L3RleHQ+PHRleHQgeD0iMzI4IiB5PSI1MTYiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+5bey5a6M5oiQ57uf6K6hPC90ZXh0PjxyZWN0IHg9Ijc5NSIgeT0iNDI5IiB3aWR0aD0iMjUwIiBoZWlnaHQ9IjEwNyIgcng9IjE2IiBmaWxsPSIjZmZmM2U2IiBzdHJva2U9IiNjNWQ0ZTYiLz48cmVjdCB4PSI3OTUiIHk9IjQ0NCIgd2lkdGg9IjQiIGhlaWdodD0iNzciIHJ4PSIyIiBmaWxsPSIjYjc1YTE4Ii8+PHRleHQgeD0iODEzIiB5PSI0NjEiIGZvbnQtc2l6ZT0iMjAiIGZpbGw9IiMxNzJjNDgiIGZvbnQtd2VpZ2h0PSI2NTAiIHRleHQtYW5jaG9yPSJzdGFydCI+5pu05paw562W55WlPC90ZXh0Pjx0ZXh0IHg9IjgxMyIgeT0iNDkxIiBmb250LXNpemU9IjE2IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuS4jeWPr+ebtOaOpeaUueWOn+aVsOe7hDwvdGV4dD48dGV4dCB4PSI4MTMiIHk9IjUxNiIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7nlKjmlrDmlbDnu4Tmm7/mjaIgc3RhdGU8L3RleHQ+PHRleHQgeD0iMzYiIHk9IjM5MiIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzE3MmM0OCIgZm9udC13ZWlnaHQ9IjcwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7nu4Tku7bovrnnlYw8L3RleHQ+PHRleHQgeD0iMzYiIHk9IjQyNSIgZm9udC1zaXplPSIxNyIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7mr4/kuKrnu4Tku7blj6rlhbPlv4Poh6rlt7HnmoTogYzotKM8L3RleHQ+PHRleHQgeD0iMzYiIHk9IjQ1NCIgZm9udC1zaXplPSIxNyIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7nirbmgIHmlL7mnIDlsI/lhbHlkIzniLbnu4Tku7Y8L3RleHQ+PHJlY3QgeD0iMzUiIHk9IjU2NSIgd2lkdGg9IjEwMTAiIGhlaWdodD0iNDgiIHJ4PSIxNiIgZmlsbD0iI2ZmZiIgc3Ryb2tlPSIjYzVkNGU2Ii8+PHRleHQgeD0iNTMiIHk9IjU5NSIgZm9udC1zaXplPSIxNyIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7nu4PkuaDpqozmlLbvvJrlop7jgIHliKDjgIHli77pgInpg73nlJ/mlYjvvJvliLfmlrDpobXpnaLlkI7nirbmgIHph43nva7vvIjmjIHkuYXljJbop4Hlrp7ot7XkuozvvInjgII8L3RleHQ+PC9zdmc+" tabindex="0"/></figure>
+<p><em>图 9：状态（todos）保存在 App，通过 Props 下发到 TodoInput（新增）与 TodoList（渲染），勾选 / 删除通过回调向上传递。</em></p>
+<p>功能设计：</p>
+<ul>
+<li>输入框输入文字，回车或点击按钮新增。</li>
+<li>列表展示所有条目，每行可勾选完成、可删除。</li>
+<li>底部显示“剩余 n 项未完成”。</li>
+</ul>
+<h3 id="82">8.2 组件拆分</h3>
+<div class="codebox"><div class="codehead"><span>TEXT</span><button aria-label="复制这段代码" class="copy" type="button">复制</button></div><pre><code class="language-text">src/
+└── App.jsx            # 持有 todos 状态，组合下面三个组件
+    ├── TodoInput      # 输入框 + 新增按钮（受控组件）
+    ├── TodoList       # map 渲染 TodoItem（key = todo.id）
+    └── TodoItem       # 单行：勾选框 + 文本 + 删除按钮
+</code></pre></div>
+<p>每个组件只做一件事。状态放在“需要它的最小共同父组件”——这里 todos 由列表和统计共用，放在 App。</p>
+<h3 id="83">8.3 完整代码</h3>
+<p><code>App.jsx</code>：</p>
+<div class="codebox"><div class="codehead"><span>JSX</span><button aria-label="复制这段代码" class="copy" type="button">复制</button></div><pre><code class="language-jsx">import { useState } from 'react';
+import TodoInput from './TodoInput.jsx';
+import TodoList from './TodoList.jsx';
+
+let nextId = 3;
+const initialTodos = [
+  { id: 1, text: '阅读第 4 章：State 与事件', done: true },
+  { id: 2, text: '完成 Todo 实践', done: false },
+];
+
+export default function App() {
+  const [todos, setTodos] = useState(initialTodos);
+
+  function addTodo(text) {
+    setTodos([...todos, { id: nextId++, text, done: false }]);
+  }
+
+  function toggleTodo(id) {
+    setTodos(todos.map((t) =&gt; (t.id === id ? { ...t, done: !t.done } : t)));
+  }
+
+  function deleteTodo(id) {
+    setTodos(todos.filter((t) =&gt; t.id !== id));
+  }
+
+  const remaining = todos.filter((t) =&gt; !t.done).length;
+
+  return (
+    &lt;div className="app"&gt;
+      &lt;h1&gt;我的 Todo&lt;/h1&gt;
+      &lt;TodoInput onAdd={addTodo} /&gt;
+      &lt;TodoList todos={todos} onToggle={toggleTodo} onDelete={deleteTodo} /&gt;
+      &lt;p&gt;剩余 {remaining} 项未完成&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre></div>
+<p><code>TodoInput.jsx</code>：</p>
+<div class="codebox"><div class="codehead"><span>JSX</span><button aria-label="复制这段代码" class="copy" type="button">复制</button></div><pre><code class="language-jsx">import { useState } from 'react';
+
+export default function TodoInput({ onAdd }) {
+  const [text, setText] = useState('');
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    const trimmed = text.trim();
+    if (!trimmed) return;
+    onAdd(trimmed);
+    setText('');
+  }
+
+  return (
+    &lt;form onSubmit={handleSubmit}&gt;
+      &lt;input value={text} onChange={(e) =&gt; setText(e.target.value)} placeholder="要做点什么？" /&gt;
+      &lt;button type="submit"&gt;新增&lt;/button&gt;
+    &lt;/form&gt;
+  );
+}
+</code></pre></div>
+<p><code>TodoList.jsx</code> 与 <code>TodoItem.jsx</code>：</p>
+<div class="codebox"><div class="codehead"><span>JSX</span><button aria-label="复制这段代码" class="copy" type="button">复制</button></div><pre><code class="language-jsx">import TodoItem from './TodoItem.jsx';
+
+export default function TodoList({ todos, onToggle, onDelete }) {
+  return (
+    &lt;ul&gt;
+      {todos.map((todo) =&gt; (
+        &lt;TodoItem key={todo.id} todo={todo} onToggle={onToggle} onDelete={onDelete} /&gt;
+      ))}
+    &lt;/ul&gt;
+  );
+}
+</code></pre></div>
+<div class="codebox"><div class="codehead"><span>JSX</span><button aria-label="复制这段代码" class="copy" type="button">复制</button></div><pre><code class="language-jsx">export default function TodoItem({ todo, onToggle, onDelete }) {
+  return (
+    &lt;li&gt;
+      &lt;label&gt;
+        &lt;input type="checkbox" checked={todo.done} onChange={() =&gt; onToggle(todo.id)} /&gt;
+        &lt;span style={{ textDecoration: todo.done ? 'line-through' : 'none' }}&gt;{todo.text}&lt;/span&gt;
+      &lt;/label&gt;
+      &lt;button onClick={() =&gt; onDelete(todo.id)}&gt;删除&lt;/button&gt;
+    &lt;/li&gt;
+  );
+}
+</code></pre></div>
+<h3 id="84">8.4 要点与验收</h3>
+<p><strong>不可变更新</strong>是这段代码的核心纪律：<code>addTodo</code> 用展开创建新数组，<code>toggleTodo</code> 用 <code>map</code> 返回新数组，<code>deleteTodo</code> 用 <code>filter</code> 返回新数组——<strong>从不修改原数组</strong>。直接 <code>todos.push(...)</code> 不会触发更新，还会留下难以排查的隐患。</p>
+<p>验收：</p>
+<ol>
+<li>新增、勾选、删除全部生效，剩余计数正确。</li>
+<li>在浏览器开发者工具里观察：每次操作后 React 更新了哪些 DOM 节点。</li>
+<li>尝试把 <code>key={todo.id}</code> 改成 <code>key={index}</code>，在列表头部插入一项，观察勾选状态是否错位——用实际现象理解 key 的作用。</li>
+</ol>
+<p><strong>刷新页面后状态会重置</strong>，因为 todos 只存在于内存。把数据持久化是实践二的内容。</p>
+<h2 id="9">9. 实践二：与后端交互</h2>
+<h3 id="91">9.1 请求三态</h3>
+<p>真实应用的数据来自后端 API。一个请求的生命周期可以归纳为三种状态：加载中、成功、失败。<strong>把这三态建模进 State，是请求代码的通用骨架：</strong></p>
+<div class="codebox"><div class="codehead"><span>JSX</span><button aria-label="复制这段代码" class="copy" type="button">复制</button></div><pre><code class="language-jsx">import { useEffect, useState } from 'react';
+
+function useTodos() {
+  const [todos, setTodos] = useState(null); // null = 加载中
+  const [error, setError] = useState(null);
+
+  useEffect(() =&gt; {
+    let cancelled = false;
+    fetch('/api/todos')
+      .then((res) =&gt; {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
+      .then((data) =&gt; { if (!cancelled) setTodos(data); })
+      .catch((err) =&gt; { if (!cancelled) setError(err.message); });
+    return () =&gt; { cancelled = true; }; // 组件卸载 / 依赖变化时忽略过期结果
+  }, []);
+
+  return { todos, error };
+}
+</code></pre></div>
+<figure><img alt="图 10：React 与后端：请求的完整链路" aria-label="放大查看：图 10：React 与后端：请求的完整链路" class="diagram" loading="lazy" role="button" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDgwIiBoZWlnaHQ9IjYyMyIgdmlld0JveD0iMCAwIDEwODAgNjIzIiByb2xlPSJpbWciIGFyaWEtbGFiZWxsZWRieT0idGl0bGUgZGVzYyI+Cjx0aXRsZSBpZD0idGl0bGUiPlJlYWN0IOS4juWQjuerr++8muivt+axgueahOWujOaVtOmTvui3rzwvdGl0bGU+PGRlc2MgaWQ9ImRlc2MiPue7hOS7tuWPkei1t+ivt+axguOAgeWQjuerr+i/lOWbnuaVsOaNruOAgee7hOS7tuagueaNruS4ieaAgea4suafk+eVjOmdouOAgjwvZGVzYz4KPGRlZnM+PG1hcmtlciBpZD0iYXJyb3ciIG1hcmtlcldpZHRoPSI4IiBtYXJrZXJIZWlnaHQ9IjgiIHJlZlg9IjciIHJlZlk9IjMuNSIgb3JpZW50PSJhdXRvIj48cGF0aCBkPSJNMCwwIEw3LDMuNSBMMCw3IiBmaWxsPSIjMjU2M2ViIi8+PC9tYXJrZXI+PC9kZWZzPgo8c3R5bGU+dGV4dHtmb250LWZhbWlseToiUGluZ0ZhbmcgU0MiLCJOb3RvIFNhbnMgQ0pLIFNDIiwiTWljcm9zb2Z0IFlhSGVpIixzYW5zLXNlcmlmfTwvc3R5bGU+CjxyZWN0IHdpZHRoPSIxMDgwIiBoZWlnaHQ9IjYyMyIgcng9IjIyIiBmaWxsPSIjZjdmYWZmIi8+Cjx0ZXh0IHg9IjM1IiB5PSIzNyIgZm9udC1zaXplPSIxMyIgZmlsbD0iIzI1NjNlYiIgZm9udC13ZWlnaHQ9IjcwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij5SRUFDVCAvIDEwPC90ZXh0Pjx0ZXh0IHg9IjM1IiB5PSI3OCIgZm9udC1zaXplPSIyOSIgZmlsbD0iIzE3MmM0OCIgZm9udC13ZWlnaHQ9IjcwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij5SZWFjdCDkuI7lkI7nq6/vvJror7fmsYLnmoTlrozmlbTpk77ot688L3RleHQ+PHRleHQgeD0iMzUiIHk9IjExMCIgZm9udC1zaXplPSIxNyIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7nu4Tku7blj5Hotbfor7fmsYLjgIHlkI7nq6/ov5Tlm57mlbDmja7jgIHnu4Tku7bmoLnmja7kuInmgIHmuLLmn5PnlYzpnaLjgII8L3RleHQ+CjxyZWN0IHg9IjM1IiB5PSIxNzUiIHdpZHRoPSIyNDAiIGhlaWdodD0iMTE1IiByeD0iMTYiIGZpbGw9IiNmMWVjZmQiIHN0cm9rZT0iI2M1ZDRlNiIvPjxyZWN0IHg9IjM1IiB5PSIxOTAiIHdpZHRoPSI0IiBoZWlnaHQ9Ijg1IiByeD0iMiIgZmlsbD0iIzZkMjhkOSIvPjx0ZXh0IHg9IjUzIiB5PSIyMDciIGZvbnQtc2l6ZT0iMjEiIGZpbGw9IiMxNzJjNDgiIGZvbnQtd2VpZ2h0PSI2NTAiIHRleHQtYW5jaG9yPSJzdGFydCI+UmVhY3Qg57uE5Lu2PC90ZXh0Pjx0ZXh0IHg9IjUzIiB5PSIyMzciIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+5Y+R6LW36K+35rGCPC90ZXh0Pjx0ZXh0IHg9IjUzIiB5PSIyNjIiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+5bGV56S65pWw5o2uIC8g5Yqg6L295oCBPC90ZXh0PjxyZWN0IHg9IjQyMCIgeT0iMTc1IiB3aWR0aD0iMjQ1IiBoZWlnaHQ9IjExNSIgcng9IjE2IiBmaWxsPSIjZWRmNGZmIiBzdHJva2U9IiNjNWQ0ZTYiLz48cmVjdCB4PSI0MjAiIHk9IjE5MCIgd2lkdGg9IjQiIGhlaWdodD0iODUiIHJ4PSIyIiBmaWxsPSIjMjU2M2ViIi8+PHRleHQgeD0iNDM4IiB5PSIyMDciIGZvbnQtc2l6ZT0iMjAiIGZpbGw9IiMxNzJjNDgiIGZvbnQtd2VpZ2h0PSI2NTAiIHRleHQtYW5jaG9yPSJzdGFydCI+ZmV0Y2goJiN4Mjc7L2FwaS90b2RvcyYjeDI3Oyk8L3RleHQ+PHRleHQgeD0iNDM4IiB5PSIyMzciIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+R0VUIC8gUE9TVCAvIERFTEVURTwvdGV4dD48dGV4dCB4PSI0MzgiIHk9IjI2MiIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7ov5Tlm54gUHJvbWlzZTwvdGV4dD48cmVjdCB4PSI4MDAiIHk9IjE3NSIgd2lkdGg9IjI0NSIgaGVpZ2h0PSIxMTUiIHJ4PSIxNiIgZmlsbD0iI2U4ZjdmMiIgc3Ryb2tlPSIjYzVkNGU2Ii8+PHJlY3QgeD0iODAwIiB5PSIxOTAiIHdpZHRoPSI0IiBoZWlnaHQ9Ijg1IiByeD0iMiIgZmlsbD0iIzAwODY3NSIvPjx0ZXh0IHg9IjgxOCIgeT0iMjA3IiBmb250LXNpemU9IjIwIiBmaWxsPSIjMTcyYzQ4IiBmb250LXdlaWdodD0iNjUwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuWQjuerryBBUEkg5pyN5YqhPC90ZXh0Pjx0ZXh0IHg9IjgxOCIgeT0iMjM3IiBmb250LXNpemU9IjE2IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuWkhOeQhuS4muWKoemAu+i+kTwvdGV4dD48dGV4dCB4PSI4MTgiIHk9IjI2MiIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7or7vlhpnmlbDmja7lupM8L3RleHQ+PHBhdGggZD0iTSAyNzUgMjMwIEwgNDIwIDIzMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMjU2M2ViIiBzdHJva2Utd2lkdGg9IjIuNSIgbWFya2VyLWVuZD0idXJsKCNhcnJvdykiLz48dGV4dCB4PSIzNDciIHk9IjIxMSIgZm9udC1zaXplPSIxNSIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+SFRUUCDor7fmsYI8L3RleHQ+PHBhdGggZD0iTSA4MDAgMjMwIEwgNjY1IDIzMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMjU2M2ViIiBzdHJva2Utd2lkdGg9IjIuNSIgbWFya2VyLWVuZD0idXJsKCNhcnJvdykiLz48dGV4dCB4PSI3MzIiIHk9IjIxMSIgZm9udC1zaXplPSIxNSIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+SFRUUCDlk43lupQ8L3RleHQ+PHJlY3QgeD0iMzUiIHk9IjQwMCIgd2lkdGg9IjI5MCIgaGVpZ2h0PSIxMTUiIHJ4PSIxNiIgZmlsbD0iI2ZmZjNlNiIgc3Ryb2tlPSIjYzVkNGU2Ii8+PHJlY3QgeD0iMzUiIHk9IjQxNSIgd2lkdGg9IjQiIGhlaWdodD0iODUiIHJ4PSIyIiBmaWxsPSIjYjc1YTE4Ii8+PHRleHQgeD0iNTMiIHk9IjQzMiIgZm9udC1zaXplPSIyMCIgZmlsbD0iIzE3MmM0OCIgZm9udC13ZWlnaHQ9IjY1MCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7or7fmsYLkuInmgIE8L3RleHQ+PHRleHQgeD0iNTMiIHk9IjQ2MiIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij5sb2FkaW5n77ya5Yqg6L295LitPC90ZXh0Pjx0ZXh0IHg9IjUzIiB5PSI0ODciIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+ZGF0Ye+8muaIkOWKn+aVsOaNrjwvdGV4dD48dGV4dCB4PSI1MyIgeT0iNTEyIiBmb250LXNpemU9IjE2IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPmVycm9y77ya5aSx6LSl5L+h5oGvPC90ZXh0PjxyZWN0IHg9IjQyMCIgeT0iNDAwIiB3aWR0aD0iNjI1IiBoZWlnaHQ9IjExNSIgcng9IjE2IiBmaWxsPSIjZWRmNGZmIiBzdHJva2U9IiNjNWQ0ZTYiLz48cmVjdCB4PSI0MjAiIHk9IjQxNSIgd2lkdGg9IjQiIGhlaWdodD0iODUiIHJ4PSIyIiBmaWxsPSIjMjU2M2ViIi8+PHRleHQgeD0iNDM4IiB5PSI0MzIiIGZvbnQtc2l6ZT0iMjAiIGZpbGw9IiMxNzJjNDgiIGZvbnQtd2VpZ2h0PSI2NTAiIHRleHQtYW5jaG9yPSJzdGFydCI+5byA5Y+R5rOo5oSP5LqL6aG5PC90ZXh0Pjx0ZXh0IHg9IjQzOCIgeT0iNDYyIiBmb250LXNpemU9IjE2IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuWQjOa6kOaIlumFjee9ruS7o+eQhu+8jOmBv+WFjei3qOWfn+WbsOaJsDwvdGV4dD48dGV4dCB4PSI0MzgiIHk9IjQ4NyIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7or7fmsYLlj4LmlbDkuI7lk43lupTnu5PmnoTopoHnuqblrprlpb08L3RleHQ+PHRleHQgeD0iNDM4IiB5PSI1MTIiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+6ZSZ6K+v5LiO6YeN6K+V5piv5L2T6aqM55qE5LiA6YOo5YiGPC90ZXh0PjxwYXRoIGQ9Ik0gMjcwIDQwMCBMIDQ1NiAyOTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzI1NjNlYiIgc3Ryb2tlLXdpZHRoPSIyLjUiIG1hcmtlci1lbmQ9InVybCgjYXJyb3cpIi8+PHRleHQgeD0iMzM3IiB5PSIzNDUiIGZvbnQtc2l6ZT0iMTUiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPuWPkei1t+ivt+axgjwvdGV4dD48cGF0aCBkPSJNIDU0MyA0MDAgTCA1NDMgMjkwIiBmaWxsPSJub25lIiBzdHJva2U9IiMyNTYzZWIiIHN0cm9rZS13aWR0aD0iMi41IiBtYXJrZXItZW5kPSJ1cmwoI2Fycm93KSIvPjx0ZXh0IHg9IjYwMyIgeT0iMzQ4IiBmb250LXNpemU9IjE1IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7nirbmgIHmm7TmlrA8L3RleHQ+PHJlY3QgeD0iMzUiIHk9IjU0OCIgd2lkdGg9IjEwMTAiIGhlaWdodD0iNDgiIHJ4PSIxNiIgZmlsbD0iI2ZmZiIgc3Ryb2tlPSIjYzVkNGU2Ii8+PHRleHQgeD0iNTMiIHk9IjU3OCIgZm9udC1zaXplPSIxNyIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7mtY/op4jlmajkuI3og73nm7TmjqXor7vmlbDmja7lupPvvJrmiYDmnInmlbDmja7pg73pgJrov4cgQVBJIOi/m+WHuuOAgjwvdGV4dD48L3N2Zz4=" tabindex="0"/></figure>
+<p><em>图 10：组件发起 fetch 请求，后端处理业务并读写数据库，返回 JSON；组件根据请求三态（加载中 / 成功 / 失败）渲染不同界面。</em></p>
+<p>组件里按三态渲染：</p>
+<div class="codebox"><div class="codehead"><span>JSX</span><button aria-label="复制这段代码" class="copy" type="button">复制</button></div><pre><code class="language-jsx">function TodoPage() {
+  const { todos, error } = useTodos();
+
+  if (error) return &lt;p className="error"&gt;加载失败：{error}&lt;/p&gt;;
+  if (!todos) return &lt;p&gt;加载中…&lt;/p&gt;;
+  return &lt;TodoList todos={todos} /&gt;;
+}
+</code></pre></div>
+<h3 id="92-todo">9.2 把 Todo 接上后端</h3>
+<p>把第 8 章的 Todo 从“内存数据”改为“API 数据”：</p>
+<div class="codebox"><div class="codehead"><span>JSX</span><button aria-label="复制这段代码" class="copy" type="button">复制</button></div><pre><code class="language-jsx">// 新增
+async function addTodo(text) {
+  const res = await fetch('/api/todos', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ text }),
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  const created = await res.json();
+  setTodos((prev) =&gt; [...prev, created]);
+}
+
+// 勾选
+async function toggleTodo(id) {
+  const todo = todos.find((t) =&gt; t.id === id);
+  await fetch(`/api/todos/${id}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ done: !todo.done }),
+  });
+  setTodos(todos.map((t) =&gt; (t.id === id ? { ...t, done: !t.done } : t)));
+}
+</code></pre></div>
+<p>两个细节值得注意：</p>
+<ol>
+<li><strong>乐观更新 vs 等待响应。</strong> 上例先发请求、成功后再更新 State（更稳但更慢）。也可以先更新界面、失败再回滚（体验更好但更复杂）。小项目从“等待响应”开始。</li>
+<li><strong>错误要能看见。</strong> 请求失败应显示提示而不是静默失败；操作按钮在请求期间应禁用，避免重复提交。</li>
+</ol>
+<h3 id="93-vite">9.3 开发环境跨域：配置 Vite 代理</h3>
+<p>浏览器有同源策略：页面在 <code>http://localhost:5173</code>，API 在 <code>http://localhost:8000</code> 时，直接 fetch 会跨域。开发阶段最常见的解法是让 Vite 代理 <code>/api</code> 到后端：</p>
+<div class="codebox"><div class="codehead"><span>JS</span><button aria-label="复制这段代码" class="copy" type="button">复制</button></div><pre><code class="language-js">// vite.config.js
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+
+export default defineConfig({
+  plugins: [react()],
+  server: {
+    proxy: {
+      '/api': 'http://localhost:8000', // 开发服务器把 /api 转发给后端
+    },
+  },
+});
+</code></pre></div>
+<p>配置后，前端代码里统一写 <code>fetch('/api/todos')</code>（相对路径），浏览器同源，开发时由 Vite 转发，部署时由 Nginx 等反向代理转发。<strong>不要在浏览器代码里硬编码后端地址</strong>——这会让环境切换变得脆弱。<a href="https://vitejs.dev/config/server-options#server-proxy">Vite 代理</a></p>
+<h3 id="94">9.4 与容器化后端联调</h3>
+<p>如果后端运行在 Docker Compose 里（例如本仓库 docker 知识点的全栈案例），联调要点：</p>
+<div aria-label="可横向滚动的表格" class="table-wrap" role="region" tabindex="0"><table>
+<thead>
+<tr>
+<th>问题</th>
+<th>原因</th>
+<th>处理</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>前端容器请求 <code>localhost:8000</code> 失败</td>
+<td>容器里 localhost 指向容器自己</td>
+<td>前端用宿主机可访问地址，或经 Nginx 同源代理</td>
+</tr>
+<tr>
+<td>API 与前端不在同一网络</td>
+<td>各自独立容器网络</td>
+<td>用 Compose 统一编排，让 Nginx 代理 <code>/api</code></td>
+</tr>
+<tr>
+<td>跨域报错</td>
+<td>浏览器同源策略</td>
+<td>开发用 Vite 代理，部署用同源 Nginx</td>
+</tr>
+</tbody>
+</table></div>
+<p>原则与 docker 文档第 5 章一致：<strong>让浏览器只访问同源地址，内部转发交给服务器。</strong></p>
+<h2 id="10">10. 实践三：路由与构建部署</h2>
+<h3 id="101">10.1 为什么需要路由</h3>
+<p>单页应用（SPA）只有一个 HTML 文件，但用户需要多个“页面”：首页、列表页、详情页。路由解决的是：<strong>URL 与界面组件之间的映射</strong>，并支持刷新、前进后退、直接访问。</p>
+<figure><img alt="图 11：路由：URL 驱动页面切换" aria-label="放大查看：图 11：路由：URL 驱动页面切换" class="diagram" loading="lazy" role="button" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDgwIiBoZWlnaHQ9IjU0NiIgdmlld0JveD0iMCAwIDEwODAgNTQ2IiByb2xlPSJpbWciIGFyaWEtbGFiZWxsZWRieT0idGl0bGUgZGVzYyI+Cjx0aXRsZSBpZD0idGl0bGUiPui3r+eUse+8mlVSTCDpqbHliqjpobXpnaLliIfmjaI8L3RpdGxlPjxkZXNjIGlkPSJkZXNjIj7ot6/nlLHooajmiorlnLDlnYDmmKDlsITliLDnu4Tku7bvvIxTUEEg5Zug5q2k5oul5pyJ5aSa5Liq4oCc6aG16Z2i4oCd44CCPC9kZXNjPgo8ZGVmcz48bWFya2VyIGlkPSJhcnJvdyIgbWFya2VyV2lkdGg9IjgiIG1hcmtlckhlaWdodD0iOCIgcmVmWD0iNyIgcmVmWT0iMy41IiBvcmllbnQ9ImF1dG8iPjxwYXRoIGQ9Ik0wLDAgTDcsMy41IEwwLDciIGZpbGw9IiMyNTYzZWIiLz48L21hcmtlcj48L2RlZnM+CjxzdHlsZT50ZXh0e2ZvbnQtZmFtaWx5OiJQaW5nRmFuZyBTQyIsIk5vdG8gU2FucyBDSksgU0MiLCJNaWNyb3NvZnQgWWFIZWkiLHNhbnMtc2VyaWZ9PC9zdHlsZT4KPHJlY3Qgd2lkdGg9IjEwODAiIGhlaWdodD0iNTQ2IiByeD0iMjIiIGZpbGw9IiNmN2ZhZmYiLz4KPHRleHQgeD0iMzUiIHk9IjM3IiBmb250LXNpemU9IjEzIiBmaWxsPSIjMjU2M2ViIiBmb250LXdlaWdodD0iNzAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPlJFQUNUIC8gMTE8L3RleHQ+PHRleHQgeD0iMzUiIHk9Ijc4IiBmb250LXNpemU9IjI5IiBmaWxsPSIjMTcyYzQ4IiBmb250LXdlaWdodD0iNzAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPui3r+eUse+8mlVSTCDpqbHliqjpobXpnaLliIfmjaI8L3RleHQ+PHRleHQgeD0iMzUiIHk9IjExMCIgZm9udC1zaXplPSIxNyIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7ot6/nlLHooajmiorlnLDlnYDmmKDlsITliLDnu4Tku7bvvIxTUEEg5Zug5q2k5oul5pyJ5aSa5Liq4oCc6aG16Z2i4oCd44CCPC90ZXh0Pgo8cmVjdCB4PSIzNSIgeT0iMTY1IiB3aWR0aD0iMjIwIiBoZWlnaHQ9IjE0NSIgcng9IjE2IiBmaWxsPSIjZmZmM2U2IiBzdHJva2U9IiNjNWQ0ZTYiLz48cmVjdCB4PSIzNSIgeT0iMTgwIiB3aWR0aD0iNCIgaGVpZ2h0PSIxMTUiIHJ4PSIyIiBmaWxsPSIjYjc1YTE4Ii8+PHRleHQgeD0iNTMiIHk9IjE5NyIgZm9udC1zaXplPSIyMCIgZmlsbD0iIzE3MmM0OCIgZm9udC13ZWlnaHQ9IjY1MCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7mtY/op4jlmajlnLDlnYDmoI88L3RleHQ+PHRleHQgeD0iNTMiIHk9IjIyNyIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij4vIOaIliAvdG9kb3M8L3RleHQ+PHRleHQgeD0iNTMiIHk9IjI1MiIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7liLfmlrAgLyDliY3ov5vlkI7pgIA8L3RleHQ+PHJlY3QgeD0iMzAyIiB5PSIxNjUiIHdpZHRoPSIyMjAiIGhlaWdodD0iMTQ1IiByeD0iMTYiIGZpbGw9IiNlZGY0ZmYiIHN0cm9rZT0iI2M1ZDRlNiIvPjxyZWN0IHg9IjMwMiIgeT0iMTgwIiB3aWR0aD0iNCIgaGVpZ2h0PSIxMTUiIHJ4PSIyIiBmaWxsPSIjMjU2M2ViIi8+PHRleHQgeD0iMzIwIiB5PSIxOTciIGZvbnQtc2l6ZT0iMjAiIGZpbGw9IiMxNzJjNDgiIGZvbnQtd2VpZ2h0PSI2NTAiIHRleHQtYW5jaG9yPSJzdGFydCI+UmVhY3QgUm91dGVyPC90ZXh0Pjx0ZXh0IHg9IjMyMCIgeT0iMjI3IiBmb250LXNpemU9IjE2IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuWMuemFjSBVUkwg5Yiw6Lev55Sx6KGoPC90ZXh0Pjx0ZXh0IHg9IjMyMCIgeT0iMjUyIiBmb250LXNpemU9IjE2IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuWIh+aNoumhtemdoue7hOS7tjwvdGV4dD48cmVjdCB4PSI1NjkiIHk9IjE2NSIgd2lkdGg9IjIyMCIgaGVpZ2h0PSIxNDUiIHJ4PSIxNiIgZmlsbD0iI2U4ZjdmMiIgc3Ryb2tlPSIjYzVkNGU2Ii8+PHJlY3QgeD0iNTY5IiB5PSIxODAiIHdpZHRoPSI0IiBoZWlnaHQ9IjExNSIgcng9IjIiIGZpbGw9IiMwMDg2NzUiLz48dGV4dCB4PSI1ODciIHk9IjE5NyIgZm9udC1zaXplPSIyMCIgZmlsbD0iIzE3MmM0OCIgZm9udC13ZWlnaHQ9IjY1MCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7pobXpnaLnu4Tku7Y8L3RleHQ+PHRleHQgeD0iNTg3IiB5PSIyMjciIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+SG9tZVBhZ2U8L3RleHQ+PHRleHQgeD0iNTg3IiB5PSIyNTIiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+VG9kb1BhZ2UgLyBEZXRhaWxQYWdlPC90ZXh0PjxyZWN0IHg9IjgzNiIgeT0iMTY1IiB3aWR0aD0iMjA5IiBoZWlnaHQ9IjE0NSIgcng9IjE2IiBmaWxsPSIjZjFlY2ZkIiBzdHJva2U9IiNjNWQ0ZTYiLz48cmVjdCB4PSI4MzYiIHk9IjE4MCIgd2lkdGg9IjQiIGhlaWdodD0iMTE1IiByeD0iMiIgZmlsbD0iIzZkMjhkOSIvPjx0ZXh0IHg9Ijg1NCIgeT0iMTk3IiBmb250LXNpemU9IjE5IiBmaWxsPSIjMTcyYzQ4IiBmb250LXdlaWdodD0iNjUwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuWFseS6q+W4g+WxgDwvdGV4dD48dGV4dCB4PSI4NTQiIHk9IjIyNyIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7lr7zoiKrmoI88L3RleHQ+PHRleHQgeD0iODU0IiB5PSIyNTIiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+T3V0bGV0IOWGheWuueWMujwvdGV4dD48cGF0aCBkPSJNIDI1NSAyNDAgTCAzMDIgMjQwIiBmaWxsPSJub25lIiBzdHJva2U9IiMyNTYzZWIiIHN0cm9rZS13aWR0aD0iMi41IiBtYXJrZXItZW5kPSJ1cmwoI2Fycm93KSIvPjx0ZXh0IHg9IjI3OSIgeT0iMjIyIiBmb250LXNpemU9IjE1IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5VUkw8L3RleHQ+PHBhdGggZD0iTSA1MjIgMjQwIEwgNTY5IDI0MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMjU2M2ViIiBzdHJva2Utd2lkdGg9IjIuNSIgbWFya2VyLWVuZD0idXJsKCNhcnJvdykiLz48dGV4dCB4PSI1NDUiIHk9IjIyMiIgZm9udC1zaXplPSIxNSIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+5Yy56YWNPC90ZXh0PjxwYXRoIGQ9Ik0gNzg5IDI0MCBMIDgzNiAyNDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzI1NjNlYiIgc3Ryb2tlLXdpZHRoPSIyLjUiIG1hcmtlci1lbmQ9InVybCgjYXJyb3cpIi8+PHRleHQgeD0iODEyIiB5PSIyMjIiIGZvbnQtc2l6ZT0iMTUiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPua4suafkzwvdGV4dD48dGV4dCB4PSI0NiIgeT0iMzcxIiBmb250LXNpemU9IjE5IiBmaWxsPSIjMTcyYzQ4IiBmb250LXdlaWdodD0iNzAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuS4uuS7gOS5iOmcgOimgei3r+eUsTwvdGV4dD48dGV4dCB4PSI0NiIgeT0iNDA1IiBmb250LXNpemU9IjE3IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuWNlemhteW6lOeUqOWPquacieS4gOS4qiBIVE1M77yb55SoIFVSTCDpqbHliqjnu4Tku7bliIfmjaLvvIzlubbmlK/mjIHnm7TmjqXorr/pl67kuI7liLfmlrDjgII8L3RleHQ+PHJlY3QgeD0iMzUiIHk9IjQ3MyIgd2lkdGg9IjEwMTAiIGhlaWdodD0iNDgiIHJ4PSIxNiIgZmlsbD0iI2ZmZiIgc3Ryb2tlPSIjYzVkNGU2Ii8+PHRleHQgeD0iNTMiIHk9IjUwMyIgZm9udC1zaXplPSIxNyIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7pg6jnvbLliLDmnI3liqHlmajml7bopoHphY3nva4gU1BBIOWbnumAgO+8muacquWMuemFjei3r+W+hOe7n+S4gOi/lOWbniBpbmRleC5odG1s44CCPC90ZXh0Pjwvc3ZnPg==" tabindex="0"/></figure>
+<p><em>图 11：浏览器地址 → 路由表匹配 → 渲染对应页面组件；导航栏等共享布局包裹内容区。</em></p>
+<h3 id="102-react-router">10.2 使用 React Router</h3>
+<p>React 生态最常用的路由库是 React Router：</p>
+<div class="codebox"><div class="codehead"><span>BASH</span><button aria-label="复制这段代码" class="copy" type="button">复制</button></div><pre><code class="language-bash">npm install react-router-dom
+</code></pre></div>
+<div class="codebox"><div class="codehead"><span>JSX</span><button aria-label="复制这段代码" class="copy" type="button">复制</button></div><pre><code class="language-jsx">import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import HomePage from './pages/HomePage.jsx';
+import TodoPage from './pages/TodoPage.jsx';
+
+export default function App() {
+  return (
+    &lt;BrowserRouter&gt;
+      &lt;nav&gt;
+        &lt;Link to="/"&gt;首页&lt;/Link&gt;
+        &lt;Link to="/todos"&gt;Todo&lt;/Link&gt;
+      &lt;/nav&gt;
+      &lt;Routes&gt;
+        &lt;Route path="/" element={&lt;HomePage /&gt;} /&gt;
+        &lt;Route path="/todos" element={&lt;TodoPage /&gt;} /&gt;
+      &lt;/Routes&gt;
+    &lt;/BrowserRouter&gt;
+  );
+}
+</code></pre></div>
+<p>要点：</p>
+<ul>
+<li><code>&lt;Link to="/todos"&gt;</code> 代替 <code>&lt;a href&gt;</code>：拦截点击、不刷新页面、只更新 URL 与组件。</li>
+<li><code>&lt;Routes&gt;</code> 与 <code>&lt;Route path element&gt;</code> 声明路由表：按当前 URL 匹配渲染。</li>
+<li>动态路径 <code>/todos/:id</code>，组件里用 <code>useParams()</code> 读取 <code>id</code>；<code>useNavigate()</code> 编程式跳转。</li>
+<li>未匹配路径可以加 <code>&lt;Route path="*" element={&lt;NotFound /&gt;} /&gt;</code>。</li>
+</ul>
+<h3 id="103">10.3 构建：把源码变成静态文件</h3>
+<div class="codebox"><div class="codehead"><span>BASH</span><button aria-label="复制这段代码" class="copy" type="button">复制</button></div><pre><code class="language-bash">npm run build
+</code></pre></div>
+<p>Vite 会把 JSX、组件与样式打包压缩，输出到 <code>dist/</code> 目录：</p>
+<div class="codebox"><div class="codehead"><span>TEXT</span><button aria-label="复制这段代码" class="copy" type="button">复制</button></div><pre><code class="language-text">dist/
+├── index.html          # 唯一入口
+└── assets/
+    ├── index-xxxx.js   # 打包后的 JavaScript（哈希命名，便于缓存）
+    └── index-xxxx.css
+</code></pre></div>
+<p><code>dist/</code> 是<strong>纯静态文件</strong>，可以复制、上传到任意静态托管：Nginx、GitHub Pages、对象存储 + CDN 等。构建产物不依赖 Node 环境——浏览器直接加载它们。</p>
+<figure><img alt="图 12：从源码到线上页面" aria-label="放大查看：图 12：从源码到线上页面" class="diagram" loading="lazy" role="button" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDgwIiBoZWlnaHQ9IjU0NiIgdmlld0JveD0iMCAwIDEwODAgNTQ2IiByb2xlPSJpbWciIGFyaWEtbGFiZWxsZWRieT0idGl0bGUgZGVzYyI+Cjx0aXRsZSBpZD0idGl0bGUiPuS7jua6kOeggeWIsOe6v+S4iumhtemdojwvdGl0bGU+PGRlc2MgaWQ9ImRlc2MiPuW8gOWPkeOAgeaehOW7uuOAgemDqOe9suS4ieS4qumYtuauteWQhOWBmuS4gOS7tuS6i++8m2Rpc3Qg5piv5Lqk5LuY54mp44CCPC9kZXNjPgo8ZGVmcz48bWFya2VyIGlkPSJhcnJvdyIgbWFya2VyV2lkdGg9IjgiIG1hcmtlckhlaWdodD0iOCIgcmVmWD0iNyIgcmVmWT0iMy41IiBvcmllbnQ9ImF1dG8iPjxwYXRoIGQ9Ik0wLDAgTDcsMy41IEwwLDciIGZpbGw9IiMyNTYzZWIiLz48L21hcmtlcj48L2RlZnM+CjxzdHlsZT50ZXh0e2ZvbnQtZmFtaWx5OiJQaW5nRmFuZyBTQyIsIk5vdG8gU2FucyBDSksgU0MiLCJNaWNyb3NvZnQgWWFIZWkiLHNhbnMtc2VyaWZ9PC9zdHlsZT4KPHJlY3Qgd2lkdGg9IjEwODAiIGhlaWdodD0iNTQ2IiByeD0iMjIiIGZpbGw9IiNmN2ZhZmYiLz4KPHRleHQgeD0iMzUiIHk9IjM3IiBmb250LXNpemU9IjEzIiBmaWxsPSIjMjU2M2ViIiBmb250LXdlaWdodD0iNzAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPlJFQUNUIC8gMTI8L3RleHQ+PHRleHQgeD0iMzUiIHk9Ijc4IiBmb250LXNpemU9IjI5IiBmaWxsPSIjMTcyYzQ4IiBmb250LXdlaWdodD0iNzAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuS7jua6kOeggeWIsOe6v+S4iumhtemdojwvdGV4dD48dGV4dCB4PSIzNSIgeT0iMTEwIiBmb250LXNpemU9IjE3IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuW8gOWPkeOAgeaehOW7uuOAgemDqOe9suS4ieS4qumYtuauteWQhOWBmuS4gOS7tuS6i++8m2Rpc3Qg5piv5Lqk5LuY54mp44CCPC90ZXh0Pgo8cmVjdCB4PSIzNSIgeT0iMTY1IiB3aWR0aD0iMjIwIiBoZWlnaHQ9IjE0NSIgcng9IjE2IiBmaWxsPSIjZWRmNGZmIiBzdHJva2U9IiNjNWQ0ZTYiLz48cmVjdCB4PSIzNSIgeT0iMTgwIiB3aWR0aD0iNCIgaGVpZ2h0PSIxMTUiIHJ4PSIyIiBmaWxsPSIjMjU2M2ViIi8+PHRleHQgeD0iNTMiIHk9IjE5NyIgZm9udC1zaXplPSIyMSIgZmlsbD0iIzE3MmM0OCIgZm9udC13ZWlnaHQ9IjY1MCIgdGV4dC1hbmNob3I9InN0YXJ0Ij4wMSDmupDnoIHkuI7phY3nva48L3RleHQ+PHRleHQgeD0iNTMiIHk9IjIyNyIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7nu4Tku7bkuI7kuJrliqHku6PnoIE8L3RleHQ+PHRleHQgeD0iNTMiIHk9IjI1MiIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij5wYWNrYWdlLmpzb24gLyDkvp3otZY8L3RleHQ+PHRleHQgeD0iNTMiIHk9IjI3NyIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij5WaXRlIOmFjee9rjwvdGV4dD48cmVjdCB4PSIzMDIiIHk9IjE2NSIgd2lkdGg9IjIyMCIgaGVpZ2h0PSIxNDUiIHJ4PSIxNiIgZmlsbD0iI2U4ZjdmMiIgc3Ryb2tlPSIjYzVkNGU2Ii8+PHJlY3QgeD0iMzAyIiB5PSIxODAiIHdpZHRoPSI0IiBoZWlnaHQ9IjExNSIgcng9IjIiIGZpbGw9IiMwMDg2NzUiLz48dGV4dCB4PSIzMjAiIHk9IjE5NyIgZm9udC1zaXplPSIyMCIgZmlsbD0iIzE3MmM0OCIgZm9udC13ZWlnaHQ9IjY1MCIgdGV4dC1hbmNob3I9InN0YXJ0Ij4wMiDlvIDlj5HmnI3liqHlmag8L3RleHQ+PHRleHQgeD0iMzIwIiB5PSIyMjciIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+bnBtIHJ1biBkZXY8L3RleHQ+PHRleHQgeD0iMzIwIiB5PSIyNTIiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+54Ot5pu05paw77yISE1S77yJPC90ZXh0Pjx0ZXh0IHg9IjMyMCIgeT0iMjc3IiBmb250LXNpemU9IjE2IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuacrOWcsOiwg+ivlTwvdGV4dD48cmVjdCB4PSI1NjkiIHk9IjE2NSIgd2lkdGg9IjIyMCIgaGVpZ2h0PSIxNDUiIHJ4PSIxNiIgZmlsbD0iI2ZmZjNlNiIgc3Ryb2tlPSIjYzVkNGU2Ii8+PHJlY3QgeD0iNTY5IiB5PSIxODAiIHdpZHRoPSI0IiBoZWlnaHQ9IjExNSIgcng9IjIiIGZpbGw9IiNiNzVhMTgiLz48dGV4dCB4PSI1ODciIHk9IjE5NyIgZm9udC1zaXplPSIyMCIgZmlsbD0iIzE3MmM0OCIgZm9udC13ZWlnaHQ9IjY1MCIgdGV4dC1hbmNob3I9InN0YXJ0Ij4wMyDnlJ/kuqfmnoTlu7o8L3RleHQ+PHRleHQgeD0iNTg3IiB5PSIyMjciIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+bnBtIHJ1biBidWlsZDwvdGV4dD48dGV4dCB4PSI1ODciIHk9IjI1MiIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7miZPljIUgKyDljovnvKk8L3RleHQ+PHRleHQgeD0iNTg3IiB5PSIyNzciIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+55Sf5oiQIGRpc3QvIOmdmeaAgeaWh+S7tjwvdGV4dD48cmVjdCB4PSI4MzYiIHk9IjE2NSIgd2lkdGg9IjIwOSIgaGVpZ2h0PSIxNDUiIHJ4PSIxNiIgZmlsbD0iI2YxZWNmZCIgc3Ryb2tlPSIjYzVkNGU2Ii8+PHJlY3QgeD0iODM2IiB5PSIxODAiIHdpZHRoPSI0IiBoZWlnaHQ9IjExNSIgcng9IjIiIGZpbGw9IiM2ZDI4ZDkiLz48dGV4dCB4PSI4NTQiIHk9IjE5NyIgZm9udC1zaXplPSIxOSIgZmlsbD0iIzE3MmM0OCIgZm9udC13ZWlnaHQ9IjY1MCIgdGV4dC1hbmNob3I9InN0YXJ0Ij4wNCDpg6jnvbLmiZjnrqE8L3RleHQ+PHRleHQgeD0iODU0IiB5PSIyMjciIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+6Z2Z5oCB5pyN5Yqh5ZmoIC8gQ0ROPC90ZXh0Pjx0ZXh0IHg9Ijg1NCIgeT0iMjUyIiBmb250LXNpemU9IjE2IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPumFjee9riBTUEEg5Zue6YCAPC90ZXh0Pjx0ZXh0IHg9Ijg1NCIgeT0iMjc3IiBmb250LXNpemU9IjE2IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPkhUVFBTIOiuv+mXrjwvdGV4dD48cGF0aCBkPSJNIDI1NSAyNDAgTCAzMDIgMjQwIiBmaWxsPSJub25lIiBzdHJva2U9IiMyNTYzZWIiIHN0cm9rZS13aWR0aD0iMi41IiBtYXJrZXItZW5kPSJ1cmwoI2Fycm93KSIvPjx0ZXh0IHg9IjI3OSIgeT0iMjIyIiBmb250LXNpemU9IjE1IiBmaWxsPSIjNTM2OTgyIiBmb250LXdlaWdodD0iNDAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5kZXY8L3RleHQ+PHBhdGggZD0iTSA1MjIgMjQwIEwgNTY5IDI0MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMjU2M2ViIiBzdHJva2Utd2lkdGg9IjIuNSIgbWFya2VyLWVuZD0idXJsKCNhcnJvdykiLz48dGV4dCB4PSI1NDUiIHk9IjIyMiIgZm9udC1zaXplPSIxNSIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+YnVpbGQ8L3RleHQ+PHBhdGggZD0iTSA3ODkgMjQwIEwgODM2IDI0MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMjU2M2ViIiBzdHJva2Utd2lkdGg9IjIuNSIgbWFya2VyLWVuZD0idXJsKCNhcnJvdykiLz48dGV4dCB4PSI4MTIiIHk9IjIyMiIgZm9udC1zaXplPSIxNSIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+dXBsb2FkPC90ZXh0PjxyZWN0IHg9IjU3MSIgeT0iMzYyIiB3aWR0aD0iNDc0IiBoZWlnaHQ9Ijg2IiByeD0iMTYiIGZpbGw9IiNlZGY0ZmYiIHN0cm9rZT0iI2M1ZDRlNiIvPjxyZWN0IHg9IjU3MSIgeT0iMzc3IiB3aWR0aD0iNCIgaGVpZ2h0PSI1NiIgcng9IjIiIGZpbGw9IiMyNTYzZWIiLz48dGV4dCB4PSI1ODkiIHk9IjM5NCIgZm9udC1zaXplPSIyMCIgZmlsbD0iIzE3MmM0OCIgZm9udC13ZWlnaHQ9IjY1MCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7mnoTlu7rkuqfnianmmK/nuq/pnZnmgIHmlofku7Y8L3RleHQ+PHRleHQgeD0iNTg5IiB5PSI0MjQiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+5Y+v5Lqk57uZIE5naW54IC8gR2l0SHViIFBhZ2VzIC8gQ0ROIOetieS7u+aEj+mdmeaAgeaJmOeuoTwvdGV4dD48dGV4dCB4PSI0NiIgeT0iMzcxIiBmb250LXNpemU9IjE5IiBmaWxsPSIjMTcyYzQ4IiBmb250LXdlaWdodD0iNzAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuaehOW7uiDiiaAg6YOo572yPC90ZXh0Pjx0ZXh0IHg9IjQ2IiB5PSI0MDUiIGZvbnQtc2l6ZT0iMTciIGZpbGw9IiM1MzY5ODIiIGZvbnQtd2VpZ2h0PSI0MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+ZGlzdCDnm67lvZXph4znmoTmlofku7blj6/ku6XljZXni6zlpI3liLbliIbkuqvvvJvpg6jnvbLlj6rmmK/miorlroPmlL7liLDog73orr/pl67nmoTlnLDmlrnjgII8L3RleHQ+PHJlY3QgeD0iMzUiIHk9IjQ3MyIgd2lkdGg9IjEwMTAiIGhlaWdodD0iNDgiIHJ4PSIxNiIgZmlsbD0iI2ZmZiIgc3Ryb2tlPSIjYzVkNGU2Ii8+PHRleHQgeD0iNTMiIHk9IjUwMyIgZm9udC1zaXplPSIxNyIgZmlsbD0iIzUzNjk4MiIgZm9udC13ZWlnaHQ9IjQwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7njq/looPlj5jph4/vvJrmnoTlu7rml7bms6jlhaXnmoTphY3nva7kvJrlnKjmiZPljIXml7blhpnov5vkuqfnianvvJvov5DooYzml7bms6jlhaXpnIDopoHkuJPpl6jmlrnmoYjjgII8L3RleHQ+PC9zdmc+" tabindex="0"/></figure>
+<p><em>图 12：开发（npm run dev，热更新）→ 构建（npm run build，产出 dist/）→ 部署（静态托管）。dist 是交付物，可以单独复制分享。</em></p>
+<h3 id="104-spa">10.4 部署与 SPA 回退</h3>
+<p>静态托管服务器需要处理一个 SPA 特有的问题：用户直接访问 <code>/todos</code> 时，服务器上并不存在 <code>todos</code> 文件。需要把未匹配路径回退到 <code>index.html</code>：</p>
+<div class="codebox"><div class="codehead"><span>NGINX</span><button aria-label="复制这段代码" class="copy" type="button">复制</button></div><pre><code class="language-nginx"># Nginx 配置片段：SPA 回退
+location / {
+    try_files $uri $uri/ /index.html;
+}
+</code></pre></div>
+<div class="codebox"><div class="codehead"><span>TEXT</span><button aria-label="复制这段代码" class="copy" type="button">复制</button></div><pre><code class="language-text"># 其他平台也都有等价配置：Netlify 用 _redirects，Vercel 用 vercel.json 等
+</code></pre></div>
+<p>不配置回退时，直接访问子路由会得到 404。<strong>这个配置是部署 React SPA 最常见的一步遗漏。</strong></p>
+<h3 id="105">10.5 构建变量与运行时配置</h3>
+<p>构建时注入的环境变量会在打包时写进产物：</p>
+<div class="codebox"><div class="codehead"><span>BASH</span><button aria-label="复制这段代码" class="copy" type="button">复制</button></div><pre><code class="language-bash">VITE_API_BASE=https://api.example.com npm run build
+</code></pre></div>
+<div class="codebox"><div class="codehead"><span>JSX</span><button aria-label="复制这段代码" class="copy" type="button">复制</button></div><pre><code class="language-jsx">// 代码里通过 import.meta.env 读取
+const base = import.meta.env.VITE_API_BASE ?? '/api';
+</code></pre></div>
+<p>注意：以 <code>VITE_</code> 开头的变量才会被 Vite 打进前端产物；产物里的变量值在构建时固定，之后改环境变量不会改变已构建的文件。<strong>浏览器可见的配置里不能放服务端密钥</strong>——任何打包进前端的值用户都能看到。</p>
+<h2 id="11_1">11. 工程化与最佳实践</h2>
+<h3 id="111">11.1 组件设计原则</h3>
+<div aria-label="可横向滚动的表格" class="table-wrap" role="region" tabindex="0"><table>
+<thead>
+<tr>
+<th>原则</th>
+<th>含义</th>
+<th>反例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>单一职责</td>
+<td>一个组件只做一件事</td>
+<td>一个组件既渲染表单又管全局路由</td>
+</tr>
+<tr>
+<td>Props 保持简单</td>
+<td>传基础数据，少传深层对象</td>
+<td>把整个 store 塞进 props</td>
+</tr>
+<tr>
+<td>状态靠近使用处</td>
+<td>谁用谁持有，必要时才提升</td>
+<td>所有状态都放顶层组件</td>
+</tr>
+<tr>
+<td>派生值不复制</td>
+<td>能算出来的不存 State</td>
+<td><code>filteredList</code> 单独存一份 State</td>
+</tr>
+<tr>
+<td>组件可组合</td>
+<td>用 children / props 扩展</td>
+<td>为每个变体复制一份组件</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="112">11.2 目录组织</h3>
+<p>小项目按“功能”组织即可，不必过度分层：</p>
+<div class="codebox"><div class="codehead"><span>TEXT</span><button aria-label="复制这段代码" class="copy" type="button">复制</button></div><pre><code class="language-text">src/
+├── components/        # 通用可复用组件（Button、Modal）
+├── pages/             # 路由页面组件（HomePage、TodoPage）
+├── hooks/             # 自定义 Hook（useFetch、useLocalStorage）
+├── api/               # 请求封装（fetchTodos、createTodo）
+├── App.jsx            # 根组件 / 路由
+└── main.jsx           # 入口
+</code></pre></div>
+<p>随着项目变大再引入状态管理库（Zustand、Redux 等）。<strong>一开始不需要全局状态库</strong>——多数状态提升到父组件就够了，过早引入会掩盖设计问题。</p>
+<h3 id="113">11.3 测试：从组件到逻辑</h3>
+<p>测试金字塔同样适用于前端：多数是组件 / Hook 测试，少量端到端。</p>
+<div class="codebox"><div class="codehead"><span>JSX</span><button aria-label="复制这段代码" class="copy" type="button">复制</button></div><pre><code class="language-jsx">// 用 Vitest + React Testing Library 做组件测试
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import Counter from './Counter.jsx';
+
+test('点击按钮计数增加', async () =&gt; {
+  render(&lt;Counter /&gt;);
+  await userEvent.click(screen.getByRole('button', { name: '+1' }));
+  expect(screen.getByRole('status')).toHaveTextContent('1');
+});
+</code></pre></div>
+<p>测试要点：</p>
+<ul>
+<li><strong>测用户可观察的行为</strong>（文本、按钮、行为），而不是实现细节（内部变量名、调用次数）。</li>
+<li>交互用 <code>userEvent</code>（模拟真实输入），不用 <code>fireEvent</code> 直接派发。</li>
+<li>网络请求用 mock 拦截，测试三态渲染：加载中、成功、失败。</li>
+<li>测试是信心的来源，但不必追求 100% 覆盖率；优先测核心逻辑与易错分支。</li>
+</ul>
+<h3 id="114">11.4 性能优化清单</h3>
+<p>按优先级排：</p>
+<ol>
+<li><strong>数据流正确</strong>：避免多余的中间 State、避免在渲染期间做重计算。</li>
+<li><strong>列表虚拟化</strong>：几千行的列表用 <code>react-window</code> 等只渲染可视区。</li>
+<li><strong>memo + useCallback</strong>：确认子组件因引用变化被无谓重渲染时再用。</li>
+<li><strong>代码分割</strong>：<code>React.lazy</code> + <code>Suspense</code> 按路由懒加载，减少首屏体积。</li>
+<li><strong>图片与字体</strong>：懒加载图片、用现代格式、按需加载字体。</li>
+</ol>
+<p><strong>用数据说话：</strong> 在 React DevTools 的 Profiler 里观察哪个组件渲染耗时，再动手优化。没有测量就优化，往往优化错地方。</p>
+<h2 id="12">12. 排错：用证据缩小问题范围</h2>
+<h3 id="121">12.1 一条排查顺序</h3>
+<p>先看控制台错误，再确认数据，最后检查渲染逻辑。不要一上来就删 node_modules、重装依赖或改全局配置。</p>
+<div class="codebox"><div class="codehead"><span>BASH</span><button aria-label="复制这段代码" class="copy" type="button">复制</button></div><pre><code class="language-bash"># 1. 确认开发服务器日志
+npm run dev
+
+# 2. 打开浏览器开发者工具：Console 标签看报错
+# 3. React DevTools：Components 面板看 props / state 是否符合预期
+# 4. Network 面板：确认请求发出、状态码、响应体
+# 5. 逐步隔离：注释掉可疑部分，二分定位
+</code></pre></div>
+<h3 id="122">12.2 症状、原因与验证动作</h3>
+<div aria-label="可横向滚动的表格" class="table-wrap" role="region" tabindex="0"><table>
+<thead>
+<tr>
+<th>症状</th>
+<th>常见原因</th>
+<th>先做什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>页面空白，控制台报 <code>Cannot read properties of undefined</code></td>
+<td>渲染时访问了不存在的对象字段</td>
+<td>打印数据，确认异步数据到达前是否渲染了空值</td>
+</tr>
+<tr>
+<td>修改 State 后界面没变</td>
+<td>直接修改了数组 / 对象，没有用新引用</td>
+<td>检查是否用了 <code>push</code> / <code>arr[i]=x</code>，改为不可变更新</td>
+</tr>
+<tr>
+<td>点击后数字没加</td>
+<td>多次 <code>setCount(count+1)</code> 被批量合并</td>
+<td>需要基于上一次值时用函数式更新</td>
+</tr>
+<tr>
+<td>条件渲染显示 <code>0</code></td>
+<td><code>{items.length &amp;&amp; ...}</code> 的短路陷阱</td>
+<td>改为 <code>{items.length &gt; 0 &amp;&amp; ...}</code></td>
+</tr>
+<tr>
+<td>列表勾选状态错乱</td>
+<td>key 用了下标或随机值</td>
+<td>改用稳定 id 作为 key</td>
+</tr>
+<tr>
+<td>组件内部的值一直不变</td>
+<td>读取的是旧渲染闭包里的值</td>
+<td>理解闭包：事件回调捕获的是当次渲染的值</td>
+</tr>
+<tr>
+<td>useEffect 无限循环</td>
+<td>effect 里 setState，依赖又在变</td>
+<td>检查依赖数组；能算的值不要在 effect 里同步</td>
+</tr>
+<tr>
+<td>请求报 404</td>
+<td>路径拼错、后端未启动、代理未配置</td>
+<td>看 Network 面板实际请求的 URL</td>
+</tr>
+<tr>
+<td>跨域报 CORS 错误</td>
+<td>前后端不同源</td>
+<td>开发用 Vite 代理，部署用同源 Nginx</td>
+</tr>
+<tr>
+<td>直接访问子路由 404</td>
+<td>服务器没配 SPA 回退</td>
+<td>配置 try_files / 等效规则回退到 index.html</td>
+</tr>
+<tr>
+<td>改了代码页面没更新</td>
+<td>热更新失效、缓存、编译报错</td>
+<td>看终端错误，重启 dev server，强制刷新</td>
+</tr>
+<tr>
+<td>生产页面白屏</td>
+<td>构建产物路径错误、部署不完整</td>
+<td>本地 <code>npm run build</code> 后用静态服务器验证 dist</td>
+</tr>
+<tr>
+<td><code>key</code> 相关控制台警告</td>
+<td>列表缺 key 或 key 不唯一</td>
+<td>给列表元素添加稳定的唯一 key</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="123">12.3 三个最值得先掌握的调试技巧</h3>
+<ol>
+<li><strong>React DevTools（浏览器扩展）。</strong> Components 面板查看组件树与 props / state 实况；Profiler 面板记录渲染耗时。</li>
+<li><strong>Console 里打印渲染现场。</strong> 在组件函数体里 <code>console.log(count)</code>，每次渲染都会打印，立刻看到“渲染了几次、值是多少”。</li>
+<li><strong>最小复现。</strong> 把问题代码抽成一个独立组件放 CodeSandbox 复现；能复现就能定位，能定位就能修复。</li>
+</ol>
+<h2 id="13">13. 一周学习计划与动手挑战</h2>
+<h3 id="131">13.1 七天安排</h3>
+<div aria-label="可横向滚动的表格" class="table-wrap" role="region" tabindex="0"><table>
+<thead>
+<tr>
+<th>日期</th>
+<th>主题</th>
+<th>当天动作</th>
+<th>应产出的证据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>第 1 天</td>
+<td>概念与环境</td>
+<td>阅读第 1～2 章，创建 Vite 项目，改一个组件</td>
+<td>用自己的话写清声明式、组件、JSX 的区别</td>
+</tr>
+<tr>
+<td>第 2 天</td>
+<td>JSX 与组件</td>
+<td>阅读第 3 章，写 5 个小组件并组合</td>
+<td>组件树图 + 至少一处 children 用法</td>
+</tr>
+<tr>
+<td>第 3 天</td>
+<td>State 与事件</td>
+<td>阅读第 4 章，完成受控表单与计数器</td>
+<td>能解释批量更新与状态提升</td>
+</tr>
+<tr>
+<td>第 4 天</td>
+<td>列表与 Hooks</td>
+<td>阅读第 5～6 章，完成带过滤的列表</td>
+<td>能解释 key、useEffect 时机与 Hooks 规则</td>
+</tr>
+<tr>
+<td>第 5 天</td>
+<td>渲染原理</td>
+<td>阅读第 7 章，用 DevTools 观察渲染，画 Fiber 链表</td>
+<td>能画出 render → commit 流程，能解释 Fiber 与双缓存</td>
+</tr>
+<tr>
+<td>第 6 天</td>
+<td>实践一 + 二</td>
+<td>完成 Todo 应用并接上后端请求</td>
+<td>增删勾选生效，三态渲染正确</td>
+</tr>
+<tr>
+<td>第 7 天</td>
+<td>路由与部署</td>
+<td>完成路由 + 构建部署</td>
+<td>线上页面可访问，子路由刷新不 404</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="132">13.2 四个进阶挑战</h3>
+<ol>
+<li><strong>状态管理：</strong> 给 Todo 增加“编辑”功能，再尝试用 <code>useReducer</code> 重构增删改查，比较 <code>useState</code> 与 <code>useReducer</code> 的取舍。</li>
+<li><strong>数据获取：</strong> 实现一个 <code>useFetch</code> 自定义 Hook（含取消过期请求、错误重试），再用 <code>useTransition</code> 做搜索输入的防卡顿。</li>
+<li><strong>组合与复用：</strong> 用 <code>children</code> 实现一个 Modal 组件和一个布局组件，体会组合模式的扩展性。</li>
+<li><strong>工程化：</strong> 给 Todo 项目补充组件测试与 <code>React.lazy</code> 按路由分包，把 dist 部署到静态托管并配置 SPA 回退。</li>
+</ol>
+<p>建议每个挑战都保留“假设 → 操作 → 输出 → 结论”四项记录，避免只留下能复制的代码。</p>
+<h2 id="14-react">14. 复盘题：能否脱离代码解释 React</h2>
+<p>先自己作答，再看参考要点。</p>
+<div aria-label="可横向滚动的表格" class="table-wrap" role="region" tabindex="0"><table>
+<thead>
+<tr>
+<th>问题</th>
+<th>参考要点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. React 是框架还是库？</td>
+<td>是用于构建用户界面的库；完整框架能力（路由、SSR 等）由 Next.js 等提供</td>
+</tr>
+<tr>
+<td>2. JSX 是 HTML 吗？</td>
+<td>不是；它是 JavaScript 的语法扩展，编译为 React.createElement 调用</td>
+</tr>
+<tr>
+<td>3. 组件为什么必须大写开头？</td>
+<td>React 用大小写区分组件与原生标签</td>
+</tr>
+<tr>
+<td>4. 修改 props 会怎样？</td>
+<td>props 只读；需要变化的数据应放 State</td>
+</tr>
+<tr>
+<td>5. 直接改数组能触发更新吗？</td>
+<td>不能；要用新数组替换 State（不可变更新）</td>
+</tr>
+<tr>
+<td>6. 为什么多次 setCount 结果可能不是累加？</td>
+<td>状态更新按快照批量合并；基于上一次值要用函数式更新</td>
+</tr>
+<tr>
+<td>7. 两个组件要共享数据怎么办？</td>
+<td>状态提升到最近的共同父组件，props 下发、回调上报</td>
+</tr>
+<tr>
+<td>8. useEffect 的依赖数组是干什么的？</td>
+<td>控制 effect 何时重跑；空数组只在挂载后执行一次</td>
+</tr>
+<tr>
+<td>9. ref 和 state 的区别是什么？</td>
+<td>改 ref 不触发渲染；改 state 会触发渲染</td>
+</tr>
+<tr>
+<td>10. key 的作用是什么？</td>
+<td>帮助协调阶段识别列表元素身份，防止状态错位</td>
+</tr>
+<tr>
+<td>11. 虚拟 DOM 的收益是什么？</td>
+<td>减少直接操作真实 DOM 的高昂成本，批量提交变化</td>
+</tr>
+<tr>
+<td>12. 渲染阶段与提交阶段有什么区别？</td>
+<td>渲染阶段可中断、不碰 DOM；提交阶段把变化写入 DOM，不可中断</td>
+</tr>
+<tr>
+<td>13. 为什么 Hooks 不能写在条件里？</td>
+<td>React 依赖调用顺序记住状态，条件会破坏顺序</td>
+</tr>
+<tr>
+<td>14. 受控组件是什么？</td>
+<td>表单值由 State 控制、变化写回 State 的组件</td>
+</tr>
+<tr>
+<td>15. 部署 SPA 为什么常常要配回退？</td>
+<td>服务器没有对应子路由的文件，需把未匹配路径回退到 index.html</td>
+</tr>
+<tr>
+<td>16. 前端能直接读数据库吗？</td>
+<td>不能；所有数据通过 API 进出，密钥不能放前端</td>
+</tr>
+</tbody>
+</table></div>
+<p>如果你能不看答案解释其中至少 12 个问题，并独立完成 Todo 应用的增删勾选、请求后端与部署，就已具备继续学习 React 生态（Next.js、状态管理、测试）的基础。这个阈值是自学检验建议，不是专业认证标准。</p>
+<h2 id="15">15. 官方资料与验证说明</h2>
+<h3 id="151">15.1 按主题继续阅读</h3>
+<p>以下均为官方文档或官方项目维护的资料。本文结合多个来源进行解释与原创案例设计，不依赖转载教程。</p>
+<div aria-label="可横向滚动的表格" class="table-wrap" role="region" tabindex="0"><table>
+<thead>
+<tr>
+<th>主题</th>
+<th>入口</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>React 官方教程</td>
+<td><a href="https://react.dev/learn">react.dev/learn</a></td>
+</tr>
+<tr>
+<td>React API 参考</td>
+<td><a href="https://react.dev/reference/react">react.dev/reference/react</a></td>
+</tr>
+<tr>
+<td>安装与开始</td>
+<td><a href="https://react.dev/learn/installation">react.dev/learn/installation</a> · <a href="https://react.dev/learn/start-a-new-react-project">Start a new project</a></td>
+</tr>
+<tr>
+<td>JSX</td>
+<td><a href="https://react.dev/learn/writing-markup-with-jsx">Writing markup with JSX</a></td>
+</tr>
+<tr>
+<td>渲染与提交</td>
+<td><a href="https://react.dev/learn/render-and-commit">Render and commit</a></td>
+</tr>
+<tr>
+<td>状态管理</td>
+<td><a href="https://react.dev/learn/managing-state">Managing state</a> · <a href="https://react.dev/learn/queueing-a-series-of-state-updates">Queueing state updates</a></td>
+</tr>
+<tr>
+<td>Effect</td>
+<td><a href="https://react.dev/learn/lifecycle-of-reactive-effects">Lifecycle of reactive effects</a></td>
+</tr>
+<tr>
+<td>ref</td>
+<td><a href="https://react.dev/learn/referencing-values-with-refs">Referencing values with refs</a></td>
+</tr>
+<tr>
+<td>列表与条件</td>
+<td><a href="https://react.dev/learn/rendering-lists">Rendering lists</a> · <a href="https://react.dev/learn/conditional-rendering">Conditional rendering</a></td>
+</tr>
+<tr>
+<td>性能</td>
+<td><a href="https://react.dev/learn/performance">Performance</a> · <a href="https://react.dev/reference/react/useMemo">useMemo</a> · <a href="https://react.dev/reference/react/useCallback">useCallback</a></td>
+</tr>
+<tr>
+<td>Hooks 规则</td>
+<td><a href="https://react.dev/reference/rules/rules-of-hooks">Rules of Hooks</a></td>
+</tr>
+<tr>
+<td>组合模式</td>
+<td><a href="https://react.dev/learn/thinking-in-react">Thinking in React</a></td>
+</tr>
+<tr>
+<td>Vite</td>
+<td><a href="https://vitejs.dev/">Vite 官方文档</a> · <a href="https://vitejs.dev/config/server-options#server-proxy">Server proxy</a></td>
+</tr>
+<tr>
+<td>React Router</td>
+<td><a href="https://reactrouter.com/">React Router 官方文档</a></td>
+</tr>
+<tr>
+<td>测试</td>
+<td><a href="https://testing-library.com/react">React Testing Library</a> · <a href="https://vitest.dev/">Vitest</a></td>
+</tr>
+<tr>
+<td>Next.js（进阶框架）</td>
+<td><a href="https://nextjs.org/docs">Next.js 官方文档</a></td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="152">15.2 本文的验证范围</h3>
+<p>本文的命令、目录和配置按正文保持一致；两种文档由同一 Markdown 正文生成，示意图为本次学习资料原创。以下是本次实际执行的检查范围。</p>
+<div aria-label="可横向滚动的表格" class="table-wrap" role="region" tabindex="0"><table>
+<thead>
+<tr>
+<th>检查项</th>
+<th>本次结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>正文结构</td>
+<td>16 章；HTML 与 Markdown 的代码块逐一一致</td>
+</tr>
+<tr>
+<td>配图文件</td>
+<td>17 张原创 SVG 与同名 PNG 均存在，SVG 可解析，Markdown 本地图片路径有效</td>
+</tr>
+<tr>
+<td>代码检查</td>
+<td>所有 JSX 示例按 React 19 + Vite 的语法核对；shell 命令可在对应环境执行</td>
+</tr>
+<tr>
+<td>HTML 交互</td>
+<td>章节链接有效；代码复制内容一致；配图放大与关闭正常</td>
+</tr>
+<tr>
+<td>离线与排版</td>
+<td>Chrome 下禁用网络仍可读取正文与全部配图；桌面及窄屏检查通过</td>
+</tr>
+<tr>
+<td>浏览器错误</td>
+<td>检查过程中未出现页面 JavaScript 异常</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>版本说明：</strong> 本文以 React 19 为主线，示例同样适用于 React 18（<code>createRoot</code> 挂载方式一致）。React 19 的部分新特性（如 <code>ref</code> 作为 prop、Actions）在正文相应位置说明。React 与工具链仍在演进，官方网页会更新；具体 API 与命令选项应结合你的版本核对。</p>
+<p><strong>补充：与 Docker 文档的衔接。</strong> 本仓库的 docker 知识点讲了如何把前端构建成镜像、用 Nginx 托管并配置 SPA 回退——把本章的 <code>dist/</code> 构建产物放进 Docker 多阶段构建（node 构建阶段 → nginx 运行阶段）即可组合使用，这也是“一周一个知识点”系列互相衔接的示例。</p></article><footer class="footer">一周一个知识点 · React<br>先解释清楚，再动手验证。</footer></div></main>
+<button id="top" aria-label="返回文档顶部">↑ 顶部</button><dialog id="zoom" aria-labelledby="zoomtitle"><div class="zoomhead"><span id="zoomtitle"></span><button class="subtle" id="closezoom">关闭</button></div><div class="zoomscroll"><img id="zoomimage" alt=""></div></dialog>
+<script>
+const menu=document.querySelector('#menu');const side=document.querySelector('.sidebar');const scrim=document.querySelector('#scrim');
+function closeNav(){side.classList.remove('open');scrim.classList.remove('visible');menu.setAttribute('aria-expanded','false');}
+menu.addEventListener('click',()=>{const open=side.classList.toggle('open');scrim.classList.toggle('visible',open);menu.setAttribute('aria-expanded',String(open));});
+scrim.addEventListener('click',closeNav);document.querySelectorAll('.toc a').forEach(a=>a.addEventListener('click',closeNav));document.addEventListener('keydown',e=>{if(e.key==='Escape')closeNav();});
+document.querySelector('#print').addEventListener('click',()=>window.print());document.querySelector('#top').addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+document.querySelectorAll('.copy').forEach(btn=>btn.addEventListener('click',async()=>{const code=btn.closest('.codebox').querySelector('code').textContent;try{if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(code);}else{const area=document.createElement('textarea');area.value=code;area.style.position='fixed';area.style.opacity='0';document.body.append(area);area.select();if(!document.execCommand('copy'))throw new Error('copy failed');area.remove();}btn.textContent='已复制';}catch(e){btn.textContent='请手动选择';}setTimeout(()=>btn.textContent='复制',1600);}));
+const heads=[...document.querySelectorAll('article h2')];const links=[...document.querySelectorAll('.toc a')];let scheduled=false;
+function update(){const max=document.documentElement.scrollHeight-window.innerHeight;document.querySelector('#progress').style.width=(max?Math.min(100,window.scrollY/max*100):100)+'%';let active=heads[0];for(const h of heads){if(h.getBoundingClientRect().top<160)active=h;}links.forEach(a=>{const yes=decodeURIComponent(a.hash.slice(1))===active.id;a.classList.toggle('active',yes);if(yes)a.setAttribute('aria-current','location');else a.removeAttribute('aria-current');});scheduled=false;}
+window.addEventListener('scroll',()=>{if(!scheduled){scheduled=true;requestAnimationFrame(update);}},{passive:true});window.addEventListener('resize',update);update();
+const dialog=document.querySelector('#zoom');const zoomImage=document.querySelector('#zoomimage');
+function zoom(img){zoomImage.src=img.src;zoomImage.alt=img.alt;document.querySelector('#zoomtitle').textContent=img.alt;dialog.showModal();}
+document.querySelectorAll('.diagram').forEach(img=>{img.addEventListener('click',()=>zoom(img));img.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();zoom(img);}});});
+document.querySelector('#closezoom').addEventListener('click',()=>dialog.close());dialog.addEventListener('click',e=>{if(e.target===dialog)dialog.close();});
+</script></body></html>

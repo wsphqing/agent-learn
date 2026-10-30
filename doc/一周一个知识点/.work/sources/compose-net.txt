@@ -1,0 +1,1681 @@
+Networking in Compose | Docker Docs
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+
+
+Get started
+Guides
+Manuals
+Reference
+
+
+GordonGordon, your AI assistant for Docker docs
+
+Search
+
+
+
+
+
+Start a new chat
+
+What can I help you with?
+I'm Gordon, your AI assistant for Docker and documentation
+questions.
+Try asking
+Get started with Docker
+
+Docker Hardened Images
+
+MCP Toolkit
+
+Create an org
+
+
+Was this helpful?
+
+Helpful
+
+
+
+Not quite
+
+
+Copy
+
+
+
+remaining in this thread.
+You've reached the maximum of
+ questions per thread. For
+better answer quality, start a new thread.
+Start a new thread
+
+
+When enabled, Gordon considers the current page you're viewing
+to provide more relevant answers.Share feedbackAnswers are generated based on the documentation.
+
+Back
+Manuals
+
+
+
+Get started
+
+Guides
+
+Reference
+AI and agents
+Overview
+Docker Sandboxes
+
+
+Install
+Get started
+Usage
+Agents
+
+
+Claude Code
+Codex
+Copilot
+Cursor
+Devin
+Docker Agent
+Droid
+Gemini
+Kiro
+OpenCode
+Shell
+Workflows
+
+
+Git workflows
+Local development
+Authenticate tools
+Agent skills
+CI and headless
+Configuration
+
+
+Credentials
+Environment files
+Experimental
+GPU passthrough
+Upstream proxy
+Registry mirror
+Integrations
+
+
+VS Code
+Cursor
+Claude Desktop
+ChatGPT
+T3 Code
+MCP gateway
+Customize
+Early Access
+
+
+Templates
+Kits
+Build an agent
+Examples
+Spec reference
+Architecture
+Security model
+
+
+Isolation layers
+Defaults
+Governance
+
+
+Policy concepts
+Access controls
+
+
+Local policy
+Org policies
+Network access
+Filesystem access
+MCP access
+Audit logs
+
+
+Local audit logs
+Configure delivery
+View and export
+SIEM forwarding
+Record reference
+Monitor and enforce
+
+
+Monitoring policies
+Sign-in enforcement
+Reference
+
+
+API reference
+MCP policy
+Troubleshooting
+FAQ
+Release notes
+MCP Catalog and Toolkit
+Beta
+
+
+Get started
+Catalog
+Profiles
+Toolkit UI
+Use with CLI
+Dynamic discovery
+Gateway
+FAQs
+E2B sandboxes
+Model Runner
+
+
+Get started with DMR
+DMR REST API
+Configuration options
+DMR examples
+IDE and tool integrations
+Open WebUI integration
+Inference engines
+Gordon
+
+
+Use cases
+
+Concepts
+
+
+Capabilities
+Data privacy
+
+How-to guides
+
+
+Docker Desktop
+CLI
+Permissions
+Configure tools
+Usage limits
+
+AI and Docker Compose
+
+
+Use AI models in Compose
+Docker Agent
+
+
+
+Getting Started
+
+
+Introduction
+Installation
+Set Up a Model
+Quick Start
+
+Core Concepts
+
+
+Agents
+Models
+Tools
+Multi-Agent
+Agent Distribution
+
+Configuration
+
+
+Overview
+HCL Configuration
+Agent Config
+Model Config
+Tool Config
+Custom Commands
+Hooks
+Permissions
+Budget
+Ignoring files
+Sandbox Mode
+Structured Output
+Flavors
+Model Routing
+User Settings
+
+Built-in Tools
+
+
+Filesystem
+Shell
+Background Jobs
+Script
+Open URL
+Fetch
+A2A
+Handoff
+Transfer Task
+Background Agents
+Memory
+RAG
+MCP Catalog
+Git
+MCP
+Scheduler
+Think
+Webhook
+Plan
+Session Plan
+Todo
+Tasks
+User Prompt
+Model Picker
+Session Context
+LSP
+OpenAPI
+API
+
+Features
+
+
+Terminal UI
+Kanban Board
+Snapshots
+Sessions
+CLI Reference
+MCP Mode
+Coding Harnesses
+A2A Protocol
+ACP
+API Server
+Chat Server
+Evaluation
+Skills
+Code Mode
+Remote MCP Servers
+
+Model Providers
+
+
+Overview
+Anthropic
+AWS Bedrock
+Baseten
+Cerebras
+ChatGPT (OpenAI account)
+Cloudflare AI Gateway
+Cloudflare Workers AI
+DeepSeek
+Docker Model Runner
+Fireworks AI
+GitHub Copilot
+Google Gemini
+Groq
+Hugging Face
+Local Models
+MiniMax
+Mistral
+Moonshot AI
+Nebius
+OpenAI
+OpenCode Go
+OpenCode Zen
+OpenRouter
+OVHcloud
+Together AI
+Vercel AI Gateway
+xAI (Grok)
+Provider Definitions
+NVIDIA NIM
+
+Guides
+
+
+Tips & Best Practices
+Thinking / Reasoning
+Managing Secrets
+Go SDK
+Managing Context & Compaction
+Running Agents Headless & in CI
+
+Community
+
+
+Contributing
+Troubleshooting
+Telemetry
+OpenTelemetry Tracing
+Application development
+Docker Desktop
+
+
+
+Setup
+
+
+
+Install
+
+
+Mac
+Mac permission requirements
+Windows
+Windows permission requirements
+Linux
+
+
+Ubuntu
+Debian
+Fedora
+Arch
+RHEL
+VM or VDI environments
+Sign in
+Allowlist
+Explore Docker Desktop
+
+
+Containers
+Images
+Volumes
+Builds
+Kubernetes
+Logs
+Resource Saver mode
+Pause Docker Desktop
+
+Features and capabilities
+
+
+Networking
+
+
+How-tos
+GPU support
+USB/IP support
+Synchronized file shares
+containerd image store
+Wasm workloads
+Beta
+Docker Desktop CLI
+Virtual Machine Manager
+Updated
+WSL
+
+
+Best practices
+Custom kernels
+Use WSL
+
+Settings and maintenance
+
+
+Change settings
+Backup and restore data
+
+Troubleshoot and support
+
+
+Troubleshoot and diagnose
+
+
+Common topics
+Known issues
+MacOS app damaged dialog
+
+FAQs
+
+
+General
+Mac
+Windows
+Linux
+Releases
+Give feedback
+Uninstall
+Release notes
+Docker Engine
+
+
+Install
+
+
+Ubuntu
+Debian
+RHEL
+Fedora
+Raspberry Pi OS (32-bit / armhf)
+CentOS
+Binaries
+Post-installation steps
+Storage
+
+
+Volumes
+Bind mounts
+tmpfs mounts
+Image mounts
+Storage drivers
+
+
+Select a storage driver
+BTRFS storage driver
+Device Mapper storage driver (deprecated)
+OverlayFS storage driver
+VFS storage driver
+windowsfilter storage driver
+ZFS storage driver
+containerd image store
+Networking
+
+
+Docker with iptables
+Docker with nftables
+Packet filtering and firewalls
+Port publishing and mapping
+Network drivers
+
+
+Bridge network driver
+Host network driver
+IPvlan network driver
+Macvlan network driver
+None network driver
+Overlay network driver
+CA certificates
+Legacy container links
+
+Containers
+
+
+Start containers automatically
+Run multiple processes in a container
+Resource constraints
+GPU access
+Runtime metrics
+Running containers
+
+CLI
+
+
+Completion
+Proxy configuration
+Filter commands
+Format command and log output
+OpenTelemetry for the Docker CLI
+Daemon
+
+
+Start the daemon
+Use IPv6 networking
+Daemon proxy configuration
+Embedded containerd
+Experimental
+Live restore
+Alternative container runtimes
+Collect Docker metrics with Prometheus
+Configure remote access for Docker daemon
+Read the daemon logs
+Troubleshooting the Docker daemon
+
+Manage resources
+
+
+Docker contexts
+Docker object labels
+Prune unused Docker objects
+Logs and metrics
+
+
+Configure logging drivers
+Customize log driver output
+
+Logging drivers
+
+
+Amazon CloudWatch Logs logging driver
+ETW logging driver
+Fluentd logging driver
+Google Cloud Logging driver
+Graylog Extended Format logging driver
+Journald logging driver
+JSON File logging driver
+Local file logging driver
+Splunk logging driver
+Syslog logging driver
+Use a logging driver plugin
+Use docker logs with remote logging drivers
+Security
+
+
+Rootless mode
+
+
+UID/GID mapping
+Tips
+Troubleshooting
+Antivirus software and Docker
+AppArmor security profiles for Docker
+Content trust in Docker
+
+
+Automation with content trust
+Delegations for content trust
+Deploy Notary Server with Compose
+Manage keys for content trust
+Play in a content trust sandbox
+Docker security non-events
+Isolate containers with a user namespace
+Protect the Docker daemon socket
+Seccomp security profiles for Docker
+Verify repository client with certificates
+Swarm mode
+
+
+Administer and maintain a swarm of Docker Engines
+Deploy a stack to a swarm
+Deploy services to a swarm
+Getting started with Swarm mode
+
+
+Create a swarm
+Add nodes to the swarm
+Deploy a service to the swarm
+Inspect a service on the swarm
+Scale the service in the swarm
+Delete the service running on the swarm
+Apply rolling updates to a service
+Drain a node on the swarm
+
+How swarm works
+
+
+How nodes work
+How services work
+Manage swarm security with public key infrastructure (PKI)
+Swarm task states
+Join nodes to a swarm
+Lock your swarm to protect its encryption key
+Manage nodes in a swarm
+Manage sensitive data with Docker secrets
+Manage swarm service networks
+Raft consensus in swarm mode
+Run Docker Engine in swarm mode
+Store configuration data using Docker Configs
+Swarm mode key concepts
+Use Swarm mode routing mesh
+Deprecated features
+Docker Engine plugins
+
+
+Access authorization plugin
+Docker log driver plugins
+Docker network driver plugins
+Docker Plugin API
+Docker volume plugins
+Plugin Config Version 1 of Plugin V2
+Use Docker Engine plugins
+
+Release notes
+
+
+Engine v29
+Engine v28
+Engine v27
+Engine v26.1
+Engine v26.0
+Engine v25.0
+Engine v24.0
+Engine v23.0
+Engine v20.10
+Engine v19.03
+Engine v18.09
+Engine v18.06
+Engine v18.05
+Engine v18.04
+Engine v18.03
+Engine v18.02
+Engine v18.01
+Engine v17.12
+Engine v17.11
+Engine v17.10
+Engine v17.09
+Engine v17.07
+Engine v17.06
+Engine v17.05
+Engine v17.04
+Engine v17.03
+Prior releases
+Docker Offload
+
+
+Quickstart
+About
+Configure
+Usage
+Optimize usage
+Troubleshoot
+Give feedback
+Docker Build
+
+
+
+Core concepts
+
+
+Docker Build Overview
+Dockerfile overview
+Build context
+Build checks
+
+Building
+
+
+Multi-stage
+Variables
+Secrets
+Multi-platform
+Export binaries
+Container Device Interface (CDI)
+Best practices
+Base images
+Builders
+
+
+Build drivers
+
+
+Cloud driver
+Docker container driver
+Docker driver
+Kubernetes driver
+Remote driver
+Manage builders
+Bake
+
+
+Introduction
+Targets
+Inheritance
+Variables
+Expressions
+Functions
+Matrix targets
+Contexts
+Bake file reference
+Bake standard library functions
+Building with Bake from a Compose file
+Overriding configurations
+Remote Bake file definition
+Cache
+
+
+Build cache invalidation
+Build garbage collection
+Cache storage backends
+
+
+Amazon S3 cache
+Azure Blob Storage cache
+GitHub Actions cache
+Inline cache
+Local cache
+Registry cache
+Optimize cache usage in builds
+CI
+
+
+GitHub Actions
+
+
+Annotations
+Attestations
+Build checks
+Build secrets
+Build summary
+BuildKit configuration
+Cache management
+Copy image between registries
+Export to Docker
+GitHub Builder
+New
+
+
+Architecture
+Build workflow
+Bake workflow
+Local registry
+Multi-platform image
+Named contexts
+Push to multiple registries
+Reproducible builds
+Share image between jobs
+Tags and labels
+Test before push
+Update Docker Hub description
+Validating builds
+Experimental
+
+
+Introduction
+Usage
+Image validation
+Git validation
+Templates & examples
+Testing
+Debugging
+Input reference
+Built-in functions
+
+Metadata
+
+
+Annotations
+Build attestations
+
+
+Image attestation storage
+Provenance attestations
+SBOM attestations
+SLSA definitions
+Exporters
+
+
+Image and registry exporters
+Local and tar exporters
+OCI and Docker exporters
+BuildKit
+
+
+buildkitd.toml
+Configure BuildKit
+Custom Dockerfile syntax
+Dockerfile release notes
+
+Debugging
+
+
+OpenTelemetry support
+Build release notes
+Docker Build Cloud
+
+
+Setup
+Usage
+Continuous integration
+Optimization
+Builder settings
+Release notes
+Docker Compose
+
+
+
+Introduction to Compose
+
+
+How Compose works
+Why use Compose?
+History and development
+Install
+
+
+Plugin
+Standalone (Legacy)
+Uninstall
+Quickstart
+
+How-tos
+
+
+Specify a project name
+Use service profiles
+Control startup order
+Use environment variables
+
+
+Set environment variables
+Environment variables precedence
+Pre-defined environment variables
+Interpolation
+Best practices
+Build dependent images
+Use Compose Watch
+Secrets in Compose
+Networking
+Use multiple Compose files
+
+
+Merge
+Extend
+Include
+Enable GPU support
+Use Compose in production
+OCI artifact applications
+Use lifecycle hooks
+Use init containers
+New
+Use provider services
+Compose Bridge
+
+
+Usage
+Customize
+Use Model Runner
+Compose SDK
+Trust model for Compose files
+
+Support and feedback
+
+
+FAQs
+Give feedback
+Release notes
+Docker Extensions
+
+
+Marketplace extensions
+Non-marketplace extensions
+Configure a private marketplace
+Settings and feedback
+Extensions SDK
+
+
+The build and publish process
+Quickstart
+
+Part one: Build
+
+
+Create a simple extension
+Create an advanced frontend extension
+Add a backend to your extension
+Part two: Publish
+
+
+Add labels
+Validate
+Package and release your extension
+Share your extension
+Publish in the Marketplace
+Build multi-arch extensions
+Architecture
+
+
+Metadata
+Security
+Design and UI styling
+
+
+Guidelines
+Docker design principles
+MUI best practices
+
+Developer Guides
+
+
+Authentication
+Interacting with Kubernetes
+Invoke host binaries
+Use the Docker socket
+
+Developer SDK tools
+
+
+Test and debug
+Continuous Integration (CI)
+CLI reference
+
+Extension APIs
+
+
+Dashboard
+Docker
+Extension Backend
+Extension UI API
+Navigation
+Deprecated products and features
+Release lifecycle
+Supply chain security
+Docker Hardened Images
+
+
+Quickstart
+Explore
+
+
+Hardened images
+Build process
+Image types
+Scanner integrations
+Image testing
+Responsibility overview
+Malware scanning
+Security concepts
+
+
+Attestations
+CIS Benchmark
+Code signing
+CVEs
+Distroless images
+FIPS
+glibc and musl
+Hardening
+Image digests
+Image provenance
+Immutability
+SBOMs
+SLSA
+Software Supply Chain Security
+SSDLC
+STIG
+VEX
+Migration
+
+
+Migration checklist
+AI-assisted migration
+Experimental
+Migrate from Alpine or Debian
+Migrate from Ubuntu
+Migrate from Wolfi
+Migration examples
+
+
+Go
+Python
+Node.js
+.NET
+Java
+How-tos
+
+
+Search and evaluate
+Mirror a repository
+Customize an image or chart
+Create and build an image
+Use an image
+Use a Helm chart
+Use hardened packages
+Verify an image or chart
+Scan an image
+Query VEX suppressions via API
+Apply image policies
+Troubleshoot
+Use DHI Select & Enterprise
+Tools
+
+
+Docker Hub
+CLI
+MCP server
+Terraform
+API
+
+Release notes
+
+
+CLI release notes
+Platform release notes
+Resources and feedback
+Docker Hub
+
+
+Quickstart
+Library
+
+
+Search
+Trusted content
+Catalogs
+Mirror
+Repositories
+
+
+Create
+
+Manage
+
+
+Repository information
+Access
+Images
+
+
+Tags
+Immutable tags
+Image Management
+Software artifacts
+Push images
+Move images
+Bulk migrate images
+Image security insights
+Webhooks
+Automated builds
+Deprecated
+
+
+Migrate
+Set up
+Link accounts
+Automated repository tests
+Advanced options
+Manage autobuilds
+Troubleshoot
+Trusted content
+
+
+Docker Official Images
+Docker Verified Publisher Program
+Docker-Sponsored Open Source Program
+Insights and analytics
+Export repositories
+Archive
+Delete
+Settings
+Usage and limits
+
+
+Pulls
+Optimize usage
+Hub MCP server
+Troubleshoot
+Release notes
+Docker Scout
+
+
+Install
+Quickstart
+
+Explore
+
+
+Dashboard
+Docker Scout image analysis
+Docker Scout metrics exporter
+Image details view
+Manage vulnerability exceptions
+
+How-tos
+
+
+Create an exception using the GUI
+Create an exception using the VEX
+Docker Scout environment variables
+Docker Scout SBOMs
+Use Scout with different artifact types
+
+Deep dive
+
+
+Advisory database sources and matching service
+Data collection and storage in Docker Scout
+Policy Evaluation
+
+
+Evaluate policies
+Integrations
+
+
+Container registries
+Continuous Integration
+
+
+Azure DevOps Pipelines
+Circle CI
+GitHub Actions
+GitLab CI/CD
+Jenkins
+Integrating Docker Scout with environments
+
+
+Generic (CLI)
+
+Release notes
+
+
+CLI release notes
+Platform release notes
+Accounts and admin
+Accounts
+
+
+Individual
+
+
+Setup
+Manage
+Deactivate
+Organization
+
+
+Setup
+
+
+Create
+Onboard
+Convert account
+Manage
+
+
+Members
+Teams
+License assignment
+Seats
+Product usage and access
+Change information
+Deactivate
+Activity logs
+Insights
+Company
+
+
+Setup
+Manage
+Subscription and billing
+
+
+Plans
+
+
+Docker
+Gordon
+Docker Hardened Images
+AI Governance
+Docker Verified Publisher
+Manage
+
+
+Plans
+Payment methods
+3D Secure
+Billing details
+Invoice history
+Taxes
+Docker Desktop license agreement
+Security
+
+
+Announcements
+Access tokens
+
+
+Personal access tokens
+Organization access tokens
+Authentication
+
+
+Single sign-on
+
+
+Setup
+Manage connections
+Troubleshoot
+Two-factor authentication
+
+
+Recover your Docker account
+OIDC connections
+
+
+Create and manage connections
+Rulesets and subject claims
+Provision
+
+
+Add and manage domains
+SCIM
+
+
+Setup
+Group mapping
+Migrate
+Just-in-Time
+Auto-provision
+Troubleshoot
+Roles and permissions
+
+
+Core roles
+Custom roles
+
+
+Manage
+Permissions reference
+FAQs
+
+
+Accounts
+Security
+Subscription and billing
+Platform
+Support
+Release notes
+Enterprise
+Deploy Docker Desktop
+
+
+MSI installer
+PKG installer
+MS Store
+Deploy with Intune
+Deploy with Jamf Pro
+Microsoft Dev Box
+FAQs
+Security
+
+
+Enforce sign-in
+
+
+Configure
+Hardened Docker Desktop
+
+
+Enhanced Container Isolation
+
+
+Enable ECI
+Configure advanced settings
+Limitations
+FAQs
+Settings Management
+
+
+Use a JSON file
+Use Docker Home
+Desktop settings reporting
+Settings reference
+Air-gapped containers
+Registry Access Management
+Image Access Management
+Namespace accessHome
+/
+Manuals
+/
+Docker Compose
+/
+How-tos
+/
+Networking
+Networking in Compose
+
+Ask Gordon
+
+
+
+
+Copy Markdown
+
+
+
+View MarkdownTable of contents
+Default network and service discovery
+Updating containers on the network
+Change the network mode
+Specify custom networks
+Internal networks
+Configure the default network
+Use an existing external network
+Connecting multiple Compose projects
+Hybrid networking
+Custom DNS with extra_hosts
+Multi-host networking
+Link containers
+Debugging
+Inspect port mappings
+Verify network membership
+Check connectivity
+Further reference information
+Compose handles networking for you by default, but gives you fine-grained control when you need it. This page explains how the default network works and how containers discover each other by name. It also covers when and how to define custom networks, connect services across separate Compose projects, map custom hostnames, and debug connectivity issues.
+Default network and service discovery
+By default, Compose sets up a single
+network for your app. Each container for a service joins the default network and is both reachable by other containers on that network, and discoverable by its service name. This network uses the bridge driver. To attach services to a different Compose network or an external one, see Specify custom networks. To change how a service uses the host network stack (network_mode: host), see Change the network mode.
+For most development setups, the default network is sufficient. When you run docker compose up, Compose creates a network named <project-name>_default and attaches all services to it. Each service registers its name with an internal DNS server, so containers can reach each other using the service name directly. No IP addresses or manual configuration is needed.
+For example, suppose your app is in a directory called myapp, and your compose.yaml looks like this:
+
+
+services:
+ web:
+ build: .
+ ports:
+ - "8000:8000"
+ db:
+ image: postgres:latest
+ ports:
+ - "8001:5432"
+Compose automatically connects all services to the default network, so you don't need to define networks explicitly in the Compose file.
+When you run docker compose up, the following happens:
+A network called myapp_default is created.
+A container is created using web's configuration. It joins myapp_default under the name web.
+A container is created using db's configuration. It joins myapp_default under the name db.
+Each container can now look up the service name web or db and get back the appropriate container's IP address. The web service can connect to the database at postgres://db:5432. From the host machine, the same database is accessible at postgres://localhost:8001 if your container is running locally.
+Tip
+Docker assigns container IP addresses dynamically from the network's subnet each time a container starts so they are not persisted across restarts or recreations. This means you should always reference services by name, not IP address. When containers are recreated, for example after a configuration change, they receive a new IP address. The service name stays stable.
+Your app's network is given a name based on the "project name", which is taken from the name of the directory it lives in. You can override the project name with either the
+--project-name flag or the COMPOSE_PROJECT_NAME environment variable.
+The HOST_PORT and CONTAINER_PORT serve different purposes. In the example above, for db, the HOST_PORT is 8001 and the container port is 5432 (the Postgres default). Networked service-to-service communication uses the CONTAINER_PORT. The host port is only used when accessing the service from outside the network.
+Updating containers on the network
+If you make a configuration change to a service and run docker compose up to update it, the old container is removed and the new one joins the network under a different IP address but the same name. Running containers can look up that name and connect to the new address, but the old address stops working.
+If any containers have connections open to the old container, they are closed. It is each container's responsibility to detect this condition, look up the name again, and reconnect.
+Change the network mode
+By default, each service joins the project's bridge network. It is the most secure networking mode. If you don't specify
+network_mode, this is the type of network you are creating.
+You can override the networking mode on a per-service basis. The network_mode option accepts the following values:
+host: The container shares the host's network stack. No port mapping is needed or supported, and service name DNS resolution does not work. Use for system-level tools like network monitors that require direct access to host interfaces. A container using network_mode: host can access all host ports and observe all network traffic on the host. Use it only when genuinely required.
+none: Turns off all container networking.
+service:{name}: Gives the container access to the specified container by referring to its service name.
+container:{name}: Gives the container access to the specified container by referring to its container ID.
+You can mix modes in a single project:
+
+
+services:
+ app:
+ image: myapp
+ networks:
+ - isolated
+ ports:
+ - "3000:3000"
+
+ monitoring:
+ image: netdata/netdata
+ network_mode: host # Can monitor host system and all host ports
+
+networks:
+ isolated:
+ driver: bridge
+Specify custom networks
+Instead of just using the default app network, you can specify your own networks with the top-level networks key. This lets you create more complex topologies and specify
+custom network drivers and options. You can also use it to connect services to externally-created networks which aren't managed by Compose.
+Each service can specify what networks to connect to with the service-level networks key, which is a list of names referencing entries under the top-level networks key.
+The following example shows a Compose file which defines two custom networks. The proxy service is isolated from the db service, because they do not share a network in common. Only app can talk to both.
+
+
+services:
+ proxy:
+ build: ./proxy
+ networks:
+ - frontend
+ app:
+ build: ./app
+ networks:
+ - frontend
+ - backend
+ db:
+ image: postgres:latest
+ networks:
+ - backend
+
+networks:
+ frontend:
+ driver: bridge # Specify driver options
+ driver_opts:
+ com.docker.network.bridge.host_binding_ipv4: "127.0.0.1"
+ backend:
+ driver: custom-driver # Use a custom driver
+Networks can be configured with static IP addresses by setting the
+ipv4_address and/or ipv6_address for each attached network.
+Networks can also be given a
+custom name:
+
+
+services:
+ # ...
+networks:
+ frontend:
+ name: custom_frontend
+ driver: custom-driver-1
+Internal networks
+Setting internal: true on a network creates it without a connection to the host's network interfaces. It has no default gateway for external connectivity. This is useful for services like databases that should be completely unreachable from outside the container network:
+
+
+services:
+ cache:
+ image: redis
+ networks:
+ - isolated
+
+ worker:
+ image: myworker
+ networks:
+ - isolated
+ - public
+
+networks:
+ isolated:
+ internal: true # No external connectivity
+ public: # Standard bridge network, created by Compose on docker compose up
+Note that a service connected to both an internal and a non-internal network (like worker above) can still reach the internet via the non-internal network public.
+Configure the default network
+Instead of, or as well as, specifying your own networks, you can also change the settings of the app-wide default network by defining an entry under networks named default:
+
+
+services:
+ web:
+ build: .
+ ports:
+ - "8000:8000"
+ db:
+ image: postgres:latest
+
+networks:
+ default:
+ driver: custom-driver-1 # Use a custom driver
+Use an existing external network
+If you've manually created a bridge network using docker network create, you can connect your Compose services to it by marking the network as
+external:
+
+
+services:
+ # ...
+networks:
+ network1:
+ name: my-pre-existing-network
+ external: true
+Instead of creating <project-name>_default, Compose looks for a network called my-pre-existing-network and connects your containers to it.
+Connecting multiple Compose projects
+External networks are particularly useful when services in separate Compose projects need to communicate. Create a shared network once, then reference it as external in each project:
+
+
+docker network create inter-project
+backend-compose.yaml:
+
+
+services:
+ api:
+ image: myapi:latest
+ networks:
+ - shared
+ - default # Also keep the project's internal network
+
+networks:
+ shared:
+ external: true
+ name: inter-project
+frontend-compose.yaml:
+
+
+services:
+ web:
+ image: myfrontend:latest
+ environment:
+ API_URL: http://api:8080 # Reference by service name
+ networks:
+ - shared
+
+networks:
+ shared:
+ external: true
+ name: inter-project
+Services on the same external network can reach each other by service name, just like services within a single project.
+Important
+The external network must exist before you run docker compose up. If it doesn't, Compose fails with a Network not found error. Always create it first with docker network create.
+Hybrid networking
+A service can belong to both an external shared network and its own project-internal network. This lets you expose only the services that need to be reachable from other projects, while keeping everything else, such as databases, fully isolated:
+
+
+services:
+ api:
+ image: myapp-api
+ networks:
+ - shared # Reachable from other projects
+ - internal # Can also reach the database
+
+ database:
+ image: postgres:latest
+ networks:
+ - internal # Not exposed on the shared network
+
+networks:
+ shared:
+ name: inter-project
+ external: true
+ internal: {} # Project-specific, isolated
+Custom DNS with extra_hosts
+You can add custom hostname-to-IP mappings to a container's /etc/hosts file using
+extra_hosts. This is useful when a service needs to resolve a hostname that isn't registered in Docker's internal DNS. For example, a fixed-IP dependency or a staging endpoint:
+
+
+services:
+ app:
+ image: myapp
+ extra_hosts:
+ - "api.staging:192.168.1.100"
+ - "cache.internal:192.168.1.101"
+To map a hostname dynamically to the host machine's IP, use the special host-gateway value:
+
+
+services:
+ app:
+ image: myapp
+ extra_hosts:
+ - "host.docker.internal:host-gateway"
+On Linux, host-gateway resolves to the host's IP on the default bridge network. On Mac and Windows, Docker automatically provides this, host-gateway resolves to the same internal IP address as host.docker.internal.
+You can also drive extra_hosts from environment variables, which makes it easy to point services at different targets per environment:
+
+
+services:
+ app:
+ image: myapp
+ extra_hosts:
+ - "api.service:${API_HOST:-127.0.0.1}"
+ - "auth.service:${AUTH_HOST:-127.0.0.1}"
+Where .env.development might set API_HOST=localhost and a production env file might set API_HOST=10.0.1.50.
+To verify what has been injected, inspect the hosts file inside the container:
+
+
+$ docker compose exec app cat /etc/hosts
+Multi-host networking
+When deploying a Compose application on a Docker Engine with
+Swarm mode enabled, you can use the built-in overlay driver to enable multi-host communication. Overlay networks are always created as attachable. You can optionally set the
+attachable property to false.
+To learn more, see the
+overlay network driver documentation.
+Link containers
+Links allow you to define extra aliases by which a service is reachable from another service. They are not required for basic service-to-service communication. By default, any service can reach any other service at that service's name. In the following example, db is reachable from web at both the hostnames db and database:
+
+
+services:
+ web:
+ build: .
+ links:
+ - "db:database"
+ db:
+ image: postgres:latest
+See the
+links reference for more information.
+Debugging
+When a service can't reach another, work through the following steps in order: first confirm the network configuration looks right, then confirm the containers are actually attached, then test live connectivity.
+Inspect port mappings
+To find out which host port maps to a container port, use docker compose port:
+
+
+# Which host port maps to container port 5432 on db?
+$ docker compose port db 5432
+# Output: 0.0.0.0:8001
+This is especially useful when using dynamic port mapping, where the host port changes on every docker compose up:
+
+
+services:
+ web:
+ image: nginx
+ ports:
+ - "80" # Docker assigns the host port dynamically
+
+
+$ docker compose port web 80
+# Output: 0.0.0.0:55432
+When you scale a service, each replica gets its own dynamic port. Use --index to query a specific replica:
+
+
+$ docker compose up -d --scale web=3
+
+$ docker compose port --index=1 web 80 # Output: 0.0.0.0:55001
+$ docker compose port --index=2 web 80 # Output: 0.0.0.0:55002
+$ docker compose port --index=3 web 80 # Output: 0.0.0.0:55003
+By default, docker compose port looks for TCP mappings. If a service exposes both TCP and UDP on the same port, use --protocol:
+
+
+$ docker compose port --protocol=udp myservice 53
+Verify network membership
+To check which containers are attached to a network (useful when troubleshooting connectivity across external or custom networks):
+
+
+$ docker network inspect <network-name>
+Check connectivity
+If the network membership looks correct but services still can't reach each other, test connectivity from inside a running container using docker compose exec.
+Further reference information
+For full details of the network configuration options available, see the following references:
+Top-level networks element
+Service-level networks attribute
+
+Edit this page
+
+Request changesTable of contents
+Default network and service discovery
+Updating containers on the network
+Change the network mode
+Specify custom networks
+Internal networks
+Configure the default network
+Use an existing external network
+Connecting multiple Compose projects
+Hybrid networking
+Custom DNS with extra_hosts
+Multi-host networking
+Link containers
+Debugging
+Inspect port mappings
+Verify network membership
+Check connectivity
+Further reference information
+
+
+
+Product offerings
+Pricing
+About us
+llms.txt
+llms-full.txt
+Cookies Settings
+
+|
+Terms of Use
+|
+Status
+|
+LegalCopyright © 2013-2026 Docker Inc. All rights reserved.Automated traffic detection

@@ -1,0 +1,15 @@
+{
+  "checks": [
+    "16 chapter anchors valid; desktop has no page-level horizontal overflow",
+    "All 17 embedded figures load",
+    "Code copy writes exact code to clipboard",
+    "Figure zoom opens and closes",
+    "Standalone file renders with network disabled; no external requests",
+    "390px mobile layout has no page overflow; menu and chapter navigation work",
+    "Print stylesheet hides navigation and controls, retains all chapters"
+  ],
+  "errors": [],
+  "code_blocks": 53,
+  "chapter_count": 16,
+  "figures": 17
+}
